@@ -18,6 +18,9 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 
+import com.redhat.it.customers.dmc.core.cdi.interfaces.AppCollectorWorkerBinding;
+import com.redhat.it.customers.dmc.core.cdi.interfaces.InstanceCollectorWorkerBinding;
+import com.redhat.it.customers.dmc.core.cdi.interfaces.JvmCollectorWorkerBinding;
 import com.redhat.it.customers.dmc.core.constants.CollectorWorkerStatus;
 import com.redhat.it.customers.dmc.core.dto.configuration.Configuration;
 import com.redhat.it.customers.dmc.core.dto.event.RestartCollectorEvent;
@@ -48,7 +51,16 @@ public class MetricCollectorServiceImpl implements MetricCollectorService {
     private ConfigurationService configurationService;
 
     @Inject
-    private Instance<CollectorWorker> threads;
+    @AppCollectorWorkerBinding
+    private Instance<AppCollectorWorkerImpl> appThreads;
+
+    @Inject
+    @InstanceCollectorWorkerBinding
+    private Instance<InstanceCollectorWorkerImpl> instanceThreads;
+
+    @Inject
+    @JvmCollectorWorkerBinding
+    private Instance<JvmCollectorWorkerImpl> jvmThreads;
 
     private final Map<String, CollectorWorker> runningCollectors;
 
@@ -293,8 +305,22 @@ public class MetricCollectorServiceImpl implements MetricCollectorService {
 
     private CollectorWorker buildCollectorWorker(Configuration configuration)
             throws DMRException {
-        CollectorWorker collectorWorker = threads.get();
+        CollectorWorker collectorWorker = null;
+        switch (configuration.getMetricType()) {
+        case APP:
+            collectorWorker = appThreads.get();
+            break;
+        case INSTANCE:
+            collectorWorker = instanceThreads.get();
+            break;
+        case JVM:
+            collectorWorker = jvmThreads.get();
+            break;
+        }
         collectorWorker.setConfiguration(configuration);
+        if (configuration.isStart()) {
+            collectorWorker.start();
+        }
         // collectorWorker.setQueryExecutor(connectionService
         // .getQueryExecutor(configuration.getId()));
         return collectorWorker;

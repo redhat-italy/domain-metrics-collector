@@ -2,14 +2,13 @@ package com.redhat.it.customers.dmc.core.services.metrics;
 
 import com.redhat.it.customers.dmc.core.constants.CollectorWorkerStatus;
 import com.redhat.it.customers.dmc.core.dto.configuration.Configuration;
-import com.redhat.it.customers.dmc.core.services.connection.QueryExecutor;
 
 /**
  * The Interface CollectorWorker.
  * 
  * @author Andrea Battaglia
  */
-public interface CollectorWorker extends Runnable {
+public interface CollectorWorker<C extends Configuration> extends Runnable {
 
     /**
      * Gets the id.
@@ -24,7 +23,7 @@ public interface CollectorWorker extends Runnable {
      * @param configuration
      *            the new id
      */
-    void setConfiguration(Configuration configuration);
+    void setConfiguration(C configuration);
 
     /**
      * Start.
@@ -60,13 +59,6 @@ public interface CollectorWorker extends Runnable {
     void fireAndForget();
 
     /**
-     * Sets the DMR connection.
-     *
-     * @param queryExecutor the new query executor
-     */
-    void setQueryExecutor(QueryExecutor queryExecutor);
-
-    /**
      * Gets the status.
      *
      * @return the status
@@ -100,4 +92,5 @@ public interface CollectorWorker extends Runnable {
      * @return true, if is stopped
      */
     boolean isStopped();
+
 }

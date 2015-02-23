@@ -3,44 +3,61 @@
  */
 package com.redhat.it.customers.dmc.core.dto.configuration;
 
-import java.util.Set;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlType;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonSubTypes;
+import org.codehaus.jackson.annotate.JsonSubTypes.Type;
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+
+import com.redhat.it.customers.dmc.core.constants.MetricType;
 
 /**
  * The Class Configuration.
  *
  * @author Andrea Battaglia
  */
-public class Configuration {
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Configuration", namespace = "dto.dmc.customers.it.redhat.com")
+@XmlSeeAlso({ AppConfiguration.class, InstanceConfiguration.class,
+        JvmConfiguration.class })
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "metricType")
+@JsonSubTypes({ @Type(value = AppConfiguration.class, name = "APP"),
+        @Type(value = InstanceConfiguration.class, name = "INSTANCE"),
+        @Type(value = JvmConfiguration.class, name = "JVM") })
+public abstract class Configuration {
 
-    private String id;
+    protected String id;
+
+    protected MetricType metricType;
 
     /** The hostname. */
-    private String hostname;
+    protected String hostname;
 
     /** The port. */
-    private int port;
+    protected int port;
 
     /** The username. */
-    private String username;
+    protected String username;
 
     /** The password. */
-    private String password;
+    protected String password;
 
     /** The realm. */
-    private String realm;
+    protected String realm;
 
     /** The regexp hostname. */
-    private String regexpHostname;
+    protected String regexpHostname;
 
     /** The regexp server. */
-    private String regexpServer;
+    protected String regexpServer;
 
-    /** The apps. */
-    private Set<String> apps;
+    protected int scanInterval;
 
-    private int scanInterval;
-
-    private String fileName;
+    protected boolean start;
 
     public String getId() {
         return id;
@@ -48,6 +65,11 @@ public class Configuration {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @JsonIgnore
+    public MetricType getMetricType() {
+        return metricType;
     }
 
     /**
@@ -184,25 +206,6 @@ public class Configuration {
     }
 
     /**
-     * Gets the apps.
-     *
-     * @return the apps
-     */
-    public Set<String> getApps() {
-        return apps;
-    }
-
-    /**
-     * Sets the apps.
-     *
-     * @param apps
-     *            the new apps
-     */
-    public void setApps(Set<String> apps) {
-        this.apps = apps;
-    }
-
-    /**
      * Gets the scan interval.
      *
      * @return the scan interval
@@ -219,6 +222,57 @@ public class Configuration {
      */
     public void setScanInterval(int scanInterval) {
         this.scanInterval = scanInterval;
+    }
+
+    /**
+     * @return the start
+     */
+    public boolean isStart() {
+        return start;
+    }
+
+    /**
+     * @param start
+     *            the start to set
+     */
+    public void setStart(boolean start) {
+        this.start = start;
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = (prime * result) + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Configuration other = (Configuration) obj;
+        if (id == null) {
+            if (other.id != null) {
+                return false;
+            }
+        } else if (!id.equals(other.id)) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -243,10 +297,10 @@ public class Configuration {
         builder.append(regexpHostname);
         builder.append(", regexpServer=");
         builder.append(regexpServer);
-        builder.append(", apps=");
-        builder.append(apps.toString());
         builder.append(", scanInterval=");
         builder.append(scanInterval);
+        builder.append(", start=");
+        builder.append(start);
         builder.append("]");
         return builder.toString();
     }

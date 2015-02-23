@@ -54,6 +54,9 @@
     </appender>
 
     <logger name="com.redhat.it.customers.dmc" level="${log.core.level}" />
+    <logger name="org.jboss.as.controller" level="TRACE"> 
+        <appender-ref ref="CONSOLE" />
+    </logger>
     <logger name="exportLogger" level="TRACE">
         <appender-ref ref="SIFT" />
     </logger>

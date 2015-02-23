@@ -7,9 +7,7 @@ import static com.redhat.it.customers.dmc.core.constants.CollectorWorkerStatus.S
 import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Pattern;
 
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -18,7 +16,6 @@ import org.slf4j.MDC;
 import com.redhat.it.customers.dmc.core.constants.CollectorWorkerStatus;
 import com.redhat.it.customers.dmc.core.constants.Constants;
 import com.redhat.it.customers.dmc.core.dto.configuration.Configuration;
-import com.redhat.it.customers.dmc.core.exceptions.CollectorStoppedException;
 import com.redhat.it.customers.dmc.core.services.connection.QueryExecutor;
 import com.redhat.it.customers.dmc.core.services.export.DataExporter;
 import com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker;
@@ -28,24 +25,21 @@ import com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker;
  * 
  * @author Andrea Battaglia
  */
-@Dependent
-public class CollectorWorkerImpl implements CollectorWorker {
+public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
+        implements CollectorWorker<C> {
 
     /** The uuid. */
     private final String uuid = UUID.randomUUID().toString();
 
     /** The id. */
-    private String id;
-    private Configuration configuration;
-    private long scanInterval;
+    protected String id;
+    protected C configuration;
+    protected long scanInterval;
 
     private final AtomicReference<CollectorWorkerStatus> status;
 
     @Inject
     private Logger LOG;
-
-    @Inject
-    private QueryExecutor queryExecutor;
 
     @Inject
     private DataExporter dataExporter;
@@ -56,7 +50,7 @@ public class CollectorWorkerImpl implements CollectorWorker {
      * @param id
      *            the id
      */
-    public CollectorWorkerImpl() {
+    public AbstractCollectorWorkerImpl() {
         super();
         status = new AtomicReference<CollectorWorkerStatus>(PAUSED);
     }
@@ -75,7 +69,7 @@ public class CollectorWorkerImpl implements CollectorWorker {
      * @param id
      */
     @Override
-    public void setConfiguration(Configuration configuration) {
+    public void setConfiguration(C configuration) {
         this.id = configuration.getId();
         this.scanInterval = configuration.getScanInterval() * 1000;
         this.configuration = configuration;
@@ -169,7 +163,7 @@ public class CollectorWorkerImpl implements CollectorWorker {
         MDC.put(Constants.COLLECTOR_ID_MDC_KEY.getValue(), id);
         try {
             initComponents();
-            status.compareAndSet(PAUSED, RUNNING);
+            // status.compareAndSet(PAUSED, RUNNING);
             while (status.get() != STOPPED) {
                 if (status.get() == RUNNING) {
                     _doWork();
@@ -204,26 +198,17 @@ public class CollectorWorkerImpl implements CollectorWorker {
 
     }
 
-    private void configureQueryExecutor() {
-        queryExecutor.setUsername(configuration.getUsername());
-        queryExecutor.setPassword(configuration.getPassword());
-        queryExecutor.setRealm(configuration.getRealm());
-        queryExecutor
-                .setPatternHostname(configuration.getRegexpHostname() == null ? null
-                        : Pattern.compile(configuration.getRegexpHostname()));
-        queryExecutor
-                .setPatternServer(configuration.getRegexpServer() == null ? null
-                        : Pattern.compile(configuration.getRegexpServer()));
-        queryExecutor.setApps(configuration.getApps());
-    }
+    protected abstract void configureQueryExecutor();
+
+    protected abstract QueryExecutor getQueryExecutor();
 
     private void initComponents() throws IOException {
-        queryExecutor.open();
+        getQueryExecutor().open();
         dataExporter.open();
     }
 
     private void disposeComponents() throws IOException {
-        queryExecutor.close();
+        getQueryExecutor().close();
         dataExporter.close();
 
     }
@@ -244,11 +229,4 @@ public class CollectorWorkerImpl implements CollectorWorker {
         MDC.remove(Constants.COLLECTOR_ID_MDC_KEY.getValue());
     }
 
-    /**
-     * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#setDMRConnection(org.jboss.as.controller.client.ModelControllerClient)
-     */
-    @Override
-    public void setQueryExecutor(QueryExecutor queryExecutor) {
-        this.queryExecutor = queryExecutor;
-    }
 }

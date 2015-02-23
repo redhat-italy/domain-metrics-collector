@@ -1,7 +1,9 @@
 package com.redhat.it.customers.dmc.core.rest.resources;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -12,7 +14,6 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 
 import com.redhat.it.customers.dmc.core.dto.configuration.Configuration;
-import com.redhat.it.customers.dmc.core.dto.configuration.builder.ConfigurationBuilder;
 import com.redhat.it.customers.dmc.core.exceptions.ConfigurationAlreadyExistsException;
 import com.redhat.it.customers.dmc.core.exceptions.ConfigurationDeleteException;
 import com.redhat.it.customers.dmc.core.exceptions.ConfigurationException;
@@ -47,31 +48,34 @@ public class ConfigurationResource {
      */
     @PUT
     @Path("")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Configuration addConfiguration(
-            @QueryParam("configurationId") String configurationId,
-            @QueryParam("hostname") String hostname,
-            @QueryParam("port") Integer port,
-            @QueryParam("username") String username,
-            @QueryParam("password") String password,
-            @QueryParam("realm") String realm,
-            @QueryParam("regexpHostname") String regexpHostname,
-            @QueryParam("regexpServer") String regexpServer,
-            @QueryParam("apps") String apps,
-            @QueryParam("scanInterval") Integer scanInterval,
-            @QueryParam("fileName") String fileName)
-            throws ConfigurationAlreadyExistsException,
-            ConfigurationStoreException, InvalidConfigurationIdException {
-        if (configurationId == null || configurationId.equals(""))
-            throw new InvalidConfigurationIdException(configurationId);
-        Configuration configuration = adaptRawDataToConfigurationObject(
-                configurationId, hostname, port, username, password, realm,
-                regexpHostname, regexpServer, apps, scanInterval, fileName);
+            @QueryParam("configuration") Configuration configuration
+    // @QueryParam("configurationId") String configurationId,
+    // @QueryParam("hostname") String hostname,
+    // @QueryParam("port") Integer port,
+    // @QueryParam("username") String username,
+    // @QueryParam("password") String password,
+    // @QueryParam("realm") String realm,
+    // @QueryParam("regexpHostname") String regexpHostname,
+    // @QueryParam("regexpServer") String regexpServer,
+    // @QueryParam("apps") String apps,
+    // @QueryParam("scanInterval") Integer scanInterval,
+    // @QueryParam("start") @DefaultValue("false") boolean start
+    ) throws ConfigurationAlreadyExistsException, ConfigurationStoreException,
+            InvalidConfigurationIdException {
+        // if ((configurationId == null) || configurationId.equals("")) {
+        // throw new InvalidConfigurationIdException(configurationId);
+        // }
+        // Configuration configuration = adaptRawDataToConfigurationObject(
+        // configurationId, hostname, port, username, password, realm,
+        // regexpHostname, regexpServer, apps, scanInterval, start);
         Configuration newConfiguration = configurationService
                 .addConfiguration(configuration);
         LOG.info(
                 "Configuration {} added successfully. The full configuration is \n{}",
-                configurationId, newConfiguration);
+                newConfiguration.getId(), newConfiguration);
         return newConfiguration;
     }
 
@@ -84,30 +88,22 @@ public class ConfigurationResource {
      */
     @POST
     @Path("")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Configuration updateConfiguration(
-            @QueryParam("configurationId") String configurationId,
-            @QueryParam("hostname") String hostname,
-            @QueryParam("port") Integer port,
-            @QueryParam("username") String username,
-            @QueryParam("password") String password,
-            @QueryParam("realm") String realm,
-            @QueryParam("regexpHostname") String regexpHostname,
-            @QueryParam("regexpServer") String regexpServer,
-            @QueryParam("apps") String apps,
-            @QueryParam("scanInterval") Integer scanInterval,
-            @QueryParam("fileName") String fileName)
+            @QueryParam("configuration") Configuration newConfiguration)
             throws ConfigurationStoreException, ConfigurationException {
-        if (configurationId == null || configurationId.equals(""))
-            throw new InvalidConfigurationIdException(configurationId);
-        Configuration newConfiguration = adaptRawDataToConfigurationObject(
-                configurationId, hostname, port, username, password, realm,
-                regexpHostname, regexpServer, apps, scanInterval, fileName);
+//        if ((configurationId == null) || configurationId.equals("")) {
+//            throw new InvalidConfigurationIdException(configurationId);
+//        }
+//        Configuration newConfiguration = adaptRawDataToConfigurationObject(
+//                configurationId, hostname, port, username, password, realm,
+//                regexpHostname, regexpServer, apps, scanInterval, start);
         Configuration oldConfiguration = configurationService
                 .updateConfiguration(newConfiguration);
         LOG.info(
                 "Configuration {} updated successfully.\nThe new configuration is {}, the old one is {}",
-                configurationId, newConfiguration, oldConfiguration);
+                newConfiguration.getId(), newConfiguration, oldConfiguration);
         return oldConfiguration;
     }
 
@@ -126,8 +122,9 @@ public class ConfigurationResource {
             @QueryParam("configurationId") final String configurationId)
             throws ConfigurationNotFoundException,
             ConfigurationDeleteException, InvalidConfigurationIdException {
-        if (configurationId == null || configurationId.equals(""))
+        if ((configurationId == null) || configurationId.equals("")) {
             throw new InvalidConfigurationIdException(configurationId);
+        }
         Configuration configuration = configurationService
                 .removeConfiguration(configurationId);
         LOG.info(
@@ -136,18 +133,18 @@ public class ConfigurationResource {
         return configuration;
     }
 
-    private Configuration adaptRawDataToConfigurationObject(
-            String configurationId, String hostname, Integer port,
-            String username, String password, String realm,
-            String regexpHostname, String regexpServer, String apps,
-            Integer scanInterval, String fileName) {
-        Configuration configuration = ConfigurationBuilder.configuration()
-                .withId(configurationId).withHostname(hostname).withPort(port)
-                .withUsername(username).withPassword(password).withRealm(realm)
-                .withRegexpHostname(regexpHostname)
-                .withRegexpServer(regexpServer).withApps(apps)
-                .withScanInterval(scanInterval).build();
-        return configuration;
-    }
+//    private Configuration adaptRawDataToConfigurationObject(
+//            String configurationId, String hostname, Integer port,
+//            String username, String password, String realm,
+//            String regexpHostname, String regexpServer, String apps,
+//            Integer scanInterval, boolean start) {
+//        Configuration configuration = ConfigurationBuilderFactory
+//                .configuration().withId(configurationId).withHostname(hostname)
+//                .withPort(port).withUsername(username).withPassword(password)
+//                .withRealm(realm).withRegexpHostname(regexpHostname)
+//                .withRegexpServer(regexpServer).withApps(apps)
+//                .withScanInterval(scanInterval).withStart(start).build();
+//        return configuration;
+//    }
 
 }

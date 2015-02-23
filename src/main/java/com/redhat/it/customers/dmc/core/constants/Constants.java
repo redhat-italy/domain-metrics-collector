@@ -29,6 +29,8 @@ public enum Constants {
 
     /** The export logger name. */
     TEMPLATE_LOGGER_NAME("templateLogger"),
+    
+    SERVICE_JMX_REMOTING_PREFIX("service:jmx:remoting-jmx://"),
 
     ;
 
