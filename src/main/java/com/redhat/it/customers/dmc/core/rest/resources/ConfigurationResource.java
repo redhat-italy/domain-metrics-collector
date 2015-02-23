@@ -3,6 +3,7 @@ package com.redhat.it.customers.dmc.core.rest.resources;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -136,6 +137,20 @@ public class ConfigurationResource {
                 "Configuration {} removed successfully. The full removed configuration is \n{}",
                 configurationId, configuration);
         return configuration;
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("")
+    public Configuration getConfigurationById(
+            @QueryParam("configurationId") String configurationId)
+            throws InvalidConfigurationIdException {
+        if ((configurationId == null) || configurationId.equals("")) {
+            throw new InvalidConfigurationIdException(configurationId);
+        }
+        return  configurationService
+                .getConfiguration(configurationId);
+        
     }
 
     // private Configuration adaptRawDataToConfigurationObject(

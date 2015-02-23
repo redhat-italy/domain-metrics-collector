@@ -260,6 +260,11 @@ public class EJBMonitor {
                 .keys()) {
             if (response.get("result").get("subdeployment").get(subdeployment)
                     .get("subsystem").has("ejb3")) {
+
+                LOG.info("Subsystem \"eb3\" components: {}", response.get("result")
+                        .get("subdeployment").get(subdeployment)
+                        .get("subsystem").get("ejb3") );
+                
                 for (String stateful : response.get("result")
                         .get("subdeployment").get(subdeployment)
                         .get("subsystem").get("ejb3")

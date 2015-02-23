@@ -34,7 +34,19 @@ public enum Constants {
     SERVICE_JMX_REMOTING_PREFIX("service:jmx:remoting-jmx://"),
 
     /** The regexp catchall. */
-    REGEXP_CATCHALL(".+"),
+    REGEXP_CATCH_ALL(".+"),
+
+    /** The default app object depth. */
+    DEFAULT_APP_OBJECT_DEPTH("0"),
+
+    /** The default host. */
+    DEFAULT_HOST("localhost"),
+
+    /** The default port. */
+    DEFAULT_PORT("9999"),
+
+    /** The default scan interval. */
+    DEFAULT_SCAN_INTERVAL("5"),
 
     /** The configuration file extension. */
     CONFIGURATION_FILE_EXTENSION(".json")

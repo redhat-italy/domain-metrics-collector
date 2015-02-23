@@ -154,34 +154,6 @@ public abstract class AbstractDMRQueryExecutorImpl extends
 
         return response.get("result").get("server").keys();
     }
-
-    /**
-     * Gets the deployments.
-     *
-     * @param client
-     *            the client
-     * @param host
-     *            the host
-     * @param server
-     *            the server
-     * @return the deployments
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    protected Set<String> getDeployments(ModelControllerClient client,
-            String host, String server) throws IOException {
-        ModelNode op = new ModelNode();
-        op.get("operation").set("read-resource");
-        op.get("operations").set(true);
-        ModelNode address = op.get("address");
-        address.add("host", host);
-        address.add("server", server);
-
-        ModelNode response = client.execute(op);
-
-        return response.get("result").get("deployment").keys();
-    }
-
     /**
      * Gets the all statistics.
      *

@@ -25,13 +25,15 @@ public class AppConfiguration extends Configuration {
     private Set<String> apps;
 
     /** The regexp subdeployment. */
-    private String regexpSubdeployment=Constants.REGEXP_CATCHALL.getValue();
+    private String regexpSubdeployment = Constants.REGEXP_CATCH_ALL.getValue();
 
     /** The subsystem. */
     private String subsystem;
+    private String regexSubsystemComponent = Constants.REGEXP_CATCH_ALL
+            .getValue();
 
     /** The app object name regex. */
-    private String regexAppObjectName=Constants.REGEXP_CATCHALL.getValue();
+    private String regexAppObjectName = Constants.REGEXP_CATCH_ALL.getValue();
 
     /** The app object attributes. */
     private Set<String> appObjectAttributes;
@@ -47,9 +49,9 @@ public class AppConfiguration extends Configuration {
 
     /** The app object detail attribute exclude. */
     private boolean appObjectDetailAttributeExclude;
-    
+
     public AppConfiguration() {
-        metricType=MetricType.APP;
+        metricType = MetricType.APP;
     }
 
     /**
@@ -88,6 +90,25 @@ public class AppConfiguration extends Configuration {
      */
     public void setRegexpSubdeployment(String regexpSubdeployment) {
         this.regexpSubdeployment = regexpSubdeployment;
+    }
+
+    /**
+     * Gets the regex subsystem component.
+     *
+     * @return the regex subsystem component
+     */
+    public String getRegexSubsystemComponent() {
+        return regexSubsystemComponent;
+    }
+
+    /**
+     * Sets the regex subsystem component.
+     *
+     * @param regexSubsystemComponent
+     *            the new regex subsystem component
+     */
+    public void setRegexSubsystemComponent(String regexSubsystemComponent) {
+        this.regexSubsystemComponent = regexSubsystemComponent;
     }
 
     /**

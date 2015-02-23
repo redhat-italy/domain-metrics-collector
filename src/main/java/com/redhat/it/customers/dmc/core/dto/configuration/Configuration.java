@@ -36,10 +36,10 @@ public abstract class Configuration {
     protected MetricType metricType;
 
     /** The hostname. */
-    protected String hostname;
+    protected String hostname=Constants.DEFAULT_HOST.getValue();
 
     /** The port. */
-    protected int port;
+    protected int port=Integer.parseInt(Constants.DEFAULT_PORT.getValue());
 
     /** The username. */
     protected String username;
@@ -51,14 +51,16 @@ public abstract class Configuration {
     protected String realm;
 
     /** The regexp hostname. */
-    protected String regexpHostname = Constants.REGEXP_CATCHALL.getValue();
+    protected String regexpHostname = Constants.REGEXP_CATCH_ALL.getValue();
 
     /** The regexp server. */
-    protected String regexpServer=Constants.REGEXP_CATCHALL.getValue();
+    protected String regexpServer=Constants.REGEXP_CATCH_ALL.getValue();
 
-    protected int scanInterval;
+    protected int scanInterval=Integer.parseInt(Constants.DEFAULT_SCAN_INTERVAL.getValue());
 
     protected boolean start;
+    
+    protected int depth = Integer.parseInt(Constants.DEFAULT_APP_OBJECT_DEPTH.getValue());
 
     public String getId() {
         return id;
