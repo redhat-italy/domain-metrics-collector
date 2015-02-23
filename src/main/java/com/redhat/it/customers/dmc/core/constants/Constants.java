@@ -17,7 +17,7 @@ public enum Constants {
     DEFAULT_EXPORT_DIR("export"),
 
     /** The default export file extension. */
-    DEFAULT_EXPORT_FILE_EXTENSION(".CSV"),
+    DEFAULT_EXPORT_FILE_EXTENSION(".csv"),
     /** The default log dir. */
     DEFAULT_LOG_DIR("log"),
 
@@ -31,6 +31,8 @@ public enum Constants {
     TEMPLATE_LOGGER_NAME("templateLogger"),
     
     SERVICE_JMX_REMOTING_PREFIX("service:jmx:remoting-jmx://"),
+    
+    CONFIGURATION_FILE_EXTENSION(".json")
 
     ;
 

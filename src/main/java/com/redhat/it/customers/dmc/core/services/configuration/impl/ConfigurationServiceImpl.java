@@ -42,6 +42,7 @@ import com.redhat.it.customers.dmc.core.exceptions.ConfigurationException;
 import com.redhat.it.customers.dmc.core.exceptions.ConfigurationNotFoundException;
 import com.redhat.it.customers.dmc.core.exceptions.ConfigurationStoreException;
 import com.redhat.it.customers.dmc.core.services.configuration.ConfigurationService;
+import com.redhat.it.customers.dmc.core.util.ConfigurationFileFilter;
 
 /**
  * The Class ConnectionManagerServiceImpl.
@@ -50,6 +51,8 @@ import com.redhat.it.customers.dmc.core.services.configuration.ConfigurationServ
  */
 @ApplicationScoped
 public class ConfigurationServiceImpl implements ConfigurationService {
+
+    private static final ConfigurationFileFilter CONFIGURATION_FILE_FILTER = new ConfigurationFileFilter();
 
     private final ObjectMapper objectMapper;
 
@@ -214,8 +217,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     private void loadConfigurations() {
         Configuration configuration = null;
-        try (DirectoryStream<Path> directoryStream = Files
-                .newDirectoryStream(configurationFilesPath)) {
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
+                configurationFilesPath, CONFIGURATION_FILE_FILTER)) {
             for (Path configFilePath : directoryStream) {
                 configuration = objectMapper.readValue(configFilePath.toFile(),
                         Configuration.class);
@@ -315,7 +318,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private void storeConfigurationFS(Configuration configuration)
             throws ConfigurationStoreException {
         try (OutputStream os = Files.newOutputStream(
-                configurationFilesPath.resolve(configuration.getId()),
+                configurationFilesPath.resolve(configuration.getId()
+                        + Constants.CONFIGURATION_FILE_EXTENSION.getValue()),
                 StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
             objectMapper.writeValue(os, configuration);
         } catch (IOException e) {
@@ -333,8 +337,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     private void deleteConfigurationFS(String configurationId)
             throws ConfigurationDeleteException {
         try {
-            Files.deleteIfExists(configurationFilesPath
-                    .resolve(configurationId));
+            Files.deleteIfExists(configurationFilesPath.resolve(configurationId
+                    + Constants.CONFIGURATION_FILE_EXTENSION.getValue()));
         } catch (IOException e) {
             throw new ConfigurationDeleteException(configurationId, e);
         }
