@@ -9,7 +9,7 @@ import org.jboss.weld.environment.se.contexts.ThreadScoped;
  * 
  * @author Andrea Battaglia
  */
-@ThreadScoped
+//@ThreadScoped
 public class InstanceDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
 
     /**

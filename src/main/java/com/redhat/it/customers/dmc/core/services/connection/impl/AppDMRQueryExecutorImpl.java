@@ -16,7 +16,7 @@ import org.slf4j.Logger;
  * 
  * @author Andrea Battaglia
  */
-@ThreadScoped
+//@ThreadScoped
 public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
 
     /** Logger for this class. */

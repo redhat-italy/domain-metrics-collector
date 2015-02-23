@@ -2,6 +2,7 @@ package com.redhat.it.customers.dmc.core.services.metrics.impl;
 
 import java.util.regex.Pattern;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import com.redhat.it.customers.dmc.core.cdi.interfaces.AppCollectorWorkerBinding;
@@ -14,6 +15,7 @@ import com.redhat.it.customers.dmc.core.services.connection.impl.AppDMRQueryExec
  * 
  * @author Andrea Battaglia
  */
+//@Dependent
 @AppCollectorWorkerBinding
 public class AppCollectorWorkerImpl extends
         AbstractCollectorWorkerImpl<AppConfiguration> {

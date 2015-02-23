@@ -34,7 +34,7 @@ import com.redhat.it.customers.dmc.core.exceptions.DMRException;
  * 
  * @author Andrea Battaglia
  */
-@ThreadScoped
+//@ThreadScoped
 public class JmxQueryExecutorImpl extends
         AbstractQueryExecutorImpl<JMXConnector> {
 
