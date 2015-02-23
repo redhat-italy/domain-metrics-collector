@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.After;
@@ -20,6 +22,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.redhat.it.customers.dmc.core.constants.Constants;
 import com.redhat.it.customers.dmc.core.dto.configuration.AppConfiguration;
 import com.redhat.it.customers.dmc.core.dto.configuration.Configuration;
 import com.redhat.it.customers.dmc.core.dto.configuration.InstanceConfiguration;
@@ -33,6 +36,13 @@ public class ConfigurationServiceImplTest {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static Path configurationFilesPath;
+    
+    private final static Set<String> apps=new LinkedHashSet<String>();
+    
+    static{
+        apps.add("test-enterprise.ear");
+        apps.add("test-pippo.ear");
+    }
 
     /**
      * @throws java.lang.Exception
@@ -121,19 +131,20 @@ public class ConfigurationServiceImplTest {
 
     @Test
     public void writeAppConfigurationToFileSystem() {
-        Configuration configuration = new AppConfiguration();
-        configuration.setId("testAppConfiguration");
+        AppConfiguration appConfiguration = new AppConfiguration();
+        appConfiguration.setId("testAppConfiguration");
+        appConfiguration.setApps(apps);
         try (OutputStream os = Files.newOutputStream(
-                configurationFilesPath.resolve(configuration.getId()),
+                configurationFilesPath.resolve(appConfiguration.getId()+Constants.CONFIGURATION_FILE_EXTENSION.getValue()),
                 StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
-            objectMapper.writeValue(os, configuration);
+            objectMapper.writeValue(os, appConfiguration);
         } catch (IOException e) {
             e.printStackTrace();
         }
         //
-        configuration = null;
+        Configuration configuration = null;
         try (InputStream is = Files.newInputStream(configurationFilesPath
-                .resolve("testAppConfiguration"))) {
+                .resolve("testAppConfiguration"+Constants.CONFIGURATION_FILE_EXTENSION.getValue()))) {
             configuration = objectMapper.readValue(is, Configuration.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -147,7 +158,7 @@ public class ConfigurationServiceImplTest {
         Configuration configuration = new InstanceConfiguration();
         configuration.setId("testInstanceConfiguration");
         try (OutputStream os = Files.newOutputStream(
-                configurationFilesPath.resolve(configuration.getId()),
+                configurationFilesPath.resolve(configuration.getId()+Constants.CONFIGURATION_FILE_EXTENSION.getValue()),
                 StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
             objectMapper.writeValue(os, configuration);
         } catch (IOException e) {
@@ -156,7 +167,7 @@ public class ConfigurationServiceImplTest {
         //
         configuration = null;
         try (InputStream is = Files.newInputStream(configurationFilesPath
-                .resolve("testInstanceConfiguration"))) {
+                .resolve("testInstanceConfiguration"+Constants.CONFIGURATION_FILE_EXTENSION.getValue()))) {
             configuration = objectMapper.readValue(is, Configuration.class);
         } catch (IOException e) {
             e.printStackTrace();
@@ -170,7 +181,7 @@ public class ConfigurationServiceImplTest {
         Configuration configuration = new JvmConfiguration();
         configuration.setId("testJvmConfiguration");
         try (OutputStream os = Files.newOutputStream(
-                configurationFilesPath.resolve(configuration.getId()),
+                configurationFilesPath.resolve(configuration.getId()+Constants.CONFIGURATION_FILE_EXTENSION.getValue()),
                 StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
             objectMapper.writeValue(os, configuration);
         } catch (IOException e) {
@@ -179,7 +190,7 @@ public class ConfigurationServiceImplTest {
         //
         configuration = null;
         try (InputStream is = Files.newInputStream(configurationFilesPath
-                .resolve("testJvmConfiguration"))) {
+                .resolve("testJvmConfiguration"+Constants.CONFIGURATION_FILE_EXTENSION.getValue()))) {
             configuration = objectMapper.readValue(is, Configuration.class);
         } catch (IOException e) {
             e.printStackTrace();

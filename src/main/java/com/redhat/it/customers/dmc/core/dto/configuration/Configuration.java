@@ -13,6 +13,7 @@ import org.codehaus.jackson.annotate.JsonSubTypes;
 import org.codehaus.jackson.annotate.JsonSubTypes.Type;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
+import com.redhat.it.customers.dmc.core.constants.Constants;
 import com.redhat.it.customers.dmc.core.constants.MetricType;
 
 /**
@@ -50,10 +51,10 @@ public abstract class Configuration {
     protected String realm;
 
     /** The regexp hostname. */
-    protected String regexpHostname;
+    protected String regexpHostname = Constants.REGEXP_CATCHALL.getValue();
 
     /** The regexp server. */
-    protected String regexpServer;
+    protected String regexpServer=Constants.REGEXP_CATCHALL.getValue();
 
     protected int scanInterval;
 

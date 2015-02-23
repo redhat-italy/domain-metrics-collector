@@ -3,7 +3,6 @@ package com.redhat.it.customers.dmc.core.rest.resources;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -91,14 +90,20 @@ public class ConfigurationResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Configuration updateConfiguration(
-            @QueryParam("configuration") Configuration newConfiguration)
+    // @HeaderParam("configurationId") String configurationId,
+    // @PathParam("parameters") PathSegment parameters
+            @QueryParam("newConfiguration") Configuration newConfiguration)
             throws ConfigurationStoreException, ConfigurationException {
-//        if ((configurationId == null) || configurationId.equals("")) {
-//            throw new InvalidConfigurationIdException(configurationId);
-//        }
-//        Configuration newConfiguration = adaptRawDataToConfigurationObject(
-//                configurationId, hostname, port, username, password, realm,
-//                regexpHostname, regexpServer, apps, scanInterval, start);
+
+        // String path = parameters.getPath();
+        // MultivaluedMap<String, String> mvm =
+        // parameters.getMatrixParameters();
+        // LOG.info("entries to update: {}", mvm);
+        String configurationId = newConfiguration.getId();
+        if ((newConfiguration.getId() == null)
+                || newConfiguration.getId().equals("")) {
+            throw new InvalidConfigurationIdException(configurationId);
+        }
         Configuration oldConfiguration = configurationService
                 .updateConfiguration(newConfiguration);
         LOG.info(
@@ -133,18 +138,18 @@ public class ConfigurationResource {
         return configuration;
     }
 
-//    private Configuration adaptRawDataToConfigurationObject(
-//            String configurationId, String hostname, Integer port,
-//            String username, String password, String realm,
-//            String regexpHostname, String regexpServer, String apps,
-//            Integer scanInterval, boolean start) {
-//        Configuration configuration = ConfigurationBuilderFactory
-//                .configuration().withId(configurationId).withHostname(hostname)
-//                .withPort(port).withUsername(username).withPassword(password)
-//                .withRealm(realm).withRegexpHostname(regexpHostname)
-//                .withRegexpServer(regexpServer).withApps(apps)
-//                .withScanInterval(scanInterval).withStart(start).build();
-//        return configuration;
-//    }
+    // private Configuration adaptRawDataToConfigurationObject(
+    // String configurationId, String hostname, Integer port,
+    // String username, String password, String realm,
+    // String regexpHostname, String regexpServer, String apps,
+    // Integer scanInterval, boolean start) {
+    // Configuration configuration = ConfigurationBuilderFactory
+    // .configuration().withId(configurationId).withHostname(hostname)
+    // .withPort(port).withUsername(username).withPassword(password)
+    // .withRealm(realm).withRegexpHostname(regexpHostname)
+    // .withRegexpServer(regexpServer).withApps(apps)
+    // .withScanInterval(scanInterval).withStart(start).build();
+    // return configuration;
+    // }
 
 }

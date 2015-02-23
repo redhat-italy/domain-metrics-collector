@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+import com.redhat.it.customers.dmc.core.constants.Constants;
 import com.redhat.it.customers.dmc.core.constants.MetricType;
 
 /**
@@ -24,13 +25,13 @@ public class AppConfiguration extends Configuration {
     private Set<String> apps;
 
     /** The regexp subdeployment. */
-    private String regexpSubdeployment;
+    private String regexpSubdeployment=Constants.REGEXP_CATCHALL.getValue();
 
     /** The subsystem. */
     private String subsystem;
 
     /** The app object name regex. */
-    private String appObjectNameRegex;
+    private String regexAppObjectName=Constants.REGEXP_CATCHALL.getValue();
 
     /** The app object attributes. */
     private Set<String> appObjectAttributes;
@@ -111,20 +112,20 @@ public class AppConfiguration extends Configuration {
     /**
      * Gets the app object name regex.
      *
-     * @return the appObjectNameRegex
+     * @return the regexAppObjectName
      */
-    public String getAppObjectNameRegex() {
-        return appObjectNameRegex;
+    public String getRegexAppObjectName() {
+        return regexAppObjectName;
     }
 
     /**
      * Sets the app object name regex.
      *
-     * @param appObjectNameRegex
-     *            the appObjectNameRegex to set
+     * @param regexAppObjectName
+     *            the regexAppObjectName to set
      */
-    public void setAppObjectNameRegex(String appObjectNameRegex) {
-        this.appObjectNameRegex = appObjectNameRegex;
+    public void setRegexAppObjectName(String regexAppObjectName) {
+        this.regexAppObjectName = regexAppObjectName;
     }
 
     /**
@@ -236,8 +237,8 @@ public class AppConfiguration extends Configuration {
         builder.append(regexpSubdeployment);
         builder.append(", subsystem=");
         builder.append(subsystem);
-        builder.append(", appObjectNameRegex=");
-        builder.append(appObjectNameRegex);
+        builder.append(", regexAppObjectName=");
+        builder.append(regexAppObjectName);
         builder.append(", appObjectAttributes=");
         builder.append(appObjectAttributes);
         builder.append(", appObjectAttributeExclude=");

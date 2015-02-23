@@ -29,9 +29,14 @@ public enum Constants {
 
     /** The export logger name. */
     TEMPLATE_LOGGER_NAME("templateLogger"),
-    
+
+    /** The service jmx remoting prefix. */
     SERVICE_JMX_REMOTING_PREFIX("service:jmx:remoting-jmx://"),
-    
+
+    /** The regexp catchall. */
+    REGEXP_CATCHALL(".+"),
+
+    /** The configuration file extension. */
     CONFIGURATION_FILE_EXTENSION(".json")
 
     ;
