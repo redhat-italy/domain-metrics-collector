@@ -22,8 +22,10 @@ import com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker;
 
 /**
  * The Class CollectorWorkerImpl.
- * 
+ *
  * @author Andrea Battaglia
+ * @param <C>
+ *            the generic type
  */
 public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
         implements CollectorWorker<C> {
@@ -33,22 +35,26 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
 
     /** The id. */
     protected String id;
+
+    /** The configuration. */
     protected C configuration;
+
+    /** The scan interval. */
     protected long scanInterval;
 
+    /** The status. */
     private final AtomicReference<CollectorWorkerStatus> status;
 
+    /** The log. */
     @Inject
     private Logger LOG;
 
+    /** The data exporter. */
     @Inject
     private DataExporter dataExporter;
 
     /**
      * Instantiates a new collector worker impl.
-     *
-     * @param id
-     *            the id
      */
     public AbstractCollectorWorkerImpl() {
         super();
@@ -66,7 +72,10 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     }
 
     /**
-     * @param id
+     * Sets the configuration.
+     *
+     * @param configuration
+     *            the new configuration
      */
     @Override
     public void setConfiguration(C configuration) {
@@ -75,12 +84,18 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
         this.configuration = configuration;
     }
 
+    /**
+     * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#getStatus()
+     */
     @Override
     public CollectorWorkerStatus getStatus() {
         return status.get();
     }
 
     /**
+     * Start.
+     *
+     * @return true, if successful
      * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#start()
      */
     @Override
@@ -89,6 +104,9 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     }
 
     /**
+     * Pause.
+     *
+     * @return true, if successful
      * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#pause()
      */
     @Override
@@ -97,6 +115,9 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     }
 
     /**
+     * Resume.
+     *
+     * @return true, if successful
      * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#pause()
      */
     @Override
@@ -105,6 +126,9 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     }
 
     /**
+     * Stop.
+     *
+     * @return true, if successful
      * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#stop()
      */
     @Override
@@ -113,6 +137,9 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     }
 
     /**
+     * Checks if is started.
+     *
+     * @return true, if is started
      * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#isStarted()
      */
     @Override
@@ -121,6 +148,9 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     }
 
     /**
+     * Checks if is paused.
+     *
+     * @return true, if is paused
      * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#isPaused()
      */
     @Override
@@ -129,6 +159,9 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     }
 
     /**
+     * Checks if is stopped.
+     *
+     * @return true, if is stopped
      * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#isStopped()
      */
     @Override
@@ -137,6 +170,9 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     }
 
     /**
+     * Fire.
+     *
+     * @return the string
      * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#fire()
      */
     @Override
@@ -145,6 +181,8 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     }
 
     /**
+     * Fire and forget.
+     *
      * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#fireAndForget()
      */
     @Override
@@ -153,6 +191,8 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     }
 
     /**
+     * Run.
+     *
      * @see java.lang.Runnable#run()
      */
     @Override
@@ -193,34 +233,72 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
         }
     }
 
+    /**
+     * Configure data exporter.
+     */
     private void configureDataExporter() {
         // TODO Auto-generated method stub
 
     }
 
+    /**
+     * Configure query executor.
+     */
     protected abstract void configureQueryExecutor();
 
-    protected abstract QueryExecutor getQueryExecutor();
+    /**
+     * Gets the query executor.
+     *
+     * @return the query executor
+     */
+    protected abstract QueryExecutor<?> getQueryExecutor();
 
+    /**
+     * Inits the components.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void initComponents() throws IOException {
         getQueryExecutor().open();
         dataExporter.open();
     }
 
+    /**
+     * Dispose components.
+     *
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     private void disposeComponents() throws IOException {
         getQueryExecutor().close();
         dataExporter.close();
 
     }
 
+    /**
+     * _do work.
+     *
+     * @return the string
+     */
     private String _doWork() {
+        try {
+            String[] data = getQueryExecutor().extractData();
+            dataExporter.writeData(new String[] { "I AM WORKING...", "Field 1",
+                    "Field \"2\"", ",,,field 3,,," });
+            return "I AM WORKING...";
+        } catch (Exception e) {
+            LOG.error("Error extracting statistics.", e);
+        }
         // LOG.info("I AM WORKING...");
-        dataExporter.writeData(new String[] { "I AM WORKING...", "Field 1",
-                "Field \"2\"", ",,,field 3,,," });
-        return "I AM WORKING...";
+        return null;
     }
 
     /**
+     * Finalize.
+     *
+     * @throws Throwable
+     *             the throwable
      * @see java.lang.Object#finalize()
      */
     @Override

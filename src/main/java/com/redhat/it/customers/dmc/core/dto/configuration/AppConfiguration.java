@@ -29,26 +29,11 @@ public class AppConfiguration extends Configuration {
 
     /** The subsystem. */
     private String subsystem;
-    private String regexSubsystemComponent = Constants.REGEXP_CATCH_ALL
+    private String regexpSubsystemComponent = Constants.REGEXP_CATCH_ALL
             .getValue();
 
     /** The app object name regex. */
-    private String regexAppObjectName = Constants.REGEXP_CATCH_ALL.getValue();
-
-    /** The app object attributes. */
-    private Set<String> appObjectAttributes;
-
-    /** The app object attribute exclude. */
-    private boolean appObjectAttributeExclude;
-
-    /** The app object detail. */
-    private String appObjectDetail;
-
-    /** The app object detail attributes. */
-    private Set<String> appObjectDetailAttributes;
-
-    /** The app object detail attribute exclude. */
-    private boolean appObjectDetailAttributeExclude;
+    private String regexpAppObjectName = Constants.REGEXP_CATCH_ALL.getValue();
 
     public AppConfiguration() {
         metricType = MetricType.APP;
@@ -97,18 +82,18 @@ public class AppConfiguration extends Configuration {
      *
      * @return the regex subsystem component
      */
-    public String getRegexSubsystemComponent() {
-        return regexSubsystemComponent;
+    public String getRegexpSubsystemComponent() {
+        return regexpSubsystemComponent;
     }
 
     /**
      * Sets the regex subsystem component.
      *
-     * @param regexSubsystemComponent
+     * @param regexpSubsystemComponent
      *            the new regex subsystem component
      */
-    public void setRegexSubsystemComponent(String regexSubsystemComponent) {
-        this.regexSubsystemComponent = regexSubsystemComponent;
+    public void setRegexpSubsystemComponent(String regexpSubsystemComponent) {
+        this.regexpSubsystemComponent = regexpSubsystemComponent;
     }
 
     /**
@@ -133,121 +118,24 @@ public class AppConfiguration extends Configuration {
     /**
      * Gets the app object name regex.
      *
-     * @return the regexAppObjectName
+     * @return the regexpAppObjectName
      */
-    public String getRegexAppObjectName() {
-        return regexAppObjectName;
+    public String getRegexpAppObjectName() {
+        return regexpAppObjectName;
     }
 
     /**
      * Sets the app object name regex.
      *
-     * @param regexAppObjectName
-     *            the regexAppObjectName to set
+     * @param regexpAppObjectName
+     *            the regexpAppObjectName to set
      */
-    public void setRegexAppObjectName(String regexAppObjectName) {
-        this.regexAppObjectName = regexAppObjectName;
+    public void setRegexpAppObjectName(String regexpAppObjectName) {
+        this.regexpAppObjectName = regexpAppObjectName;
     }
 
     /**
-     * Gets the app object attributes.
-     *
-     * @return the appObjectAttributes
-     */
-    public Set<String> getAppObjectAttributes() {
-        return appObjectAttributes;
-    }
-
-    /**
-     * Sets the app object attributes.
-     *
-     * @param appObjectAttributes
-     *            the appObjectAttributes to set
-     */
-    public void setAppObjectAttributes(Set<String> appObjectAttributes) {
-        this.appObjectAttributes = appObjectAttributes;
-    }
-
-    /**
-     * Checks if is app object attribute exclude.
-     *
-     * @return the appObjectAttributeExclude
-     */
-    public boolean isAppObjectAttributeExclude() {
-        return appObjectAttributeExclude;
-    }
-
-    /**
-     * Sets the app object attribute exclude.
-     *
-     * @param appObjectAttributeExclude
-     *            the appObjectAttributeExclude to set
-     */
-    public void setAppObjectAttributeExclude(boolean appObjectAttributeExclude) {
-        this.appObjectAttributeExclude = appObjectAttributeExclude;
-    }
-
-    /**
-     * Gets the app object detail.
-     *
-     * @return the appObjectDetail
-     */
-    public String getAppObjectDetail() {
-        return appObjectDetail;
-    }
-
-    /**
-     * Sets the app object detail.
-     *
-     * @param appObjectDetail
-     *            the appObjectDetail to set
-     */
-    public void setAppObjectDetail(String appObjectDetail) {
-        this.appObjectDetail = appObjectDetail;
-    }
-
-    /**
-     * Gets the app object detail attributes.
-     *
-     * @return the appObjectDetailAttributes
-     */
-    public Set<String> getAppObjectDetailAttributes() {
-        return appObjectDetailAttributes;
-    }
-
-    /**
-     * Sets the app object detail attributes.
-     *
-     * @param appObjectDetailAttributes
-     *            the appObjectDetailAttributes to set
-     */
-    public void setAppObjectDetailAttributes(
-            Set<String> appObjectDetailAttributes) {
-        this.appObjectDetailAttributes = appObjectDetailAttributes;
-    }
-
-    /**
-     * Checks if is app object detail attribute exclude.
-     *
-     * @return the appObjectDetailAttributeExclude
-     */
-    public boolean isAppObjectDetailAttributeExclude() {
-        return appObjectDetailAttributeExclude;
-    }
-
-    /**
-     * Sets the app object detail attribute exclude.
-     *
-     * @param appObjectDetailAttributeExclude
-     *            the appObjectDetailAttributeExclude to set
-     */
-    public void setAppObjectDetailAttributeExclude(
-            boolean appObjectDetailAttributeExclude) {
-        this.appObjectDetailAttributeExclude = appObjectDetailAttributeExclude;
-    }
-
-    /**
-     * @see com.redhat.it.customers.dmc.core.dto.configuration.Configuration#toString()
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
@@ -258,18 +146,34 @@ public class AppConfiguration extends Configuration {
         builder.append(regexpSubdeployment);
         builder.append(", subsystem=");
         builder.append(subsystem);
-        builder.append(", regexAppObjectName=");
-        builder.append(regexAppObjectName);
-        builder.append(", appObjectAttributes=");
-        builder.append(appObjectAttributes);
-        builder.append(", appObjectAttributeExclude=");
-        builder.append(appObjectAttributeExclude);
-        builder.append(", appObjectDetail=");
-        builder.append(appObjectDetail);
-        builder.append(", appObjectDetailAttributes=");
-        builder.append(appObjectDetailAttributes);
-        builder.append(", appObjectDetailAttributeExclude=");
-        builder.append(appObjectDetailAttributeExclude);
+        builder.append(", regexpSubsystemComponent=");
+        builder.append(regexpSubsystemComponent);
+        builder.append(", regexpAppObjectName=");
+        builder.append(regexpAppObjectName);
+        builder.append(", id=");
+        builder.append(id);
+        builder.append(", metricType=");
+        builder.append(metricType);
+        builder.append(", hostname=");
+        builder.append(hostname);
+        builder.append(", port=");
+        builder.append(port);
+        builder.append(", username=");
+        builder.append(username);
+        builder.append(", password=");
+        builder.append(password);
+        builder.append(", realm=");
+        builder.append(realm);
+        builder.append(", regexpHostname=");
+        builder.append(regexpHostname);
+        builder.append(", regexpServer=");
+        builder.append(regexpServer);
+        builder.append(", scanInterval=");
+        builder.append(scanInterval);
+        builder.append(", start=");
+        builder.append(start);
+        builder.append(", depth=");
+        builder.append(depth);
         builder.append("]");
         return builder.toString();
     }

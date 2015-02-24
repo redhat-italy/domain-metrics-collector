@@ -3,21 +3,26 @@ package com.redhat.it.customers.dmc.core.services.connection.impl;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
 
+import com.redhat.it.customers.dmc.core.dto.configuration.AppObjectAttributeConfiguration;
 import com.redhat.it.customers.dmc.core.services.connection.QueryExecutor;
 
 /**
  * The Class QueryExecutorImpl.
  *
  * @author Andrea Battaglia
+ * @param <C>
+ *            the generic type
  */
 abstract class AbstractQueryExecutorImpl<C> implements QueryExecutor<C> {
+
+    /** The Constant DATE_FORMATTER. */
     protected static final DateFormat DATE_FORMATTER = new SimpleDateFormat(
             "yyyy-MM-dd'T'HH:mm:ssZ");
 
@@ -25,6 +30,7 @@ abstract class AbstractQueryExecutorImpl<C> implements QueryExecutor<C> {
     @Inject
     private Logger LOG;
 
+    /** The client. */
     protected C client;
 
     /** The hostname. */
@@ -47,6 +53,12 @@ abstract class AbstractQueryExecutorImpl<C> implements QueryExecutor<C> {
 
     /** The pattern server. */
     protected Pattern patternServer;
+
+    /** The depth. */
+    protected int depth;
+
+    /** The app object attribute configurations. */
+    protected Map<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations;
 
     /**
      * Sets the hostname.
@@ -126,11 +138,55 @@ abstract class AbstractQueryExecutorImpl<C> implements QueryExecutor<C> {
     }
 
     /**
+     * Extract header.
+     *
+     * @return the string[]
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      * @see com.redhat.it.customers.dmc.core.services.connection.QueryExecutor#extractHeader()
      */
     @Override
     public String[] extractHeader() throws IOException {
         return null;
+    }
+
+    /**
+     * Gets the depth.
+     *
+     * @return the depth
+     */
+    public int getDepth() {
+        return depth;
+    }
+
+    /**
+     * Sets the depth.
+     *
+     * @param depth
+     *            the new depth
+     */
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    /**
+     * Gets the app object attribute configurations.
+     *
+     * @return the app object attribute configurations
+     */
+    public Map<Integer, AppObjectAttributeConfiguration> getAppObjectAttributeConfigurations() {
+        return appObjectAttributeConfigurations;
+    }
+
+    /**
+     * Sets the app object attribute configurations.
+     *
+     * @param appObjectAttributeConfigurations
+     *            the app object attribute configurations
+     */
+    public void setAppObjectAttributeConfigurations(
+            Map<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations) {
+        this.appObjectAttributeConfigurations = appObjectAttributeConfigurations;
     }
 
 }

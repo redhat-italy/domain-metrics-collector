@@ -26,7 +26,7 @@
         <!-- LOG PARAMETERS -->
         <log.appenders>CONSOLE</log.appenders>
         <log.root.level>INFO</log.root.level>
-        <log.core.level>DEBUG</log.core.level>
+        <log.core.level>INFO</log.core.level>
     </properties>
 
     <dependencies>

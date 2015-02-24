@@ -1,0 +1,82 @@
+{
+	"entity-bean"=>undefined,
+	"message-driven-bean"=>undefined,
+	"singleton-bean"=>{
+		"TestSingletonBean"=>{
+			"component-class-name"=>"TestSingletonBean",
+			"declared-roles"=>[
+				
+			],
+			"execution-time"=>2L,
+			"invocations"=>15L,
+			"methods"=>{
+				"readMethod"=>{
+					"execution-time"=>2L,
+					"invocations"=>15L,
+					"wait-time"=>0L
+				}
+			},
+			"peak-concurrent-invocations"=>1L,
+			"run-as-role"=>undefined,
+			"security-domain"=>"other",
+			"timers"=>[
+				
+			],
+			"wait-time"=>0L
+		}
+	},
+	"stateful-session-bean"=>{
+		"TestStatefulBean"=>{
+			"cache-size"=>1,
+			"component-class-name"=>"TestStatefulBean",
+			"declared-roles"=>[
+				
+			],
+			"execution-time"=>0L,
+			"invocations"=>15L,
+			"methods"=>{
+				"helloMethod"=>{
+					"execution-time"=>0L,
+					"invocations"=>15L,
+					"wait-time"=>0L
+				}
+			},
+			"passivated-count"=>0,
+			"peak-concurrent-invocations"=>1L,
+			"run-as-role"=>undefined,
+			"security-domain"=>"other",
+			"total-size"=>1,
+			"wait-time"=>0L
+		}
+	},
+	"stateless-session-bean"=>{
+		"TestStatelessBean"=>{
+			"component-class-name"=>"TestStatelessBean",
+			"declared-roles"=>[
+				
+			],
+			"execution-time"=>0L,
+			"invocations"=>15L,
+			"methods"=>{
+				"helloMethod"=>{
+					"execution-time"=>0L,
+					"invocations"=>15L,
+					"wait-time"=>0L
+				}
+			},
+			"peak-concurrent-invocations"=>1L,
+			"pool-available-count"=>20,
+			"pool-create-count"=>1,
+			"pool-current-size"=>1,
+			"pool-max-size"=>20,
+			"pool-name"=>"slsb-strict-max-pool",
+			"pool-remove-count"=>0,
+			"run-as-role"=>undefined,
+			"security-domain"=>"other",
+			"timers"=>[
+				
+			],
+			"wait-time"=>0L
+		}
+	}
+}

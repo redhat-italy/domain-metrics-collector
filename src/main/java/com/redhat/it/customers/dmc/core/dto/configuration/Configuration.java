@@ -3,6 +3,8 @@
  */
 package com.redhat.it.customers.dmc.core.dto.configuration;
 
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlSeeAlso;
@@ -31,15 +33,17 @@ import com.redhat.it.customers.dmc.core.constants.MetricType;
         @Type(value = JvmConfiguration.class, name = "JVM") })
 public abstract class Configuration {
 
+    /** The id. */
     protected String id;
 
+    /** The metric type. */
     protected MetricType metricType;
 
     /** The hostname. */
-    protected String hostname=Constants.DEFAULT_HOST.getValue();
+    protected String hostname = Constants.DEFAULT_HOST.getValue();
 
     /** The port. */
-    protected int port=Integer.parseInt(Constants.DEFAULT_PORT.getValue());
+    protected int port = Integer.parseInt(Constants.DEFAULT_PORT.getValue());
 
     /** The username. */
     protected String username;
@@ -54,22 +58,52 @@ public abstract class Configuration {
     protected String regexpHostname = Constants.REGEXP_CATCH_ALL.getValue();
 
     /** The regexp server. */
-    protected String regexpServer=Constants.REGEXP_CATCH_ALL.getValue();
+    protected String regexpServer = Constants.REGEXP_CATCH_ALL.getValue();
 
-    protected int scanInterval=Integer.parseInt(Constants.DEFAULT_SCAN_INTERVAL.getValue());
+    /** The scan interval. */
+    protected int scanInterval = Integer
+            .parseInt(Constants.DEFAULT_SCAN_INTERVAL.getValue());
 
+    /** The start. */
     protected boolean start;
-    
-    protected int depth = Integer.parseInt(Constants.DEFAULT_APP_OBJECT_DEPTH.getValue());
 
+    /** The depth. */
+    protected int depth = Integer.parseInt(Constants.DEFAULT_APP_OBJECT_DEPTH
+            .getValue());
+
+    /** The app object attribute configurations. */
+    protected Map<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations;
+
+    /**
+     * Instantiates a new configuration.
+     */
+    public Configuration() {
+    }
+
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Sets the id.
+     *
+     * @param id
+     *            the new id
+     */
     public void setId(String id) {
         this.id = id;
     }
 
+    /**
+     * Gets the metric type.
+     *
+     * @return the metric type
+     */
     @JsonIgnore
     public MetricType getMetricType() {
         return metricType;
@@ -228,6 +262,8 @@ public abstract class Configuration {
     }
 
     /**
+     * Checks if is start.
+     *
      * @return the start
      */
     public boolean isStart() {
@@ -235,6 +271,8 @@ public abstract class Configuration {
     }
 
     /**
+     * Sets the start.
+     *
      * @param start
      *            the start to set
      */
@@ -243,6 +281,48 @@ public abstract class Configuration {
     }
 
     /**
+     * Gets the depth.
+     *
+     * @return the depth
+     */
+    public int getDepth() {
+        return depth;
+    }
+
+    /**
+     * Sets the depth.
+     *
+     * @param depth
+     *            the new depth
+     */
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    /**
+     * Gets the app object attribute configurations.
+     *
+     * @return the app object attribute configurations
+     */
+    public Map<Integer, AppObjectAttributeConfiguration> getAppObjectAttributeConfigurations() {
+        return appObjectAttributeConfigurations;
+    }
+
+    /**
+     * Sets the app object attribute configurations.
+     *
+     * @param appObjectAttributeConfigurations
+     *            the app object attribute configurations
+     */
+    public void setAppObjectAttributeConfigurations(
+            Map<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations) {
+        this.appObjectAttributeConfigurations = appObjectAttributeConfigurations;
+    }
+
+    /**
+     * Hash code.
+     *
+     * @return the int
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -254,6 +334,11 @@ public abstract class Configuration {
     }
 
     /**
+     * Equals.
+     *
+     * @param obj
+     *            the obj
+     * @return true, if successful
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -279,6 +364,9 @@ public abstract class Configuration {
     }
 
     /**
+     * To string.
+     *
+     * @return the string
      * @see java.lang.Object#toString()
      */
     @Override

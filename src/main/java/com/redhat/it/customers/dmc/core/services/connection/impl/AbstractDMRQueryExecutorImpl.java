@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
 import org.jboss.as.controller.client.ModelControllerClient;
 import org.jboss.dmr.ModelNode;
 import org.slf4j.Logger;
+
+import com.redhat.it.customers.dmc.core.dto.configuration.AppConfiguration;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -65,6 +68,7 @@ public abstract class AbstractDMRQueryExecutorImpl extends
     public void close() throws IOException {
         client.close();
     }
+
 
     /**
      * Extract data.
