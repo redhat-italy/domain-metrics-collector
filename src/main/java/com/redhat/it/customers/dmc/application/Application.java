@@ -3,10 +3,7 @@
  */
 package com.redhat.it.customers.dmc.application;
 
-import org.slf4j.LoggerFactory;
-
 import javax.enterprise.inject.spi.CDI;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.jboss.resteasy.cdi.CdiInjectorFactory;
@@ -16,6 +13,7 @@ import org.jboss.resteasy.spi.ResteasyDeployment;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Class Application.
@@ -27,9 +25,9 @@ public final class Application {
     /**
      * Logger for this class
      */
-    private static final Logger LOG = LoggerFactory.getLogger(Application.class);
-    
-    
+    private static final Logger LOG = LoggerFactory
+            .getLogger(Application.class);
+
     public static void main(String[] args) {
         new Application().startup();
     }
@@ -84,8 +82,8 @@ public final class Application {
     }
 
     static class ShutdownHook extends Thread {
-        @Inject
-        private Logger LOG;
+        private static final Logger LOG = LoggerFactory
+                .getLogger(ShutdownHook.class);
 
         private final Weld weld;
         private CdiNettyJaxrsServer cdiNettyJaxrsServer;

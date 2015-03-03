@@ -9,6 +9,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import com.redhat.it.customers.dmc.core.constants.Constants;
 import com.redhat.it.customers.dmc.core.constants.MetricType;
 
@@ -137,6 +139,7 @@ public class AppConfiguration extends Configuration {
     /**
      * @see java.lang.Object#toString()
      */
+    @JsonIgnore
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

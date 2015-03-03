@@ -1,6 +1,7 @@
 package com.redhat.it.customers.dmc.core.services.metrics;
 
 import com.redhat.it.customers.dmc.core.constants.CollectorWorkerStatus;
+import com.redhat.it.customers.dmc.core.constants.MetricType;
 import com.redhat.it.customers.dmc.core.dto.configuration.Configuration;
 
 /**
@@ -16,6 +17,13 @@ public interface CollectorWorker<C extends Configuration> extends Runnable {
      * @return the id
      */
     String getId();
+    
+    /**
+     * Gets the type.
+     *
+     * @return the type
+     */
+    MetricType getType();
 
     /**
      * Sets the id.

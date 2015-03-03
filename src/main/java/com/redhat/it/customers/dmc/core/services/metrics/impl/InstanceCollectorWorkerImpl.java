@@ -3,6 +3,7 @@ package com.redhat.it.customers.dmc.core.services.metrics.impl;
 import javax.inject.Inject;
 
 import com.redhat.it.customers.dmc.core.cdi.interfaces.InstanceCollectorWorkerBinding;
+import com.redhat.it.customers.dmc.core.constants.MetricType;
 import com.redhat.it.customers.dmc.core.dto.configuration.InstanceConfiguration;
 import com.redhat.it.customers.dmc.core.services.connection.QueryExecutor;
 import com.redhat.it.customers.dmc.core.services.connection.impl.InstanceDMRQueryExecutorImpl;
@@ -13,21 +14,21 @@ import com.redhat.it.customers.dmc.core.services.connection.impl.InstanceDMRQuer
  * @author Andrea Battaglia
  */
 @InstanceCollectorWorkerBinding
-public class InstanceCollectorWorkerImpl extends AbstractCollectorWorkerImpl<InstanceConfiguration> {
+public class InstanceCollectorWorkerImpl extends
+        AbstractCollectorWorkerImpl<InstanceConfiguration> {
 
-    
     /** The query executor. */
     @Inject
     private InstanceDMRQueryExecutorImpl queryExecutor;
-    
+
     /**
-     * Instantiates a new instance collector worker impl.
+     * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#getType()
      */
-    public InstanceCollectorWorkerImpl() {
-        // TODO Auto-generated constructor stub
+    @Override
+    public MetricType getType() {
+        return MetricType.INSTANCE;
     }
-    
-    
+
     /**
      * @see com.redhat.it.customers.dmc.core.services.metrics.impl.AbstractCollectorWorkerImpl#getQueryExecutor()
      */
@@ -42,7 +43,7 @@ public class InstanceCollectorWorkerImpl extends AbstractCollectorWorkerImpl<Ins
     @Override
     protected void configureQueryExecutor() {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

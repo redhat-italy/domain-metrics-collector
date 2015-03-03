@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -35,6 +36,9 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
 
     /** The id. */
     protected String id;
+
+    @Inject
+    private Event<DestroyCollectorInstanceEvent> destroyCollectorInstanceEvent;
 
     /** The configuration. */
     protected C configuration;
@@ -230,6 +234,8 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
             } catch (IOException e) {
                 LOG.error("", e);
             }
+            destroyCollectorInstanceEvent
+                    .fire(new DestroyCollectorInstanceEvent(getType(), id));
         }
     }
 

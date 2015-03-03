@@ -41,15 +41,19 @@ public class EmptyConfigurationResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Configuration getEmptyConfiguration(
             @QueryParam("metricType") MetricType metricType) {
+        Configuration configuration = null;
         switch (metricType) {
         case APP:
-            return new AppConfiguration();
+            configuration = new AppConfiguration();
+            break;
         case INSTANCE:
-            return new InstanceConfiguration();
+            configuration = new InstanceConfiguration();
+            break;
         case JVM:
-            return new JvmConfiguration();
+            configuration = new JvmConfiguration();
+            break;
         }
-        return null;
+        return configuration;
     }
 
 }

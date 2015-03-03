@@ -22,6 +22,7 @@ import com.redhat.it.customers.dmc.core.cdi.interfaces.AppCollectorWorkerBinding
 import com.redhat.it.customers.dmc.core.cdi.interfaces.InstanceCollectorWorkerBinding;
 import com.redhat.it.customers.dmc.core.cdi.interfaces.JvmCollectorWorkerBinding;
 import com.redhat.it.customers.dmc.core.constants.CollectorWorkerStatus;
+import com.redhat.it.customers.dmc.core.constants.MetricType;
 import com.redhat.it.customers.dmc.core.dto.configuration.Configuration;
 import com.redhat.it.customers.dmc.core.dto.event.RestartCollectorEvent;
 import com.redhat.it.customers.dmc.core.dto.event.StartCollectorEvent;
@@ -145,6 +146,37 @@ public class MetricCollectorServiceImpl implements MetricCollectorService {
     }
 
     /**
+     * @param event
+     */
+    void destroyCollectorInstance(@Observes DestroyCollectorInstanceEvent event) {
+        MetricType metricType = null;
+        String collectorName = null;
+        metricType = event.getMetricType();
+        collectorName = event.getCollectorName();
+        LOG.debug("Destroying stoped collector thread {} of type {}",
+                collectorName, metricType);
+        switch (metricType) {
+        case APP:
+            appThreads.destroy((AppCollectorWorkerImpl) runningCollectors
+                    .get(collectorName));
+            break;
+        case INSTANCE:
+            instanceThreads
+                    .destroy((InstanceCollectorWorkerImpl) runningCollectors
+                            .get(collectorName));
+
+            break;
+        case JVM:
+            jvmThreads.destroy((JvmCollectorWorkerImpl) runningCollectors
+                    .get(collectorName));
+
+            break;
+        }
+        metricType = null;
+        collectorName = null;
+    }
+
+    /**
      * @throws CollectorAlreadyExistsException
      * @throws DMRException
      * @throws ConfigurationNotFoundException
@@ -169,6 +201,12 @@ public class MetricCollectorServiceImpl implements MetricCollectorService {
             throw new CollectorAlreadyExistsException(collectorName);
         }
         CollectorWorker collectorWorker = buildCollectorWorker(configuration);
+        // submit returns a Future on which the submitting thread can call get
+        // to block until the task completes.
+        //
+        // Future<?> future = executor.submit(new Runnable() { ... });
+        // future.get();
+
         runningCollectors.put(collectorName, collectorWorker);
         new Thread(collectorWorker).start();
         return true;
@@ -251,7 +289,7 @@ public class MetricCollectorServiceImpl implements MetricCollectorService {
     public boolean stopCollector(String collectorName)
             throws CollectorNotFoundException, CollectorStoppedException {
         checkCollector(collectorName);
-        return runningCollectors.remove(collectorName).stop();
+        return runningCollectors.get(collectorName).stop();
     }
 
     // /**

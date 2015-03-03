@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import javax.inject.Inject;
 
 import com.redhat.it.customers.dmc.core.cdi.interfaces.AppCollectorWorkerBinding;
+import com.redhat.it.customers.dmc.core.constants.MetricType;
 import com.redhat.it.customers.dmc.core.dto.configuration.AppConfiguration;
 import com.redhat.it.customers.dmc.core.services.connection.QueryExecutor;
 import com.redhat.it.customers.dmc.core.services.connection.impl.AppDMRQueryExecutorImpl;
@@ -22,6 +23,14 @@ public class AppCollectorWorkerImpl extends
     /** The query executor. */
     @Inject
     private AppDMRQueryExecutorImpl queryExecutor;
+
+    /**
+     * @see com.redhat.it.customers.dmc.core.services.metrics.CollectorWorker#getType()
+     */
+    @Override
+    public MetricType getType() {
+        return MetricType.APP;
+    }
 
     /**
      * @see com.redhat.it.customers.dmc.core.services.metrics.impl.AbstractCollectorWorkerImpl#getQueryExecutor()

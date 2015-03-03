@@ -227,7 +227,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
                         configuration));
                 configuration = null;
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             LOG.error("Error loading configurations.", e);
         }
     }

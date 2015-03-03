@@ -72,8 +72,11 @@ public class ConfigurationServiceImplTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        configurationFilesPath = Paths.get("c:/dmc/test/configs");
+        configurationFilesPath = Paths.get("/dmc/test/configs");
         Files.createDirectories(configurationFilesPath);
+        Files.deleteIfExists(configurationFilesPath.resolve("testAppConfiguration.json"));
+        Files.deleteIfExists(configurationFilesPath.resolve("testInstanceConfiguration.json"));
+        Files.deleteIfExists(configurationFilesPath.resolve("testJvmConfiguration.json"));
     }
 
     /**

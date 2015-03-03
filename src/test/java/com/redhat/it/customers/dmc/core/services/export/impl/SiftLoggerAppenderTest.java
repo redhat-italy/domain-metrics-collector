@@ -21,7 +21,7 @@ public class SiftLoggerAppenderTest {
             .getLogger(SiftLoggerAppenderTest.class);
     
     static {
-        System.setProperty("core.export.path", "C:/dmc/test/log/sift/");
+        System.setProperty("core.export.path", "/dmc/test/log/sift/");
         System.setProperty("core.export.file.extension", "CSVXXX");
     }
 
@@ -37,7 +37,7 @@ public class SiftLoggerAppenderTest {
         @Override
         public void run() {
             MDC.put("collectorId", Integer.toString(id));
-            for (int i = 0; i < 100; i++) {
+            for (int i = 0; i < 5; i++) {
                 LOG.trace(Long.toString(System.currentTimeMillis()));
                 synchronized (this) {
                     try {
@@ -55,8 +55,9 @@ public class SiftLoggerAppenderTest {
     @Test
     public void test() {
         ExecutorService executorService = Executors.newFixedThreadPool(5);
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++) {
             executorService.submit(new MyThread(i));
+        }
         try {
             executorService.awaitTermination(120, TimeUnit.SECONDS);
         } catch (InterruptedException e) {

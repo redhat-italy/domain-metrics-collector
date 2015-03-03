@@ -28,7 +28,10 @@ public class DMCExceptionMapper implements ExceptionMapper<DMCException> {
     @Override
     public Response toResponse(DMCException e) {
         LOG.error("", e);
-        return Response.status(e.getErrorCode()).entity(e.getMessage()).build();
+        return Response
+                .status(e.getErrorCode())
+                .entity("An exception occurred: \"" + e.getMessage()
+                        + ".\" See the log file for error details.").build();
     }
 
 }
