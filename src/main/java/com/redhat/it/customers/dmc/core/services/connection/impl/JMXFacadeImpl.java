@@ -212,6 +212,7 @@ public class JMXFacadeImpl implements JMXFacade {
                 // path "memoryUsageBeforeGc/value/committed/"
                 // try {
                 try {
+                    // toReturn = dump(value, null, path);
                     toReturn = dump(value, null, path);
                     // } catch (SpeedException spe) {
                     // return spe.getMessage() + "\n";
@@ -268,23 +269,26 @@ public class JMXFacadeImpl implements JMXFacade {
      */
     private String dump(Object obj, String initialPath, String... requestedPath)
             throws DMRException {
-        StringBuffer strBuf = new StringBuffer("");
+        StringBuilder strBuf = new StringBuilder();
         String path = null;
 
         if (obj instanceof CompositeDataSupport) {
-
-            CompositeDataSupport data = (CompositeDataSupport) obj;
-            CompositeType compositeType = data.getCompositeType();
-            Set<String> keys = compositeType.keySet();
+            CompositeDataSupport data = null;
+            CompositeType compositeType = null;
+            Set<String> keys = null;
+            Object value = null;
+            OpenType<?> type = null;
+            /*
+             * 
+             */
+            data = (CompositeDataSupport) obj;
+            compositeType = data.getCompositeType();
+            keys = compositeType.keySet();
             for (String key : keys) {
-                if (initialPath != null) {
-                    path = initialPath + ((key.length() != 0) ? key + "/" : "");
-                } else {
-                    path = (key.length() != 0) ? key + "/" : "";
-                }
+                path = setInitialPath(initialPath, key);
                 // strBuf.append("\n" + path );
-                Object value = data.get(key);
-                OpenType<?> type = compositeType.getType(key);
+                value = data.get(key);
+                type = compositeType.getType(key);
                 if (type instanceof SimpleType) {
                     if ((requestedPath != null) && (requestedPath[0] != null)
                             && (requestedPath.length > 0)
@@ -315,39 +319,69 @@ public class JMXFacadeImpl implements JMXFacade {
                     }
 
                 }
-
+                path = null;
+                value = null;
+                type = null;
             }
+            keys = null;
+            data = null;
             return strBuf.toString();
 
         } else if (obj instanceof TabularData) {
+            TabularData mapToDump = null;
+            Collection<?> values = null;
+            CompositeDataSupport compData = null;
+            /*
+             * 
+             */
             if (initialPath != null) {
-                if (!initialPath.endsWith("/")) {
-                    path = initialPath + "/";
-                } else {
-                    path = initialPath;
-                }
+                path = normalizePath(initialPath);
             }
-
-            TabularData mapToDump = (TabularData) obj;
-            Collection<?> values = mapToDump.values();
-            for (Object value : values) {
-                if (value instanceof CompositeDataSupport) {
-                    CompositeDataSupport compData = (CompositeDataSupport) value;
-                    if ((requestedPath != null) && (requestedPath[0] != null)
-                            && (requestedPath.length > 0)
-                            && requestedPath[0].equals(path)) {
-                        throw new DMRException(dump(compData, path,
-                                requestedPath));
+            mapToDump = (TabularData) obj;
+            values = mapToDump.values();
+            mapToDump = null;
+            try {
+                for (Object value : values) {
+                    if (value instanceof CompositeDataSupport) {
+                        compData = (CompositeDataSupport) value;
+                        if ((requestedPath != null)
+                                && (requestedPath[0] != null)
+                                && (requestedPath.length > 0)
+                                && requestedPath[0].equals(path)) {
+                            throw new DMRException(dump(compData, path,
+                                    requestedPath));
+                        }
+                        strBuf.append(dump(compData, path, requestedPath));
+                        compData = null;
+                        return strBuf.toString();
                     }
-                    strBuf.append(dump(compData, path, requestedPath));
-
-                    return strBuf.toString();
                 }
+            } finally {
+                values = null;
             }
-
         }
 
         return obj.toString();
 
+    }
+
+    private String setInitialPath(String initialPath, String key) {
+        String path;
+        if (initialPath != null) {
+            path = initialPath + ((key.length() != 0) ? key + "/" : "");
+        } else {
+            path = (key.length() != 0) ? key + "/" : "";
+        }
+        return path;
+    }
+
+    private String normalizePath(String initialPath) {
+        String path;
+        if (!initialPath.endsWith("/")) {
+            path = initialPath + "/";
+        } else {
+            path = initialPath;
+        }
+        return path;
     }
 }

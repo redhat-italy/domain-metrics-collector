@@ -63,7 +63,7 @@ public final class Application {
         resteasyDeployment.getActualProviderClasses().addAll(
                 resteasyCdiExtension.getProviders());
         cdiNettyJaxrsServer.setDeployment(resteasyDeployment);
-        cdiNettyJaxrsServer.setPort(8087);
+        cdiNettyJaxrsServer.setPort(7779);
         cdiNettyJaxrsServer.setRootResourcePath("/dmc");
         LOG.info("Starting REST server...");
         cdiNettyJaxrsServer.start();

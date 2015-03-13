@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Arrays;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.management.AttributeNotFoundException;
 import javax.management.InstanceNotFoundException;
@@ -25,10 +27,10 @@ import com.redhat.it.customers.dmc.core.exceptions.DMCException;
 import com.redhat.it.customers.dmc.core.services.connection.JMXFacade;
 
 /**
- * The Class AdminService.
  * 
  * @author Andrea Battaglia
  */
+@ApplicationScoped
 @Path("/query")
 public class RemotingResource {
 
@@ -36,27 +38,34 @@ public class RemotingResource {
     @Inject
     private Logger LOG;
 
+    /** The jmx facade. */
     @Inject
-    private JMXFacade jmxFacade;
+    private Instance<JMXFacade> jmxFacadeInstance;
 
     /**
-     * 
      * es: username=admin;password=Pa$$w0rd
      * http://localhost:8087/dmc/query/127.0
      * .0.1::9999::admin::Pa$$w0rd::jboss.as
      * :subsystem=datasources,data-source=UNIC4_MPUSER
      * ,statistics=pool::AvailableCount
-     * 
-     * 
-     * @param parameters
-     * @return
-     * @throws IOException
-     * @throws DMCException
-     * @throws ReflectionException
-     * @throws MBeanException
-     * @throws InstanceNotFoundException
-     * @throws AttributeNotFoundException
+     *
+     * @param query
+     *            the query
+     * @return the string
      * @throws MalformedObjectNameException
+     *             the malformed object name exception
+     * @throws AttributeNotFoundException
+     *             the attribute not found exception
+     * @throws InstanceNotFoundException
+     *             the instance not found exception
+     * @throws MBeanException
+     *             the m bean exception
+     * @throws ReflectionException
+     *             the reflection exception
+     * @throws DMCException
+     *             the DMC exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -82,9 +91,10 @@ public class RemotingResource {
         object = params[4];
         attribute = params[5];
         path = (params.length == 7) ? params[6] : null;
-
+        JMXFacade jmxFacade = jmxFacadeInstance.get();
         value = jmxFacade.execute(host, port, username, password, object,
                 attribute, path);
+        jmxFacadeInstance.destroy(jmxFacade);
 
         return value;
     }

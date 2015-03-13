@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true">
     <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <File>/var/log/dmc.log</File>
+        <File>/var/log/dmc/dmc.log</File>
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] %c{0} - %X{collectorId} %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/var/log/dmc.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <fileNamePattern>/var/log/dmc/dmc.log.%d{yyyy-MM-dd}</fileNamePattern>
             <minIndex>1</minIndex>
             <maxIndex>30</maxIndex>
         </rollingPolicy>

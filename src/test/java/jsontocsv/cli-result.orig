@@ -1,0 +1,99 @@
+{
+    "outcome" => "success",
+    "result" => {
+        "content" => [{"hash" => bytes {
+            0x5b, 0x3f, 0x88, 0xd6, 0xca, 0x9f, 0xa8, 0xef,
+            0x6b, 0x62, 0x40, 0xfb, 0x6f, 0xe0, 0xf5, 0xf1,
+            0xbe, 0xfa, 0x30, 0x54
+        }}],
+        "enabled" => true,
+        "name" => "test-enterprise.ear",
+        "persistent" => true,
+        "runtime-name" => "test-enterprise.ear",
+        "status" => "OK",
+        "subdeployment" => {
+            "test-enterprise-ejb.jar" => {"subsystem" => {"ejb3" => {
+                "entity-bean" => undefined,
+                "message-driven-bean" => undefined,
+                "singleton-bean" => {"TestSingletonBean" => {
+                    "component-class-name" => "TestSingletonBean",
+                    "declared-roles" => [],
+                    "execution-time" => 0L,
+                    "invocations" => 14L,
+                    "methods" => {"readMethod" => {
+                        "execution-time" => 0L,
+                        "invocations" => 14L,
+                        "wait-time" => 0L
+                    }},
+                    "peak-concurrent-invocations" => 1L,
+                    "run-as-role" => undefined,
+                    "security-domain" => "other",
+                    "timers" => [],
+                    "wait-time" => 0L
+                }},
+                "stateful-session-bean" => {"TestStatefulBean" => {
+                    "cache-size" => 1,
+                    "component-class-name" => "TestStatefulBean",
+                    "declared-roles" => [],
+                    "execution-time" => 2L,
+                    "invocations" => 14L,
+                    "methods" => {"helloMethod" => {
+                        "execution-time" => 2L,
+                        "invocations" => 14L,
+                        "wait-time" => 0L
+                    }},
+                    "passivated-count" => 0,
+                    "peak-concurrent-invocations" => 1L,
+                    "run-as-role" => undefined,
+                    "security-domain" => "other",
+                    "total-size" => 1,
+                    "wait-time" => 0L
+                }},
+                "stateless-session-bean" => {"TestStatelessBean" => {
+                    "component-class-name" => "TestStatelessBean",
+                    "declared-roles" => [],
+                    "execution-time" => 0L,
+                    "invocations" => 14L,
+                    "methods" => {"helloMethod" => {
+                        "execution-time" => 0L,
+                        "invocations" => 14L,
+                        "wait-time" => 0L
+                    }},
+                    "peak-concurrent-invocations" => 1L,
+                    "pool-available-count" => 20,
+                    "pool-create-count" => 1,
+                    "pool-current-size" => 1,
+                    "pool-max-size" => 20,
+                    "pool-name" => "slsb-strict-max-pool",
+                    "pool-remove-count" => 0,
+                    "run-as-role" => undefined,
+                    "security-domain" => "other",
+                    "timers" => [],
+                    "wait-time" => 0L
+                }}
+            }}},
+            "test-enterprise-web.war" => {"subsystem" => {"web" => {
+                "active-sessions" => 0,
+                "context-root" => "/test",
+                "duplicated-session-ids" => 0,
+                "expired-sessions" => 0,
+                "max-active-sessions" => 0,
+                "rejected-sessions" => 0,
+                "session-avg-alive-time" => 0,
+                "session-max-alive-time" => 0,
+                "sessions-created" => 0,
+                "virtual-host" => "default-host",
+                "servlet" => {"testServlet" => {
+                    "load-time" => 11L,
+                    "maxTime" => 0L,
+                    "min-time" => 11L,
+                    "processingTime" => 36L,
+                    "requestCount" => 14,
+                    "servlet-class" => "com.redhat.consulting.test.services.web.servlet.TestServlet",
+                    "servlet-name" => "testServlet"
+                }}
+            }}}
+        },
+        "subsystem" => undefined
+    }
+}

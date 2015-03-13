@@ -1,0 +1,1 @@
+{"metricType":"AppConfiguration","id":null,"metricType":"APP","hostname":"localhost","port":9999,"username":null,"password":null,"realm":null,"regexpHostname":".+","regexpServer":".+","scanInterval":5,"start":false,"depth":0,"appObjectAttributeConfigurations":null,"apps":null,"regexpSubdeployment":".+","subsystem":null,"regexpSubsystemComponent":".+","regexpAppObjectName":".+"}

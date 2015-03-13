@@ -11,11 +11,13 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import org.codehaus.jackson.annotate.JsonUnwrapped;
 import org.jboss.dmr.ModelNode;
 import org.jboss.dmr.Property;
 import org.slf4j.Logger;
 
 import com.redhat.it.customers.dmc.core.dto.configuration.AppObjectAttributeConfiguration;
+import com.redhat.it.customers.dmc.core.util.JsonFunctions;
 
 /**
  * The Class AppDMRQueryExecutorImpl.
@@ -27,6 +29,9 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
     /** Logger for this class. */
     @Inject
     private Logger LOG;
+
+    @Inject
+    private JsonFunctions jsonFunctions;
 
     /** The apps. */
     protected Set<String> apps;
@@ -134,14 +139,16 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
 
         for (String deployment : deployments) {
             if (apps.contains(deployment)) {
-                ModelNode statistics = getAllStatistics(client, host, server,
-                        deployment);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("main(String[]) - ModelNode statistics={}",
-                            statistics);
-                }
-
-                extractStatistics(statistics, host, server, deployment);
+                 ModelNode statistics = getAllStatistics(client, host, server,
+                 deployment);
+                 LOG.info(jsonFunctions.createFlatKeyValues(statistics)
+                         .toString());
+                // if (LOG.isDebugEnabled()) {
+                // LOG.debug("main(String[]) - ModelNode statistics={}",
+                // statistics);
+                // }
+                //
+                // extractStatistics(statistics, host, server, deployment);
             }
         }
     }
@@ -218,47 +225,50 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
                     // get requested subsystem
                     modelNodeSubsystem = modelNodeSubsystems.get(subsystem);
                     // search for subsystem components
-                    for (String subsystemComponentName : modelNodeSubsystem
-                            .keys()) {
-                        if (patternSubsystemComponents.matcher(
-                                subsystemComponentName).matches()) {
-                            // get matching subsystem component
-                            modelNodeSubsystemComponent = modelNodeSubsystem
-                                    .get(subsystemComponentName);
-                            // search for matching app objects
-                            for (String appObjectName : modelNodeSubsystemComponent
-                                    .keys()) {
-                                if (patternAppObjectName.matcher(appObjectName)
-                                        .matches()) {
-                                    // analyze the matching app object
-                                    statistics.put("app.object.name",
-                                            appObjectName);
-                                    modelNodeAppObject = modelNodeSubsystemComponent
-                                            .get(appObjectName);
-                                    int depthCounter = 0;
-                                    extractAppObjectStatistics(depthCounter,
-                                            "", modelNodeAppObject, statistics);
-                                }
-                            }
-                            // TODO: remove
-                            // for (String stateful : modelNodeSubsystem
-                            // .get(subsystem)
-                            // .get("stateful-session-bean").keys()) {
-                            // for (String method : modelNodeSubsystem
-                            // .get(subsystem)
-                            // .get("stateful-session-bean")
-                            // .get(stateful).get("methods").keys()) {
-                            // ModelNode methodNode = modelNodeSubsystem
-                            // .get(subsystem)
-                            // .get("stateful-session-bean")
-                            // .get(stateful).get("methods")
-                            // .get(method);
-                            // // TODO send statistics event!!!!
-                            // return;
-                            // }
-                            // }
-                        }
-                    }
+
+                    LOG.info(modelNodeSubsystem.toJSONString(false));
+
+                    // for (String subsystemComponentName : modelNodeSubsystem
+                    // .keys()) {
+                    // if (patternSubsystemComponents.matcher(
+                    // subsystemComponentName).matches()) {
+                    // // get matching subsystem component
+                    // modelNodeSubsystemComponent = modelNodeSubsystem
+                    // .get(subsystemComponentName);
+                    // // search for matching app objects
+                    // for (String appObjectName : modelNodeSubsystemComponent
+                    // .keys()) {
+                    // if (patternAppObjectName.matcher(appObjectName)
+                    // .matches()) {
+                    // // analyze the matching app object
+                    // statistics.put("app.object.name",
+                    // appObjectName);
+                    // modelNodeAppObject = modelNodeSubsystemComponent
+                    // .get(appObjectName);
+                    // int depthCounter = 0;
+                    // extractAppObjectStatistics(depthCounter,
+                    // "", modelNodeAppObject, statistics);
+                    // }
+                    // }
+                    // // TODO: remove
+                    // // for (String stateful : modelNodeSubsystem
+                    // // .get(subsystem)
+                    // // .get("stateful-session-bean").keys()) {
+                    // // for (String method : modelNodeSubsystem
+                    // // .get(subsystem)
+                    // // .get("stateful-session-bean")
+                    // // .get(stateful).get("methods").keys()) {
+                    // // ModelNode methodNode = modelNodeSubsystem
+                    // // .get(subsystem)
+                    // // .get("stateful-session-bean")
+                    // // .get(stateful).get("methods")
+                    // // .get(method);
+                    // // // TODO send statistics event!!!!
+                    // // return;
+                    // // }
+                    // // }
+                    // }
+                    // }
                 } else {
                     LOG.warn("requested subsystem {} not found.", subsystem);
                 }

@@ -83,9 +83,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
         configurations = new ConcurrentHashMap<String, Configuration>();
         objectMapper = new ObjectMapper();
         try {
-            JAR_FILE_LOCATION = Paths.get(ConfigurationServiceImpl.class
-                    .getProtectionDomain().getCodeSource().getLocation()
-                    .toURI());
+            JAR_FILE_LOCATION = Paths.get(ConfigurationServiceImpl.class.getProtectionDomain().getCodeSource().getLocation().toURI());
         } catch (URISyntaxException e) {
             LOG.warn("Cannot determine jar file location.", e);
         }
@@ -103,78 +101,53 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
     private void loadSystemConfigurations() {
         Properties properties = null;
-        try (InputStream is = getClass().getResourceAsStream(
-                "/system-configurations.properties")) {
+        try (InputStream is = getClass().getResourceAsStream("/system-configurations.properties")) {
             properties = new Properties();
             properties.load(is);
 
-            String root = properties
-                    .getProperty(SystemConfigurationKey.ROOT_PATH.getValue());
+            String root = properties.getProperty(SystemConfigurationKey.ROOT_PATH.getValue());
             if ((root == null) || root.equals("")) {
                 rootPath = JAR_FILE_LOCATION;
             } else {
                 rootPath = Paths.get(root);
             }
 
-            setProperties(
-                    properties.getProperty(SystemConfigurationKey.CONFIGURATIONS_PATH
-                            .getValue()),
-                    properties.getProperty(SystemConfigurationKey.EXPORT_PATH
-                            .getValue()),
-                    properties
-                            .getProperty(SystemConfigurationKey.EXPORT_FILE_EXTENSION
-                                    .getValue()),
-                    properties.getProperty(SystemConfigurationKey.LOG_PATH
-                            .getValue()),
-                    properties.getProperty(SystemConfigurationKey.LOG_FILE_NAME
-                            .getValue()));
+            setProperties(properties.getProperty(SystemConfigurationKey.CONFIGURATIONS_PATH.getValue()), properties.getProperty(SystemConfigurationKey.EXPORT_PATH.getValue()), properties.getProperty(SystemConfigurationKey.EXPORT_FILE_EXTENSION.getValue()), properties.getProperty(SystemConfigurationKey.LOG_PATH.getValue()), properties.getProperty(SystemConfigurationKey.LOG_FILE_NAME.getValue()));
         } catch (IOException e) {
             LOG.warn("Cannot load system configs from file. Using defaults.");
             setProperties(null, null, null, null, null);
         }
     }
 
-    private void setProperties(final String configurationsPath,
-            final String exportPath, final String exportFileExtension,
-            final String logPath, final String logFileName) {
+    private void setProperties(final String configurationsPath, final String exportPath, final String exportFileExtension, final String logPath, final String logFileName) {
 
         // CONFIGURATIONS_PATH
         if ((configurationsPath == null) || configurationsPath.equals("")) {
-            systemConfigs.put(
-                    SystemConfigurationKey.CONFIGURATIONS_PATH,
-                    rootPath.resolve(
-                            Constants.DEFAULT_CONFIGURATIONS_PATH.getValue())
-                            .toString());
+            systemConfigs.put(SystemConfigurationKey.CONFIGURATIONS_PATH, rootPath.resolve(Constants.DEFAULT_CONFIGURATIONS_PATH.getValue()).toString());
         } else {
-            systemConfigs.put(SystemConfigurationKey.CONFIGURATIONS_PATH,
-                    configurationsPath);
+            systemConfigs.put(SystemConfigurationKey.CONFIGURATIONS_PATH, configurationsPath);
         }
-        this.configurationFilesPath = Paths.get(systemConfigs
-                .get(SystemConfigurationKey.CONFIGURATIONS_PATH));
+        this.configurationFilesPath = Paths.get(systemConfigs.get(SystemConfigurationKey.CONFIGURATIONS_PATH));
         try {
             Files.createDirectories(this.configurationFilesPath);
         } catch (IOException e) {
-            LOG.error("Cannot create folder for metric configurations files.");
+            LOG.error("Cannot create folder for metric configurations files ({" + this.configurationFilesPath + "}). " + e.getMessage());
         }
 
         // EXPORT_PATH
         if ((exportPath == null) || exportPath.equals("")) {
-            systemConfigs.put(SystemConfigurationKey.EXPORT_PATH, rootPath
-                    .resolve(Constants.DEFAULT_EXPORT_DIR.getValue())
-                    .toString());
+            systemConfigs.put(SystemConfigurationKey.EXPORT_PATH, rootPath.resolve(Constants.DEFAULT_EXPORT_DIR.getValue()).toString());
         } else {
             systemConfigs.put(SystemConfigurationKey.EXPORT_PATH, exportPath);
         }
-        this.exportFilesPath = Paths.get(systemConfigs
-                .get(SystemConfigurationKey.EXPORT_PATH));
+        this.exportFilesPath = Paths.get(systemConfigs.get(SystemConfigurationKey.EXPORT_PATH));
         try {
             Files.createDirectories(this.exportFilesPath);
         } catch (IOException e) {
-            LOG.error("Cannot create folder for export files.");
+            LOG.error("Cannot create folder for export files ({" + this.exportFilesPath + "}). " + e.getMessage());
         }
         LOG.debug("Export files path: {}", this.exportFilesPath);
-        System.setProperty(SystemConfigurationKey.EXPORT_PATH.getValue(),
-                this.exportFilesPath.toString() + File.separatorChar);
+        System.setProperty(SystemConfigurationKey.EXPORT_PATH.getValue(), this.exportFilesPath.toString() + File.separatorChar);
 
         // EXPORT_FILE_EXTENSION
         String ext = exportFileExtension;
@@ -187,44 +160,36 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             ext = ext.substring(1, ext.length());
         }
         LOG.debug("Export files extension: {}", ext);
-        System.setProperty(
-                SystemConfigurationKey.EXPORT_FILE_EXTENSION.getValue(), ext);
+        System.setProperty(SystemConfigurationKey.EXPORT_FILE_EXTENSION.getValue(), ext);
 
         // LOG_PATH
         if ((logPath == null) || logPath.equals("")) {
-            systemConfigs.put(SystemConfigurationKey.LOG_PATH, rootPath
-                    .resolve(Constants.DEFAULT_LOG_DIR.getValue()).toString());
+            systemConfigs.put(SystemConfigurationKey.LOG_PATH, rootPath.resolve(Constants.DEFAULT_LOG_DIR.getValue()).toString());
         } else {
             systemConfigs.put(SystemConfigurationKey.LOG_PATH, logPath);
         }
-        this.logFilePath = Paths.get(systemConfigs
-                .get(SystemConfigurationKey.LOG_PATH));
+        this.logFilePath = Paths.get(systemConfigs.get(SystemConfigurationKey.LOG_PATH));
         try {
             Files.createDirectories(this.logFilePath);
         } catch (IOException e) {
-            LOG.error("Cannot create folder for log file.");
+            LOG.error("Cannot create folder for log file ({" + this.logFilePath + "}). " + e.getMessage());
         }
 
         // LOG_FILE_NAME
         if ((logFileName == null) || logFileName.equals("")) {
-            systemConfigs.put(SystemConfigurationKey.LOG_FILE_NAME,
-                    Constants.DEFAULT_LOG_FILE_NAME.getValue());
+            systemConfigs.put(SystemConfigurationKey.LOG_FILE_NAME, Constants.DEFAULT_LOG_FILE_NAME.getValue());
         } else {
-            systemConfigs
-                    .put(SystemConfigurationKey.LOG_FILE_NAME, logFileName);
+            systemConfigs.put(SystemConfigurationKey.LOG_FILE_NAME, logFileName);
         }
     }
 
     private void loadConfigurations() {
         Configuration configuration = null;
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(
-                configurationFilesPath, CONFIGURATION_FILE_FILTER)) {
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(configurationFilesPath, CONFIGURATION_FILE_FILTER)) {
             for (Path configFilePath : directoryStream) {
-                configuration = objectMapper.readValue(configFilePath.toFile(),
-                        Configuration.class);
+                configuration = objectMapper.readValue(configFilePath.toFile(), Configuration.class);
                 configurations.put(configuration.getId(), configuration);
-                configurationAddedEvent.fire(new StartCollectorEvent(
-                        configuration));
+                configurationAddedEvent.fire(new StartCollectorEvent(configuration));
                 configuration = null;
             }
         } catch (Exception e) {
@@ -263,9 +228,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * @see com.redhat.it.customers.dmc.core.services.configuration.ConfigurationService#addConfiguration(com.redhat.it.customers.dmc.core.dto.configuration.Configuration)
      */
     @Override
-    public Configuration addConfiguration(Configuration configuration)
-            throws ConfigurationAlreadyExistsException,
-            ConfigurationStoreException {
+    public Configuration addConfiguration(Configuration configuration) throws ConfigurationAlreadyExistsException, ConfigurationStoreException {
         if (configurations.containsKey(configuration.getId())) {
             throw new ConfigurationAlreadyExistsException(configuration.getId());
         }
@@ -281,14 +244,12 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * @see com.redhat.it.customers.dmc.core.services.configuration.ConfigurationService#updateConfiguration(com.redhat.it.customers.dmc.core.dto.configuration.Configuration)
      */
     @Override
-    public Configuration updateConfiguration(Configuration configuration)
-            throws ConfigurationException, ConfigurationStoreException {
+    public Configuration updateConfiguration(Configuration configuration) throws ConfigurationException, ConfigurationStoreException {
         if (!configurations.containsKey(configuration.getId())) {
             throw new ConfigurationNotFoundException(configuration.getId());
         }
         storeConfigurationFS(configuration);
-        configurationUpdatedEvent
-                .fire(new RestartCollectorEvent(configuration));
+        configurationUpdatedEvent.fire(new RestartCollectorEvent(configuration));
         return configuration;
     }
 
@@ -298,8 +259,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      * @see com.redhat.it.customers.dmc.core.services.configuration.ConfigurationService#removeConfiguration(java.lang.String)
      */
     @Override
-    public Configuration removeConfiguration(String configurationId)
-            throws ConfigurationNotFoundException, ConfigurationDeleteException {
+    public Configuration removeConfiguration(String configurationId) throws ConfigurationNotFoundException, ConfigurationDeleteException {
         Configuration configuration = null;
         if ((configuration = configurations.remove(configurationId)) == null) {
             throw new ConfigurationNotFoundException(configurationId);
@@ -316,12 +276,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      *            the configuration
      * @throws ConfigurationStoreException
      */
-    private void storeConfigurationFS(Configuration configuration)
-            throws ConfigurationStoreException {
-        try (OutputStream os = Files.newOutputStream(
-                configurationFilesPath.resolve(configuration.getId()
-                        + Constants.CONFIGURATION_FILE_EXTENSION.getValue()),
-                StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
+    private void storeConfigurationFS(Configuration configuration) throws ConfigurationStoreException {
+        try (OutputStream os = Files.newOutputStream(configurationFilesPath.resolve(configuration.getId() + Constants.CONFIGURATION_FILE_EXTENSION.getValue()), StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
             objectMapper.writeValue(os, configuration);
         } catch (IOException e) {
             throw new ConfigurationStoreException(configuration.getId(), e);
@@ -335,11 +291,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
      *            the configuration id
      * @throws ConfigurationDeleteException
      */
-    private void deleteConfigurationFS(String configurationId)
-            throws ConfigurationDeleteException {
+    private void deleteConfigurationFS(String configurationId) throws ConfigurationDeleteException {
         try {
-            Files.deleteIfExists(configurationFilesPath.resolve(configurationId
-                    + Constants.CONFIGURATION_FILE_EXTENSION.getValue()));
+            Files.deleteIfExists(configurationFilesPath.resolve(configurationId + Constants.CONFIGURATION_FILE_EXTENSION.getValue()));
         } catch (IOException e) {
             throw new ConfigurationDeleteException(configurationId, e);
         }
