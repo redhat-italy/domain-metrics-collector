@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qd.raw.AbstractRawQueryData" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qd/raw/AbstractRawQueryData.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="258" x="1872" y="534"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qd.t.CSVTransformedQueryData" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qd/t/CSVTransformedQueryData.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="245" x="2175" y="708"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qd.t.JsonTransformedQueryData" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qd/t/JsonTransformedQueryData.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="245" x="2460" y="708"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" 
+    name="com.redhat.it.customers.dmc.core.dto.collector.qdk.t.AbstractTransformedQueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/t/AbstractTransformedQueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="267" x="543" y="534"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" 
+    name="com.redhat.it.customers.dmc.core.dto.collector.qdk.t.RawCSVTransformedQueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/t/RawCSVTransformedQueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="266" x="87" y="708"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qdk.t.CSVTransformedQueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/t/CSVTransformedQueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="250" x="393" y="708"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qd.raw.JMXRawQueryData" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qd/raw/JMXRawQueryData.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="258" x="1579" y="708"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qdk.raw.AbstractRawQueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/raw/AbstractRawQueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="263" x="1006" y="534"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qdk.t.JsonTransformedQueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/t/JsonTransformedQueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="250" x="683" y="708"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qd.t.RawCSVTransformedQueryData" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qd/t/RawCSVTransformedQueryData.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="245" x="2745" y="708"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qdk.raw.JMXRawQueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/raw/JMXRawQueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="263" x="1276" y="708"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="12" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qd.QueryData" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qd/QueryData.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="134" width="239" x="1593" y="534"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="13" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qdk.QueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/QueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="244" x="1006" y="270"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qd.raw.DMRRawQueryData" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qd/raw/DMRRawQueryData.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="258" x="1877" y="708"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qd.t.AbstractTransformedQueryData" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qd/t/AbstractTransformedQueryData.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="280" x="2286" y="534"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="16" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qdk.QueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/QueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="62" width="244" x="1309" y="534"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="17" language="java" 
+    name="com.redhat.it.customers.dmc.core.dto.collector.qdk.raw.InstanceDMRRawQueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/raw/InstanceDMRRawQueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="263" x="822" y="828"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qdk.raw.DMRRawQueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/raw/DMRRawQueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="263" x="973" y="708"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qdk.raw.AppDMRRawQueryDataKey" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qdk/raw/AppDMRRawQueryDataKey.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="263" x="1125" y="828"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="com.redhat.it.customers.dmc.core.dto.collector.qd.QueryData" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/collector/qd/QueryData.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="224" width="239" x="1765" y="270"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="21">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <generalization id="22">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <generalization id="23">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <generalization id="24">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <generalization id="25">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="20"/>  
+  </generalization>  
+  <association id="26">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="27" name="key"/>      
+      <multiplicity id="28" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="29">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <generalization id="30">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="31">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="1"/>  
+  </generalization>  
+  <generalization id="32">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="33">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="13"/>  
+  </generalization>  
+  <generalization id="34">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="8"/>  
+  </generalization>  
+  <generalization id="35">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <generalization id="36">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="20"/>  
+  </generalization>  
+  <generalization id="37">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="38">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <generalization id="39">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

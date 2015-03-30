@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.8" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <interface id="1" language="java" name="com.redhat.it.customers.dmc.core.services.configuration.ConfigurationService" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/services/configuration/ConfigurationService.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="607" y="637"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="2" language="java" 
+    name="com.redhat.it.customers.dmc.core.services.configuration.impl.ConfigurationServiceImpl" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/services/configuration/impl/ConfigurationServiceImpl.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="631" y="148"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.redhat.it.customers.dmc.core.dto.configuration.JvmConfiguration" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/configuration/JvmConfiguration.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="246" x="869" y="527"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="com.redhat.it.customers.dmc.core.dto.configuration.AppConfiguration" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/configuration/AppConfiguration.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="368" width="275" x="1155" y="527"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" 
+    name="com.redhat.it.customers.dmc.core.dto.configuration.AppObjectAttributeConfiguration" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/configuration/AppObjectAttributeConfiguration.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1658" y="122"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.redhat.it.customers.dmc.core.dto.configuration.Configuration" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/configuration/Configuration.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="710" width="246" x="1184" y="-223"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="com.redhat.it.customers.dmc.core.dto.configuration.InstanceConfiguration" 
+    project="domain-metrics-collector" 
+    file="/domain-metrics-collector/src/main/java/com/redhat/it/customers/dmc/core/dto/configuration/InstanceConfiguration.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="246" x="1470" y="527"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="8">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="9" name="configurations"/>      
+      <multiplicity id="10" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="11">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <realization id="12">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </realization>  
+  <generalization id="13">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <generalization id="14">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
