@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
 
-import com.redhat.it.customers.dmc.core.constants.MetricType;
+import com.redhat.it.customers.dmc.core.enums.MetricType;
 
 /**
  * The Class JvmConfiguration.

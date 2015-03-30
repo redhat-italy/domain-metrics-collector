@@ -16,7 +16,7 @@ import org.codehaus.jackson.annotate.JsonSubTypes.Type;
 import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 import com.redhat.it.customers.dmc.core.constants.Constants;
-import com.redhat.it.customers.dmc.core.constants.MetricType;
+import com.redhat.it.customers.dmc.core.enums.MetricType;
 
 /**
  * The Class Configuration.
@@ -68,11 +68,11 @@ public abstract class Configuration {
     protected boolean start;
 
     /** The depth. */
-    protected int depth = Integer.parseInt(Constants.DEFAULT_APP_OBJECT_DEPTH
-            .getValue());
+//    protected int depth = Integer.parseInt(Constants.DEFAULT_APP_OBJECT_DEPTH
+//            .getValue());
 
     /** The app object attribute configurations. */
-    protected Map<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations;
+//    protected Map<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations;
 
     /**
      * Instantiates a new configuration.
@@ -285,9 +285,9 @@ public abstract class Configuration {
      *
      * @return the depth
      */
-    public int getDepth() {
-        return depth;
-    }
+//    public int getDepth() {
+//        return depth;
+//    }
 
     /**
      * Sets the depth.
@@ -295,18 +295,18 @@ public abstract class Configuration {
      * @param depth
      *            the new depth
      */
-    public void setDepth(int depth) {
-        this.depth = depth;
-    }
+//    public void setDepth(int depth) {
+//        this.depth = depth;
+//    }
 
     /**
      * Gets the app object attribute configurations.
      *
      * @return the app object attribute configurations
      */
-    public Map<Integer, AppObjectAttributeConfiguration> getAppObjectAttributeConfigurations() {
-        return appObjectAttributeConfigurations;
-    }
+//    public Map<Integer, AppObjectAttributeConfiguration> getAppObjectAttributeConfigurations() {
+//        return appObjectAttributeConfigurations;
+//    }
 
     /**
      * Sets the app object attribute configurations.
@@ -314,10 +314,10 @@ public abstract class Configuration {
      * @param appObjectAttributeConfigurations
      *            the app object attribute configurations
      */
-    public void setAppObjectAttributeConfigurations(
-            Map<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations) {
-        this.appObjectAttributeConfigurations = appObjectAttributeConfigurations;
-    }
+//    public void setAppObjectAttributeConfigurations(
+//            Map<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations) {
+//        this.appObjectAttributeConfigurations = appObjectAttributeConfigurations;
+//    }
 
     /**
      * Hash code.

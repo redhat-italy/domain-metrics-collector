@@ -1,7 +1,7 @@
 package com.redhat.it.customers.dmc.core.interfaces;
 
-import com.redhat.it.customers.dmc.core.exceptions.StartException;
-import com.redhat.it.customers.dmc.core.exceptions.StopException;
+import com.redhat.it.customers.dmc.core.exceptions.DMCStartException;
+import com.redhat.it.customers.dmc.core.exceptions.DMCStopException;
 
 /**
  * The Interface Startable.
@@ -13,16 +13,16 @@ public interface Startable {
     /**
      * Start.
      *
-     * @throws StartException
+     * @throws DMCStartException
      *             the start exception
      */
-    void start() throws StartException;
+    void start() throws DMCStartException;
 
     /**
      * Stop.
      *
-     * @throws StopException
+     * @throws DMCStopException
      *             the stop exception
      */
-    void stop() throws StopException;
+    void stop() throws DMCStopException;
 }

@@ -7,8 +7,8 @@ import javax.ws.rs.Path;
 
 import org.slf4j.Logger;
 
-import com.redhat.it.customers.dmc.core.services.export.DataExportService;
-import com.redhat.it.customers.dmc.core.services.metrics.MetricCollectorService;
+import com.redhat.it.customers.dmc.core.services.collector.MetricCollectorService;
+import com.redhat.it.customers.dmc.core.services.data.export.DataExportService;
 
 @Path("/test")
 public class RestResource {

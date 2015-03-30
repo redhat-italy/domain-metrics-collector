@@ -17,8 +17,8 @@
         <!-- <remoting-jmx.version>1.1.2.Final-redhat-1</remoting-jmx.version> -->
 
         <!-- WRITE HERE YOUR JBOSS EAP VERSION 6.3.x -->
-        <eap.version>6.3.2.GA</eap.version>
-        <jboss.version>7.4.2.Final-redhat-2</jboss.version>
+        <eap.version>6.3.3.GA</eap.version>
+        <jboss.version>7.4.3.Final-redhat-2</jboss.version>
         <jboss-remote-naming.version>1.0.9.Final-redhat-1</jboss-remote-naming.version>
         <remoting-jmx.version>1.1.3.Final-redhat-2</remoting-jmx.version>
 
@@ -230,7 +230,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.11</version>
             <scope>test</scope>
         </dependency>
 
@@ -243,6 +243,11 @@
         <!-- <artifactId>jackson-dataformat-csv</artifactId> -->
         <!-- <version>2.5.1</version> -->
         <!-- </dependency> -->
+        <dependency>
+        	<groupId>org.aeonbits.owner</groupId>
+        	<artifactId>owner</artifactId>
+        	<version>1.0.6</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -377,24 +382,43 @@
     </build>
     
     
+<!--             <repositories> -->
+<!--                 <repository> -->
+<!--                     <id>ISA</id> -->
+<!--                     <name>ISA repository</name> -->
+<!--                     <url>http://10.52.186.51/content/groups/public/</url> -->
+<!--                     <releases> -->
+<!--                         <enabled>true</enabled> -->
+<!--                         <updatePolicy>never</updatePolicy> -->
+<!--                     </releases> -->
+<!--                     <snapshots> -->
+<!--                         <enabled>false</enabled> -->
+<!--                         <updatePolicy>daily</updatePolicy> -->
+<!--                     </snapshots> -->
+<!--                 </repository> -->
+<!--             </repositories> -->
+<!--             <pluginRepositories> -->
+<!--                 <pluginRepository> -->
+<!--                     <id>ISA</id> -->
+<!--                     <name>ISA repository</name> -->
+<!--                     <url>http://10.52.186.51/content/groups/public/</url> -->
+<!--                     <releases> -->
+<!--                         <enabled>true</enabled> -->
+<!--                         <updatePolicy>never</updatePolicy> -->
+<!--                     </releases> -->
+<!--                     <snapshots> -->
+<!--                         <enabled>false</enabled> -->
+<!--                         <updatePolicy>daily</updatePolicy> -->
+<!--                     </snapshots> -->
+<!--                 </pluginRepository> -->
+<!--             </pluginRepositories> -->
+
+
             <repositories>
                 <repository>
-                    <id>redhat-all-repository-group</id>
-                    <name>Red Hat repository group (all)</name>
-                    <url>http://172.16.88.249:8081/nexus/content/groups/redhat/</url>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>never</updatePolicy>
-                    </releases>
-                    <snapshots>
-                        <enabled>false</enabled>
-                        <updatePolicy>daily</updatePolicy>
-                    </snapshots>
-                </repository>
-                <repository>
-                    <id>jboss-public-repository</id>
-                    <name>Red Hat Tech Preview repository (all)</name>
-                    <url>http://172.16.88.249:8081/nexus/content/repositories/jboss-public-repository/</url>
+                    <id>dmc</id>
+                    <name>My repo for DMC</name>
+                    <url>http://172.16.88.133:8081/nexus/content/groups/dmc/</url>
                     <releases>
                         <enabled>true</enabled>
                         <updatePolicy>never</updatePolicy>
@@ -407,22 +431,9 @@
             </repositories>
             <pluginRepositories>
                 <pluginRepository>
-                    <id>redhat-all-repository-group</id>
-                    <name>Red Hat repository group (all)</name>
-                    <url>http://172.16.88.249:8081/nexus/content/groups/redhat/</url>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>never</updatePolicy>
-                    </releases>
-                    <snapshots>
-                        <enabled>false</enabled>
-                        <updatePolicy>daily</updatePolicy>
-                    </snapshots>
-                </pluginRepository>
-                <pluginRepository>
-                    <id>jboss-public-repository</id>
-                    <name>JBoss Public Repository</name>
-                    <url>http://172.16.88.249:8081/nexus/content/repositories/jboss-public-repository/</url>
+                    <id>dmc</id>
+                    <name>My repo for DMC</name>
+                    <url>http://172.16.88.133:8081/nexus/content/groups/dmc/</url>
                     <releases>
                         <enabled>true</enabled>
                         <updatePolicy>never</updatePolicy>

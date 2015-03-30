@@ -1,8 +1,0 @@
-/**
- * 
- */
-/**
- * @author andrea.battaglia
- *
- */
-package com.redhat.it.customers.dmc.core.services.metrics.impl;

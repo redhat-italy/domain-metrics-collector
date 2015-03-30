@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import com.redhat.it.customers.dmc.core.constants.Constants;
-import com.redhat.it.customers.dmc.core.constants.MetricType;
+import com.redhat.it.customers.dmc.core.enums.MetricType;
 
 /**
  * The Class Configuration.
@@ -175,8 +175,8 @@ public class AppConfiguration extends Configuration {
         builder.append(scanInterval);
         builder.append(", start=");
         builder.append(start);
-        builder.append(", depth=");
-        builder.append(depth);
+//        builder.append(", depth=");
+//        builder.append(depth);
         builder.append("]");
         return builder.toString();
     }

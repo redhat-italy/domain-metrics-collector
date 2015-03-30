@@ -9,11 +9,11 @@ import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
 
-import com.redhat.it.customers.dmc.core.constants.MetricType;
 import com.redhat.it.customers.dmc.core.dto.configuration.AppConfiguration;
 import com.redhat.it.customers.dmc.core.dto.configuration.Configuration;
 import com.redhat.it.customers.dmc.core.dto.configuration.InstanceConfiguration;
 import com.redhat.it.customers.dmc.core.dto.configuration.JvmConfiguration;
+import com.redhat.it.customers.dmc.core.enums.MetricType;
 import com.redhat.it.customers.dmc.core.exceptions.ConfigurationAlreadyExistsException;
 import com.redhat.it.customers.dmc.core.exceptions.ConfigurationStoreException;
 import com.redhat.it.customers.dmc.core.exceptions.InvalidConfigurationIdException;

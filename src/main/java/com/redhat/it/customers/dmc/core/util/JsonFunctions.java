@@ -25,7 +25,7 @@ import org.jboss.dmr.ModelNode;
 /**
  * The Class JsonFunctions.
  *
- * @author andreabattaglia
+ * @author Andrea Battaglia (Red Hat)
  */
 @Singleton
 public final class JsonFunctions {

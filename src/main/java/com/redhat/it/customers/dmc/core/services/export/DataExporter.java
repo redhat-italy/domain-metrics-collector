@@ -5,11 +5,11 @@ import java.io.Closeable;
 import com.redhat.it.customers.dmc.core.interfaces.Openable;
 
 /**
- * The Interface DataExporterIF.
+ * The Interface DataExporter.
  * 
  * @author Andrea Battaglia
  */
-public interface DataExporter extends Openable, Closeable {
+public interface DataExporter  {
 
     /**
      * Write data.

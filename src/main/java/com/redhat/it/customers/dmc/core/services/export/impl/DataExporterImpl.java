@@ -10,7 +10,9 @@ import javax.enterprise.context.Dependent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.redhat.it.customers.dmc.core.dto.configuration.AbstractOpenableBean;
+import com.redhat.it.customers.dmc.core.dto.AbstractOpenableBean;
+import com.redhat.it.customers.dmc.core.exceptions.DMCCloseException;
+import com.redhat.it.customers.dmc.core.exceptions.DMCOpenException;
 import com.redhat.it.customers.dmc.core.services.export.DataExporter;
 import com.redhat.it.customers.dmc.core.util.CSVFunctions;
 
@@ -102,7 +104,7 @@ public class DataExporterImpl extends AbstractOpenableBean implements
     }
 
     @Override
-    public void open() throws IOException {
+    public void open() throws DMCOpenException {
         super.open();
         if (this.lineEnd != null) {
             csvFunctions = CSVFunctions.getInstance(separator, quotechar,
@@ -111,12 +113,12 @@ public class DataExporterImpl extends AbstractOpenableBean implements
             csvFunctions = CSVFunctions.getInstance();
         }
     }
-
+    
     @Override
-    public void close() throws IOException {
-        super.close();
-        csvFunctions = null;
-        // rollingFileAppender.stop();
+    public void close() throws DMCCloseException {
+      super.close();
+      csvFunctions = null;
+      // rollingFileAppender.stop();
     }
 
     /**

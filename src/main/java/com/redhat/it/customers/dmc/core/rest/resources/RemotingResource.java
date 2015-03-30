@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 
 import com.redhat.it.customers.dmc.core.exceptions.DMCException;
-import com.redhat.it.customers.dmc.core.services.connection.JMXFacade;
+import com.redhat.it.customers.dmc.core.services.query.JMXFacade;
 
 /**
  * 

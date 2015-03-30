@@ -24,7 +24,7 @@ import com.redhat.it.customers.dmc.core.exceptions.CollectorNotFoundException;
 import com.redhat.it.customers.dmc.core.exceptions.CollectorStoppedException;
 import com.redhat.it.customers.dmc.core.exceptions.ConfigurationNotFoundException;
 import com.redhat.it.customers.dmc.core.exceptions.DMRException;
-import com.redhat.it.customers.dmc.core.services.metrics.MetricCollectorService;
+import com.redhat.it.customers.dmc.core.services.collector.MetricCollectorService;
 
 /**
  * The Class AdminService.

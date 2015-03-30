@@ -19,9 +19,21 @@ import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.node.ValueNode;
 import org.junit.Test;
 
-
+/**
+ * The Class JsonToCsvJacksonTest.
+ * 
+ * @author Andrea Battaglia (Red Hat)
+ */
 public class JsonToCsvJacksonTest {
 
+    /**
+     * Test creating flat key values.
+     *
+     * @throws JsonParseException
+     *             the json parse exception
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
     @Test
     public void testCreatingFlatKeyValues() throws JsonParseException,
             IOException {
@@ -37,16 +49,27 @@ public class JsonToCsvJacksonTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(map);
+//        System.out.println(map);
         for (Entry<String, String> entry : map.entrySet()) {
             System.out.println(entry.getKey() + " = " + entry.getValue());
 
         }
     }
 
+    /**
+     * Adds the keys.
+     *
+     * @param currentPath
+     *            the current path
+     * @param jsonNode
+     *            the json node
+     * @param map
+     *            the map
+     */
     private void addKeys(String currentPath, JsonNode jsonNode,
             Map<String, String> map) {
         if (jsonNode.isObject()) {
+            // object -> recursive
             ObjectNode objectNode = (ObjectNode) jsonNode;
             Iterator<Map.Entry<String, JsonNode>> iter = objectNode.getFields();
             String pathPrefix = currentPath.isEmpty() ? "" : currentPath + ".";
@@ -56,11 +79,13 @@ public class JsonToCsvJacksonTest {
                 addKeys(pathPrefix + entry.getKey(), entry.getValue(), map);
             }
         } else if (jsonNode.isArray()) {
+            // array -> recursive adding a child key per array element name!
             ArrayNode arrayNode = (ArrayNode) jsonNode;
             for (int i = 0; i < arrayNode.size(); i++) {
                 addKeys(currentPath + "[" + i + "]", arrayNode.get(i), map);
             }
         } else if (jsonNode.isValueNode()) {
+            // value -> print
             ValueNode valueNode = (ValueNode) jsonNode;
             map.put(currentPath, valueNode.asText());
         }

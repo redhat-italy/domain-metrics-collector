@@ -116,10 +116,10 @@ public class ConfigurationServiceImplTest {
     public void writeAppConfigurationToFileSystem() {
         AppConfiguration appConfiguration = new AppConfiguration();
         appConfiguration.setId("testAppConfiguration");
-        appConfiguration.setDepth(1);
+//        appConfiguration.setDepth(1);
         appConfiguration.setApps(apps);
-        appConfiguration
-                .setAppObjectAttributeConfigurations(appObjectAttributeConfigurations);
+//        appConfiguration
+//                .setAppObjectAttributeConfigurations(appObjectAttributeConfigurations);
         try (OutputStream os = Files.newOutputStream(
                 configurationFilesPath.resolve(appConfiguration.getId()
                         + Constants.CONFIGURATION_FILE_EXTENSION.getValue()),
