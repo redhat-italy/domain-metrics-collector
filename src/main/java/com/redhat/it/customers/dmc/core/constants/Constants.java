@@ -1,5 +1,8 @@
 package com.redhat.it.customers.dmc.core.constants;
 
+import com.redhat.it.customers.dmc.core.enums.ExportDestinationType;
+import com.redhat.it.customers.dmc.core.enums.ExportFormatType;
+
 /**
  * The Enum Constants.
  * 
@@ -49,7 +52,11 @@ public enum Constants {
     DEFAULT_SCAN_INTERVAL("5"),
 
     /** The configuration file extension. */
-    CONFIGURATION_FILE_EXTENSION(".json")
+    CONFIGURATION_FILE_EXTENSION(".json"),
+
+    DEFAULT_EXPORT_DESTINATION_TYPE(ExportDestinationType.FILE.name()),
+
+    DEFAULT_EXPORT_FORMAT_TYPE(ExportFormatType.JSON.name()),
 
     ;
 

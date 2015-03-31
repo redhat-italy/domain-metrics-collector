@@ -74,9 +74,12 @@ public class ConfigurationServiceImplTest {
     public static void setUpBeforeClass() throws Exception {
         configurationFilesPath = Paths.get("/usr/local/dmc/test/configs");
         Files.createDirectories(configurationFilesPath);
-        Files.deleteIfExists(configurationFilesPath.resolve("testAppConfiguration.json"));
-        Files.deleteIfExists(configurationFilesPath.resolve("testInstanceConfiguration.json"));
-        Files.deleteIfExists(configurationFilesPath.resolve("testJvmConfiguration.json"));
+        Files.deleteIfExists(configurationFilesPath
+                .resolve("testAppConfiguration.json"));
+        Files.deleteIfExists(configurationFilesPath
+                .resolve("testInstanceConfiguration.json"));
+        Files.deleteIfExists(configurationFilesPath
+                .resolve("testJvmConfiguration.json"));
     }
 
     /**
@@ -116,15 +119,22 @@ public class ConfigurationServiceImplTest {
     public void writeAppConfigurationToFileSystem() {
         AppConfiguration appConfiguration = new AppConfiguration();
         appConfiguration.setId("testAppConfiguration");
-//        appConfiguration.setDepth(1);
+        // appConfiguration.setDepth(1);
         appConfiguration.setApps(apps);
-//        appConfiguration
-//                .setAppObjectAttributeConfigurations(appObjectAttributeConfigurations);
+        // appConfiguration
+        // .setAppObjectAttributeConfigurations(appObjectAttributeConfigurations);
         try (OutputStream os = Files.newOutputStream(
                 configurationFilesPath.resolve(appConfiguration.getId()
                         + Constants.CONFIGURATION_FILE_EXTENSION.getValue()),
                 StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
-            objectMapper.writeValue(os, appConfiguration);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(os,
+                    appConfiguration);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //
+        try {
+            objectMapper.writeValue(System.out, appConfiguration);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -152,7 +162,14 @@ public class ConfigurationServiceImplTest {
                 configurationFilesPath.resolve(configuration.getId()
                         + Constants.CONFIGURATION_FILE_EXTENSION.getValue()),
                 StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
-            objectMapper.writeValue(os, configuration);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(os,
+                    configuration);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //
+        try {
+            objectMapper.writeValue(System.out, configuration);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -180,7 +197,14 @@ public class ConfigurationServiceImplTest {
                 configurationFilesPath.resolve(configuration.getId()
                         + Constants.CONFIGURATION_FILE_EXTENSION.getValue()),
                 StandardOpenOption.CREATE, StandardOpenOption.WRITE)) {
-            objectMapper.writeValue(os, configuration);
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(os,
+                    configuration);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //
+        try {
+            objectMapper.writeValue(System.out, configuration);
         } catch (IOException e) {
             e.printStackTrace();
         }

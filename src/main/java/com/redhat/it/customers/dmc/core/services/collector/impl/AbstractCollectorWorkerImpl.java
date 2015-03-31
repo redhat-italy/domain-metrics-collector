@@ -301,7 +301,7 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
      *
      * @return the string
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({ "rawtypes"})
     private String _doWork() {
         try {
             AbstractRawQueryData rawData = getQueryExecutor().extractData();

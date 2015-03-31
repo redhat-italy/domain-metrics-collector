@@ -4,13 +4,13 @@ package com.redhat.it.customers.dmc.core.enums;
  * The Enum ExportDestinationType.
  */
 public enum ExportDestinationType {
-    
+
     /** The file. */
-    FILE,
-    
+    FILE
+
     /** The mongodb. */
-    MONGODB,
-    
+    // MONGODB,
+
     /** The infinispan. */
-    INFINISPAN
+    // INFINISPAN
 }
