@@ -1,38 +1,35 @@
 package com.redhat.it.customers.dmc.core.services.query.impl;
 
 import java.io.IOException;
-import java.util.Date;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
-import org.codehaus.jackson.annotate.JsonUnwrapped;
 import org.jboss.dmr.ModelNode;
-import org.jboss.dmr.Property;
 import org.slf4j.Logger;
 
-import com.redhat.it.customers.dmc.core.dto.configuration.AppObjectAttributeConfiguration;
+import com.redhat.it.customers.dmc.core.dto.collector.qd.raw.DMRRawQueryData;
+import com.redhat.it.customers.dmc.core.dto.collector.qdk.raw.AppDMRRawQueryDataKey;
 import com.redhat.it.customers.dmc.core.exceptions.DMCQueryException;
-import com.redhat.it.customers.dmc.core.util.JsonFunctions;
 
 /**
  * The Class AppDMRQueryExecutorImpl.
  * 
  * @author Andrea Battaglia
  */
-public class AppDMRQueryExecutorImpl<T> extends AbstractDMRQueryExecutorImpl {
+public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
 
     /** Logger for this class. */
     @Inject
     private Logger LOG;
 
-    @Inject
-    private JsonFunctions jsonFunctions;
+//    @Inject
+//    private JsonFunctions jsonFunctions;
 
     /** The apps. */
     protected Set<String> apps;
@@ -58,22 +55,23 @@ public class AppDMRQueryExecutorImpl<T> extends AbstractDMRQueryExecutorImpl {
      * @param apps
      *            the apps to set
      */
-    public void setApps(Set<String> apps) {
+    public void setApps(final Set<String> apps) {
         this.apps = apps;
     }
 
-    /**
-     * @return the patternSubdeployment
-     */
-    public Pattern getPatternpSubdeployment() {
+    public Pattern getPatternSubdeployment() {
         return patternSubdeployment;
     }
 
-    /**
-     * @param patternSubdeployment
-     *            the patternSubdeployment to set
-     */
-    public void setPatternpSubdeployment(Pattern patternSubdeployment) {
+    public void setPatternSubsystemComponents(Pattern patternSubsystemComponents) {
+        this.patternSubsystemComponents = patternSubsystemComponents;
+    }
+
+    public Pattern getPatternSubsystemComponents() {
+        return patternSubsystemComponents;
+    }
+
+    public void setPatternSubdeployment(Pattern patternSubdeployment) {
         this.patternSubdeployment = patternSubdeployment;
     }
 
@@ -93,25 +91,6 @@ public class AppDMRQueryExecutorImpl<T> extends AbstractDMRQueryExecutorImpl {
     }
 
     /**
-     * Gets the pattern subsystem components.
-     *
-     * @return the pattern subsystem components
-     */
-    public Pattern getPatternSubsystemComponents() {
-        return patternSubsystemComponents;
-    }
-
-    /**
-     * Sets the pattern subsystem components.
-     *
-     * @param patternSubsystemComponents
-     *            the new pattern subsystem components
-     */
-    public void setPatternSubsystemComponents(Pattern patternSubsystemComponents) {
-        this.patternSubsystemComponents = patternSubsystemComponents;
-    }
-
-    /**
      * @return the patternAppObjectName
      */
     public Pattern getPatternAppObjectName() {
@@ -126,13 +105,12 @@ public class AppDMRQueryExecutorImpl<T> extends AbstractDMRQueryExecutorImpl {
         this.patternAppObjectName = patternAppObjectName;
     }
 
-    /**
-     * @see com.redhat.it.customers.dmc.core.services.query.impl.AbstractDMRQueryExecutorImpl
-     * #analyzeServer(java.lang.String,java.lang.String)
-     */
     @Override
-    protected void analyzeServer(String host, String server) throws DMCQueryException {
-        Set<String> deployments;
+    protected void analyzeServer(final long timestamp, final String host,
+            final String server, final DMRRawQueryData rawData)
+            throws DMCQueryException {
+        Set<String> deployments = null;
+
         try {
             deployments = getDeployments(host, server);
         } catch (IOException e) {
@@ -141,27 +119,29 @@ public class AppDMRQueryExecutorImpl<T> extends AbstractDMRQueryExecutorImpl {
 
         for (String deployment : deployments) {
             if (apps.contains(deployment)) {
-                 ModelNode statistics;
+                ModelNode deploymentStatistics;
                 try {
-                    statistics = getAllStatistics(host, server,
-                     deployment);
+                    deploymentStatistics = getAllStatistics(host, server,
+                            deployment);
                 } catch (IOException e) {
                     throw new DMCQueryException(e);
                 }
-                 try {
-                    LOG.info(jsonFunctions.createFlatKeyValues(statistics)
-                             .toString());
-                } catch (IOException e) {
-                    throw new DMCQueryException(e);
-                }
-                // if (LOG.isDebugEnabled()) {
-                // LOG.debug("main(String[]) - ModelNode statistics={}",
-                // statistics);
+                // try {
+                // LOG.info(jsonFunctions.createFlatKeyValues(deploymentStatistics)
+                // .toString());
+                // } catch (IOException e) {
+                // throw new DMCQueryException(e);
                 // }
-                //
-                // extractStatistics(statistics, host, server, deployment);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("main(String[]) - ModelNode statistics={}",
+                            deploymentStatistics.toJSONString(false));
+                }
+
+                analyzeDeployment(timestamp, host, server, deployment,
+                        deploymentStatistics, rawData);
             }
         }
+        deployments = null;
     }
 
     /**
@@ -202,11 +182,13 @@ public class AppDMRQueryExecutorImpl<T> extends AbstractDMRQueryExecutorImpl {
      *            the server
      * @param deploy
      *            the deploy
+     * @param deployment
      */
-    protected void extractStatistics(ModelNode response, String host,
-            String server, String deploy) {
+
+    private void analyzeDeployment(final long timestamp, final String host,
+            final String server, final String deploy,
+            final ModelNode deploymentStatistics, DMRRawQueryData rawData) {
         Map<String, Object> statistics = null;
-        String now = null;
         ModelNode modelNodeResult = null;
         ModelNode modelNodeSubdeployment = null;
         ModelNode modelNodeSubsystems = null;
@@ -214,16 +196,16 @@ public class AppDMRQueryExecutorImpl<T> extends AbstractDMRQueryExecutorImpl {
         ModelNode modelNodeSubsystemComponent = null;
         ModelNode modelNodeAppObject = null;
 
-        now = DATE_FORMATTER.format(new Date());
         statistics = new LinkedHashMap<String, Object>();
-        modelNodeResult = response.get("result");
+        modelNodeResult = deploymentStatistics.get("result");
 
         for (String subdeployment : modelNodeResult.get("subdeployment").keys()) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug(
                         "extractStatistics(ModelNode response={}, String host={}, "
-                        + "String server={}, String deploy={}) - String subdeployment={}",
-                        response, host, server, deploy, subdeployment);
+                                + "String server={}, String deploy={}) - String subdeployment={}",
+                        deploymentStatistics, host, server, deploy,
+                        subdeployment);
             }
             // foreach subdeployment
             if (patternSubdeployment.matcher(subdeployment).matches()) {
@@ -238,49 +220,13 @@ public class AppDMRQueryExecutorImpl<T> extends AbstractDMRQueryExecutorImpl {
                     modelNodeSubsystem = modelNodeSubsystems.get(subsystem);
                     // search for subsystem components
 
-                    LOG.info(modelNodeSubsystem.toJSONString(false));
+                    if (LOG.isDebugEnabled())
+                        LOG.debug(modelNodeSubsystem.toJSONString(false));
 
-                    // for (String subsystemComponentName : modelNodeSubsystem
-                    // .keys()) {
-                    // if (patternSubsystemComponents.matcher(
-                    // subsystemComponentName).matches()) {
-                    // // get matching subsystem component
-                    // modelNodeSubsystemComponent = modelNodeSubsystem
-                    // .get(subsystemComponentName);
-                    // // search for matching app objects
-                    // for (String appObjectName : modelNodeSubsystemComponent
-                    // .keys()) {
-                    // if (patternAppObjectName.matcher(appObjectName)
-                    // .matches()) {
-                    // // analyze the matching app object
-                    // statistics.put("app.object.name",
-                    // appObjectName);
-                    // modelNodeAppObject = modelNodeSubsystemComponent
-                    // .get(appObjectName);
-                    // int depthCounter = 0;
-                    // extractAppObjectStatistics(depthCounter,
-                    // "", modelNodeAppObject, statistics);
-                    // }
-                    // }
-                    // // TODO: remove
-                    // // for (String stateful : modelNodeSubsystem
-                    // // .get(subsystem)
-                    // // .get("stateful-session-bean").keys()) {
-                    // // for (String method : modelNodeSubsystem
-                    // // .get(subsystem)
-                    // // .get("stateful-session-bean")
-                    // // .get(stateful).get("methods").keys()) {
-                    // // ModelNode methodNode = modelNodeSubsystem
-                    // // .get(subsystem)
-                    // // .get("stateful-session-bean")
-                    // // .get(stateful).get("methods")
-                    // // .get(method);
-                    // // // TODO send statistics event!!!!
-                    // // return;
-                    // // }
-                    // // }
-                    // }
-                    // }
+                    cleanRawData(modelNodeSubsystem);
+                    rawData.put(new AppDMRRawQueryDataKey(configurationId,
+                            timestamp, host, server, deploy, subdeployment,
+                            subsystem), modelNodeSubsystem);
                 } else {
                     LOG.warn("requested subsystem {} not found.", subsystem);
                 }
@@ -288,49 +234,35 @@ public class AppDMRQueryExecutorImpl<T> extends AbstractDMRQueryExecutorImpl {
         }
     }
 
-//    private void extractAppObjectStatistics(int depthCounter, String prefix,
-//            ModelNode modelNodeAppObject, Map<String, Object> statistics) {
-//        if (depthCounter > depth) {
-//            return;
-//        }
-//
-//        AppObjectAttributeConfiguration appObjectAttributeConfiguration = null;
-//        Set<String> attributeSet = null;
-//
-//        appObjectAttributeConfiguration = appObjectAttributeConfigurations
-//                .get(depthCounter);
-//        attributeSet = new LinkedHashSet<String>(modelNodeAppObject.keys());
-//        if (appObjectAttributeConfiguration != null) {
-//            if (appObjectAttributeConfiguration.isAppObjectAttributeExclude()) {
-//                for (String attribute : appObjectAttributeConfiguration
-//                        .getAppObjectAttributes()) {
-//                    attributeSet.remove(attribute);
-//                }
-//            } else {
-//                attributeSet = new LinkedHashSet<String>(
-//                        appObjectAttributeConfiguration
-//                                .getAppObjectAttributes());
-//            }
-//        }
-//
-//        // lavoro di estrazione
-//        for (String attribute : attributeSet) {
-//            ModelNode modelNodeDetail = modelNodeAppObject.get(attribute);
-//            if (modelNodeDetail.isDefined()) {
-//                saveNodeProperties(modelNodeDetail, statistics);
-//            }
-//        }
-//        // alla fine incremento il counter della profondità
-//        depthCounter++;
-//    }
+    private void cleanRawData(ModelNode modelNodeSubsystem) {
+        ModelNode removed = null;
 
-    private void saveNodeProperties(ModelNode modelNode,
-            Map<String, Object> statistics) {
-        List<Property> modelNodeProperties = modelNode.asPropertyList();
-        for (Property property : modelNodeProperties) {
-            statistics.put(property.getName(), property.getValue().asObject());
+        for (String subsystemComponentName : new LinkedHashSet<>(modelNodeSubsystem.keys())) {
+            if (patternSubsystemComponents.matcher(subsystemComponentName)
+                    .matches()) {
+                cleanAppObjects(modelNodeSubsystem.get(subsystemComponentName));
+            } else {
+                removed = modelNodeSubsystem.remove(subsystemComponentName);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("removing modelNode {}",
+                            removed.toJSONString(false));
+                }
+            }
         }
+    }
 
+    private void cleanAppObjects(ModelNode modelNodeSubsystemComponent) {
+        ModelNode removed = null;
+
+        // search for matching app objects
+        for (String appObjectName : new LinkedHashSet<>(modelNodeSubsystemComponent.keys())) {
+            if (!patternAppObjectName.matcher(appObjectName).matches()) {
+                removed = modelNodeSubsystemComponent.remove(appObjectName);
+                if (LOG.isDebugEnabled())
+                    LOG.debug(removed.toJSONString(false));
+            }
+
+        }
     }
 }
 

@@ -1,13 +1,18 @@
 package com.redhat.it.customers.dmc.core.services.collector.impl;
 
+import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.New;
 import javax.inject.Inject;
 
 import com.redhat.it.customers.dmc.core.cdi.interfaces.JvmCollectorWorkerBinding;
+import com.redhat.it.customers.dmc.core.dto.configuration.InstanceConfiguration;
 import com.redhat.it.customers.dmc.core.dto.configuration.JvmConfiguration;
 import com.redhat.it.customers.dmc.core.enums.MetricType;
+import com.redhat.it.customers.dmc.core.exceptions.DMCException;
 import com.redhat.it.customers.dmc.core.services.data.export.DataExporter;
 import com.redhat.it.customers.dmc.core.services.data.transformer.DataTransformer;
 import com.redhat.it.customers.dmc.core.services.query.QueryExecutor;
+import com.redhat.it.customers.dmc.core.services.query.impl.InstanceDMRQueryExecutorImpl;
 import com.redhat.it.customers.dmc.core.services.query.impl.JmxQueryExecutorImpl;
 
 /**
@@ -18,9 +23,10 @@ import com.redhat.it.customers.dmc.core.services.query.impl.JmxQueryExecutorImpl
 @JvmCollectorWorkerBinding
 public class JmxCollectorWorkerImpl extends
         AbstractCollectorWorkerImpl<JvmConfiguration> {
-
-    /** The query executor. */
+    
     @Inject
+    @New(JmxQueryExecutorImpl.class)
+    private Instance<QueryExecutor> queryExecutorInstance;
     private JmxQueryExecutorImpl queryExecutor;
 
     /**
@@ -30,25 +36,16 @@ public class JmxCollectorWorkerImpl extends
     public MetricType getType() {
         return MetricType.JVM;
     }
-
-    /**
-     * @see com.redhat.it.customers.dmc.core.services.collector.impl.AbstractCollectorWorkerImpl#getQueryExecutor()
-     */
+    
     @Override
-    protected QueryExecutor getQueryExecutor() {
+    protected void disposeComponents() throws DMCException {
+        super.disposeComponents();
+        queryExecutorInstance.destroy(queryExecutor);
+    }
+
+    @Override
+    protected QueryExecutor<?> getQueryExecutor() {
         return queryExecutor;
-    }
-
-    @Override
-    protected DataExporter getDataExporter() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    protected DataTransformer getDataTransformer() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     /**
@@ -56,8 +53,10 @@ public class JmxCollectorWorkerImpl extends
      */
     @Override
     protected void configureQueryExecutor() {
-        // TODO Auto-generated method stub
-
+        JvmConfiguration configuration = this.configuration;
+        JmxQueryExecutorImpl queryExecutor = (JmxQueryExecutorImpl) queryExecutorInstance.get();
+        //...
+        this.queryExecutor=queryExecutor;
     }
 
 }

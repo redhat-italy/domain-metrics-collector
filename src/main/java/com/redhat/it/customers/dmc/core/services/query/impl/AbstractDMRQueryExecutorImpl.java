@@ -3,6 +3,7 @@ package com.redhat.it.customers.dmc.core.services.query.impl;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -17,7 +18,6 @@ import com.redhat.it.customers.dmc.core.exceptions.DMCException;
 import com.redhat.it.customers.dmc.core.exceptions.DMCOpenException;
 import com.redhat.it.customers.dmc.core.exceptions.DMCQueryException;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class AbstractDMRQueryExecutorImpl.
  * 
@@ -90,11 +90,15 @@ public abstract class AbstractDMRQueryExecutorImpl extends
      */
     @Override
     public DMRRawQueryData extractData() throws DMCQueryException {
+        long now = System.currentTimeMillis();
+        DMRRawQueryData rawData=null;
 
         Set<String> hosts = getHosts(client);
         if (LOG.isInfoEnabled()) {
             LOG.info("main(String[]) - Set<String> hosts={}", hosts);
         }
+        
+        rawData=new DMRRawQueryData();
 
         for (String host : hosts) {
             if (patternHostname.matcher(host).matches()) {
@@ -105,12 +109,12 @@ public abstract class AbstractDMRQueryExecutorImpl extends
 
                 for (String server : servers) {
                     if (patternServer.matcher(server).matches()) {
-                        analyzeServer(host, server);
+                        analyzeServer(now,host, server, rawData);
                     }
                 }
             }
         }
-        return null;
+        return rawData;
     }
 
     /**
@@ -120,10 +124,12 @@ public abstract class AbstractDMRQueryExecutorImpl extends
      *            the host
      * @param server
      *            the server
+     * @param server2 
+     * @param rawData 
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    protected abstract void analyzeServer(String host, String server)
+    protected abstract void analyzeServer(final long timestamp, String host, String server, DMRRawQueryData rawData)
             throws DMCQueryException;
 
     /**

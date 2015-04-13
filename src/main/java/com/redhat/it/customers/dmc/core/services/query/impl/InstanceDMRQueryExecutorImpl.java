@@ -1,9 +1,6 @@
 package com.redhat.it.customers.dmc.core.services.query.impl;
 
-import java.io.IOException;
-
-import org.jboss.weld.environment.se.contexts.ThreadScoped;
-
+import com.redhat.it.customers.dmc.core.dto.collector.qd.raw.DMRRawQueryData;
 import com.redhat.it.customers.dmc.core.exceptions.DMCQueryException;
 
 /**
@@ -11,15 +8,17 @@ import com.redhat.it.customers.dmc.core.exceptions.DMCQueryException;
  * 
  * @author Andrea Battaglia
  */
-//@ThreadScoped
+// @ThreadScoped
 public class InstanceDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
 
+    public InstanceDMRQueryExecutorImpl() {
+        // TODO Auto-generated constructor stub
+    }
 
-    /**
-     * @see com.redhat.it.customers.dmc.core.services.query.impl.AbstractDMRQueryExecutorImpl#analyzeServer(java.lang.String, java.lang.String)
-     */
     @Override
-    protected void analyzeServer(String host, String server) throws DMCQueryException {
+    protected void analyzeServer(final long timestamp, final String host,
+            final String server, final DMRRawQueryData rawData)
+            throws DMCQueryException {
         // TODO Auto-generated method stub
 
     }

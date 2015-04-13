@@ -30,6 +30,8 @@ abstract class AbstractQueryExecutorImpl<C> implements QueryExecutor<C> {
     @Inject
     private Logger LOG;
 
+    protected String configurationId;
+
     /** The client. */
     protected C client;
 
@@ -55,10 +57,16 @@ abstract class AbstractQueryExecutorImpl<C> implements QueryExecutor<C> {
     protected Pattern patternServer;
 
     /** The depth. */
-//    protected int depth;
+    // protected int depth;
 
     /** The app object attribute configurations. */
-//    protected Map<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations;
+    // protected Map<Integer, AppObjectAttributeConfiguration>
+    // appObjectAttributeConfigurations;
+
+    @Override
+    public void setConfigurationId(String configurationId) {
+        this.configurationId = configurationId;
+    }
 
     /**
      * Sets the hostname.
@@ -137,15 +145,14 @@ abstract class AbstractQueryExecutorImpl<C> implements QueryExecutor<C> {
         this.patternServer = patternServer;
     }
 
-
     /**
      * Gets the depth.
      *
      * @return the depth
      */
-//    public int getDepth() {
-//        return depth;
-//    }
+    // public int getDepth() {
+    // return depth;
+    // }
 
     /**
      * Sets the depth.
@@ -153,18 +160,19 @@ abstract class AbstractQueryExecutorImpl<C> implements QueryExecutor<C> {
      * @param depth
      *            the new depth
      */
-//    public void setDepth(int depth) {
-//        this.depth = depth;
-//    }
+    // public void setDepth(int depth) {
+    // this.depth = depth;
+    // }
 
     /**
      * Gets the app object attribute configurations.
      *
      * @return the app object attribute configurations
      */
-//    public Map<Integer, AppObjectAttributeConfiguration> getAppObjectAttributeConfigurations() {
-//        return appObjectAttributeConfigurations;
-//    }
+    // public Map<Integer, AppObjectAttributeConfiguration>
+    // getAppObjectAttributeConfigurations() {
+    // return appObjectAttributeConfigurations;
+    // }
 
     /**
      * Sets the app object attribute configurations.
@@ -172,9 +180,10 @@ abstract class AbstractQueryExecutorImpl<C> implements QueryExecutor<C> {
      * @param appObjectAttributeConfigurations
      *            the app object attribute configurations
      */
-//    public void setAppObjectAttributeConfigurations(
-//            Map<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations) {
-//        this.appObjectAttributeConfigurations = appObjectAttributeConfigurations;
-//    }
+    // public void setAppObjectAttributeConfigurations(
+    // Map<Integer, AppObjectAttributeConfiguration>
+    // appObjectAttributeConfigurations) {
+    // this.appObjectAttributeConfigurations = appObjectAttributeConfigurations;
+    // }
 
 }

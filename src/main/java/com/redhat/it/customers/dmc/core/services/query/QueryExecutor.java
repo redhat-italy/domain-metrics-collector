@@ -3,8 +3,6 @@
  */
 package com.redhat.it.customers.dmc.core.services.query;
 
-import java.io.Closeable;
-import java.io.IOException;
 import java.util.regex.Pattern;
 
 import com.redhat.it.customers.dmc.core.dto.collector.qd.raw.AbstractRawQueryData;
@@ -24,6 +22,13 @@ import com.redhat.it.customers.dmc.core.services.query.impl.JmxQueryExecutorImpl
  * @author Andrea Battaglia
  */
 public interface QueryExecutor<C> extends Openable {
+    
+    /**
+     * Sets the configuration id.
+     *
+     * @param configurationId the new configuration id
+     */
+    void setConfigurationId(String configurationId);
 
     /**
      * Extract data.

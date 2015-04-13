@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import com.redhat.it.customers.dmc.core.dto.collector.qd.raw.AbstractRawQueryData;
 import com.redhat.it.customers.dmc.core.dto.collector.qd.t.AbstractTransformedQueryData;
+import com.redhat.it.customers.dmc.core.enums.ExportDestinationType;
+import com.redhat.it.customers.dmc.core.enums.ExportFormatType;
 
 /**
  * The Interface DataTransformer.
@@ -13,18 +15,28 @@ import com.redhat.it.customers.dmc.core.dto.collector.qd.t.AbstractTransformedQu
 public interface DataTransformer {
 
     /**
+     * Gets the export format type.
+     *
+     * @return the export format type
+     */
+    ExportFormatType getExportFormatType();
+
+    /**
      * Extract header.
      *
-     * @param input the input
+     * @param input
+     *            the input
      * @return the string[]
-     * @throws IOException             Signals that an I/O exception has occurred.
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
      */
     String[] extractHeader(AbstractRawQueryData input) throws IOException;
 
     /**
      * Transform data.
      *
-     * @param input            the input
+     * @param input
+     *            the input
      * @return the t
      */
     AbstractTransformedQueryData transformData(AbstractRawQueryData input);

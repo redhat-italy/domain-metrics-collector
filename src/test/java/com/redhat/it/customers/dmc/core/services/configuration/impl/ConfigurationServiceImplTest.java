@@ -134,7 +134,8 @@ public class ConfigurationServiceImplTest {
         }
         //
         try {
-            objectMapper.writeValue(System.out, appConfiguration);
+            System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(appConfiguration));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -169,7 +170,8 @@ public class ConfigurationServiceImplTest {
         }
         //
         try {
-            objectMapper.writeValue(System.out, configuration);
+            System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(configuration));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -204,7 +206,8 @@ public class ConfigurationServiceImplTest {
         }
         //
         try {
-            objectMapper.writeValue(System.out, configuration);
+            System.out.println(objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(configuration));
         } catch (IOException e) {
             e.printStackTrace();
         }

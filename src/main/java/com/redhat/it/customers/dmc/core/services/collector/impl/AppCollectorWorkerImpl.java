@@ -2,13 +2,17 @@ package com.redhat.it.customers.dmc.core.services.collector.impl;
 
 import java.util.regex.Pattern;
 
+import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.New;
 import javax.inject.Inject;
 
 import com.redhat.it.customers.dmc.core.cdi.interfaces.AppCollectorWorkerBinding;
 import com.redhat.it.customers.dmc.core.dto.configuration.AppConfiguration;
 import com.redhat.it.customers.dmc.core.enums.MetricType;
+import com.redhat.it.customers.dmc.core.exceptions.DMCException;
 import com.redhat.it.customers.dmc.core.services.data.export.DataExporter;
 import com.redhat.it.customers.dmc.core.services.data.transformer.DataTransformer;
+import com.redhat.it.customers.dmc.core.services.data.transformer.impl.AbstractAppDataTransformerImpl;
 import com.redhat.it.customers.dmc.core.services.query.QueryExecutor;
 import com.redhat.it.customers.dmc.core.services.query.impl.AppDMRQueryExecutorImpl;
 
@@ -23,8 +27,11 @@ public class AppCollectorWorkerImpl extends
         AbstractCollectorWorkerImpl<AppConfiguration> {
 
     /** The query executor. */
+    private QueryExecutor<?> queryExecutor;
+
     @Inject
-    private AppDMRQueryExecutorImpl queryExecutor;
+    @New(AppDMRQueryExecutorImpl.class)
+    private Instance<QueryExecutor<?>> queryExecutorInstance;
 
     /**
      * @see com.redhat.it.customers.dmc.core.services.collector.CollectorWorker#getType()
@@ -32,6 +39,12 @@ public class AppCollectorWorkerImpl extends
     @Override
     public MetricType getType() {
         return MetricType.APP;
+    }
+
+    @Override
+    protected void disposeComponents() throws DMCException {
+        super.disposeComponents();
+        queryExecutorInstance.destroy(queryExecutor);
     }
 
     /**
@@ -43,15 +56,9 @@ public class AppCollectorWorkerImpl extends
     }
 
     @Override
-    protected DataExporter getDataExporter() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    protected void configureDataTransformer() {
+        super.configureDataTransformer();
 
-    @Override
-    protected DataTransformer getDataTransformer() {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     /**
@@ -60,6 +67,8 @@ public class AppCollectorWorkerImpl extends
     @Override
     protected void configureQueryExecutor() {
         AppConfiguration configuration = this.configuration;
+        AppDMRQueryExecutorImpl queryExecutor = (AppDMRQueryExecutorImpl) queryExecutorInstance
+                .get();
         queryExecutor.setHostname(configuration.getHostname());
         queryExecutor.setPort(configuration.getPort());
         queryExecutor.setUsername(configuration.getUsername());
@@ -72,18 +81,19 @@ public class AppCollectorWorkerImpl extends
                 .setPatternServer(configuration.getRegexpServer() == null ? null
                         : Pattern.compile(configuration.getRegexpServer()));
         queryExecutor.setApps(configuration.getApps());
-//        queryExecutor.setDepth(configuration.getDepth());
         queryExecutor.setSubsystem(configuration.getSubsystem());
+        AbstractAppDataTransformerImpl dti = (AbstractAppDataTransformerImpl) getDataTransformer();
         queryExecutor.setPatternSubsystemComponents(configuration
                 .getRegexpSubsystemComponent() == null ? null : Pattern
                 .compile(configuration.getRegexpSubsystemComponent()));
-//        queryExecutor.setAppObjectAttributeConfigurations(configuration
-//                .getAppObjectAttributeConfigurations());
+        // queryExecutor.setAppObjectAttributeConfigurations(configuration
+        // .getAppObjectAttributeConfigurations());
         queryExecutor.setPatternAppObjectName(configuration
                 .getRegexpAppObjectName() == null ? null : Pattern
                 .compile(configuration.getRegexpAppObjectName()));
-        queryExecutor.setPatternpSubdeployment(configuration
+        queryExecutor.setPatternSubdeployment(configuration
                 .getRegexpSubdeployment() == null ? null : Pattern
                 .compile(configuration.getRegexpSubdeployment()));
+        this.queryExecutor = queryExecutor;
     }
 }

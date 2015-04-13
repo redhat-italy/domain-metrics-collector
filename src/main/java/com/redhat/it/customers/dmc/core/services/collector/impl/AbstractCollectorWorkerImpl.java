@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ import com.redhat.it.customers.dmc.core.exceptions.DMCException;
 import com.redhat.it.customers.dmc.core.services.collector.CollectorWorker;
 import com.redhat.it.customers.dmc.core.services.data.export.DataExporter;
 import com.redhat.it.customers.dmc.core.services.data.transformer.DataTransformer;
+import com.redhat.it.customers.dmc.core.services.data.transformer.impl.JsonAppDataTransformerImpl;
 import com.redhat.it.customers.dmc.core.services.query.QueryExecutor;
 
 /**
@@ -58,13 +60,15 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     @Inject
     private Logger LOG;
 
-    /** The data transformer. */
-    @Inject
-    private Instance<DataTransformer> dataTransformerInstance;
-    private DataTransformer dataTransformer;
     /** The data exporter. */
     @Inject
     private Instance<DataExporter> dataExporterInstance;
+
+    /** The data transformer. */
+    @Inject
+    private Instance<DataTransformer> dataTransformerInstance;
+
+    private DataTransformer dataTransformer = new JsonAppDataTransformerImpl();
     private DataExporter dataExporter;
 
     /**
@@ -73,6 +77,11 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     public AbstractCollectorWorkerImpl() {
         super();
         status = new AtomicReference<CollectorWorkerStatus>(PAUSED);
+    }
+
+    @PostConstruct
+    private void init() {
+        LOG.info("CollectorWorker created");
     }
 
     /**
@@ -212,11 +221,10 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     @Override
     public void run() {
         // configure();
-        configureQueryExecutor();
-        configureDataExporter();
+        initComponents();
         MDC.put(Constants.COLLECTOR_ID_MDC_KEY.getValue(), id);
         try {
-            initComponents();
+            startupComponents();
             // status.compareAndSet(PAUSED, RUNNING);
             while (status.get() != STOPPED) {
                 if (status.get() == RUNNING) {
@@ -229,9 +237,8 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
                         try {
                             wait(scanInterval);
                         } catch (InterruptedException e) {
-                            LOG.error(
-                                    "Error waiting for timeout between metrics collector executions.",
-                                    e);
+                            LOG.error("Error waiting for timeout between "
+                                    + "metrics collector executions.", e);
                         }
                     }
                 }
@@ -240,6 +247,7 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
             LOG.error("", e1);
         } finally {
             try {
+                stopComponents();
                 disposeComponents();
             } catch (DMCException e) {
                 LOG.error("", e);
@@ -249,29 +257,11 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
         }
     }
 
-    /**
-     * Configure data exporter.
-     */
-    private void configureDataExporter() {
-        // TODO Auto-generated method stub
-
+    private void initComponents() {
+        configureQueryExecutor();
+        configureDataTransformer();
+        configureDataExporter();
     }
-
-    /**
-     * Configure query executor.
-     */
-    protected abstract void configureQueryExecutor();
-
-    /**
-     * Gets the query executor.
-     *
-     * @return the query executor
-     */
-    protected abstract QueryExecutor<?> getQueryExecutor();
-
-    protected abstract DataExporter getDataExporter();
-
-    protected abstract DataTransformer getDataTransformer();
 
     /**
      * Inits the components.
@@ -279,9 +269,14 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    private void initComponents() throws DMCException {
+    private void startupComponents() throws DMCException {
         getQueryExecutor().open();
         dataExporter.open();
+    }
+
+    private void stopComponents() throws DMCException {
+        getQueryExecutor().close();
+        dataExporter.close();
     }
 
     /**
@@ -290,10 +285,56 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    private void disposeComponents() throws DMCException {
-        getQueryExecutor().close();
-        dataExporter.close();
+    protected void disposeComponents() throws DMCException {
+        dataTransformerInstance.destroy(dataTransformer);
+        dataExporterInstance.destroy(dataExporter);
+    }
 
+    /**
+     * Configure query executor.
+     */
+    protected abstract void configureQueryExecutor();
+
+    protected void configureDataTransformer() {
+//        for (DataTransformer exporter : dataTransformerInstance) {
+//            if (exporter.getExportDestinationType().equals(
+//                    configuration.getExportDestinationType())) {
+//                dataExporter = exporter;
+//                return;
+//            }
+//        }
+//        throw new IllegalStateException(
+//                "Export destination invalid or not admitted.");
+    }
+
+    /**
+     * Configure data exporter.
+     */
+    protected void configureDataExporter() {
+        for (DataExporter exporter : dataExporterInstance) {
+            if (exporter.getExportDestinationType().equals(
+                    configuration.getExportDestinationType())) {
+                dataExporter = exporter;
+                return;
+            }
+        }
+        throw new IllegalStateException(
+                "Export destination invalid or not admitted.");
+    }
+
+    /**
+     * Gets the query executor.
+     *
+     * @return the query executor
+     */
+    protected abstract QueryExecutor<?> getQueryExecutor();
+
+    protected DataExporter getDataExporter() {
+        return dataExporter;
+    }
+
+    protected DataTransformer getDataTransformer() {
+        return dataTransformer;
     }
 
     /**
@@ -301,7 +342,7 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
      *
      * @return the string
      */
-    @SuppressWarnings({ "rawtypes"})
+    @SuppressWarnings({ "rawtypes" })
     private String _doWork() {
         try {
             AbstractRawQueryData rawData = getQueryExecutor().extractData();
