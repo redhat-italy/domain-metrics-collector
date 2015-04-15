@@ -1,0 +1,56 @@
+{
+    "stateful-session-bean":{
+        "TestStatefulBean":{
+            "cache-size":1,
+            "component-class-name":"TestStatefulBean",
+            "declared-roles":[
+                
+            ],
+            "execution-time":0,
+            "invocations":300,
+            "methods":{
+                "helloMethod":{
+                    "execution-time":0,
+                    "invocations":300,
+                    "wait-time":0
+                }
+            },
+            "passivated-count":0,
+            "peak-concurrent-invocations":1,
+            "run-as-role":null,
+            "security-domain":"other",
+            "total-size":1,
+            "wait-time":0
+        }
+    },
+    "stateless-session-bean":{
+        "TestStatelessBean":{
+            "component-class-name":"TestStatelessBean",
+            "declared-roles":[
+                
+            ],
+            "execution-time":15,
+            "invocations":300,
+            "methods":{
+                "helloMethod":{
+                    "execution-time":15,
+                    "invocations":300,
+                    "wait-time":0
+                }
+            },
+            "peak-concurrent-invocations":2,
+            "pool-available-count":20,
+            "pool-create-count":3,
+            "pool-current-size":3,
+            "pool-max-size":20,
+            "pool-name":"slsb-strict-max-pool",
+            "pool-remove-count":0,
+            "run-as-role":null,
+            "security-domain":"other",
+            "timers":[
+                
+            ],
+            "wait-time":0
+        }
+    }
+}
