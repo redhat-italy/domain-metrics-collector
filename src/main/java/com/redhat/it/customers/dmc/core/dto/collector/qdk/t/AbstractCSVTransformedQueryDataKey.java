@@ -4,6 +4,7 @@
 package com.redhat.it.customers.dmc.core.dto.collector.qdk.t;
 
 import com.google.common.base.Joiner;
+import com.redhat.it.customers.dmc.core.util.CSVFunctions;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -15,7 +16,13 @@ public abstract class AbstractCSVTransformedQueryDataKey extends
         AbstractTransformedQueryDataKey {
 
     /** The field separator. */
-    private final String fieldSeparator;
+    private final char fieldSeparator;
+
+    public AbstractCSVTransformedQueryDataKey(String configurationName,
+            long timestamp) {
+        super(configurationName, timestamp);
+        this.fieldSeparator = CSVFunctions.DEFAULT_SEPARATOR;
+    }
 
     /**
      * Instantiates a new CSV transformed query data key.
@@ -30,17 +37,12 @@ public abstract class AbstractCSVTransformedQueryDataKey extends
      *            the server
      */
     public AbstractCSVTransformedQueryDataKey(String configurationName,
-            long timestamp, String host, String server, String fieldSeparator) {
+            long timestamp, char fieldSeparator) {
         super(configurationName, timestamp);
         this.fieldSeparator = fieldSeparator;
     }
 
-    /**
-     * Gets the field separator.
-     *
-     * @return the field separator
-     */
-    public String getFieldSeparator() {
+    public char getFieldSeparator() {
         return fieldSeparator;
     }
 

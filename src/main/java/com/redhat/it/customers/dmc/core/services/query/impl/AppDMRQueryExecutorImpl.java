@@ -121,7 +121,7 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
             if (apps.contains(deployment)) {
                 ModelNode deploymentStatistics;
                 try {
-                    deploymentStatistics = getAllStatistics(host, server,
+                    deploymentStatistics = getDeploymentStatistics(host, server,
                             deployment);
                 } catch (IOException e) {
                     throw new DMCQueryException(e);

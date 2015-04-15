@@ -69,6 +69,7 @@ public class AppCollectorWorkerImpl extends
         AppConfiguration configuration = this.configuration;
         AppDMRQueryExecutorImpl queryExecutor = (AppDMRQueryExecutorImpl) queryExecutorInstance
                 .get();
+        queryExecutor.setConfigurationId(id);
         queryExecutor.setHostname(configuration.getHostname());
         queryExecutor.setPort(configuration.getPort());
         queryExecutor.setUsername(configuration.getUsername());
@@ -82,7 +83,6 @@ public class AppCollectorWorkerImpl extends
                         : Pattern.compile(configuration.getRegexpServer()));
         queryExecutor.setApps(configuration.getApps());
         queryExecutor.setSubsystem(configuration.getSubsystem());
-        AbstractAppDataTransformerImpl dti = (AbstractAppDataTransformerImpl) getDataTransformer();
         queryExecutor.setPatternSubsystemComponents(configuration
                 .getRegexpSubsystemComponent() == null ? null : Pattern
                 .compile(configuration.getRegexpSubsystemComponent()));

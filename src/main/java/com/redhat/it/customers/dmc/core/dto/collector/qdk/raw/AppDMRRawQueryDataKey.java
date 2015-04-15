@@ -131,13 +131,13 @@ public class AppDMRRawQueryDataKey extends DMRRawQueryDataKey {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("AppDMRRawQueryDataKey [");
-        builder.append("\n    configurationName()=");
+        builder.append("\n    configurationName=");
         builder.append(getConfigurationName());
-        builder.append(", \n    timestamp()=");
+        builder.append(", \n    timestamp=");
         builder.append(getTimestamp());
-        builder.append(", \n    host()=");
+        builder.append(", \n    host=");
         builder.append(getHost());
-        builder.append(", \n    server()=");
+        builder.append(", \n    server=");
         builder.append(getServer());
         builder.append(", \n    deploy=");
         builder.append(deploy);

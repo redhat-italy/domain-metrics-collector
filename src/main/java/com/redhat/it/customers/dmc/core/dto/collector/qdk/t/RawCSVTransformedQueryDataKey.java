@@ -3,6 +3,7 @@
  */
 package com.redhat.it.customers.dmc.core.dto.collector.qdk.t;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class RawCSVTransformedQueryDataKey.
  *
@@ -26,8 +27,8 @@ public class RawCSVTransformedQueryDataKey extends
      *            the field separator
      */
     public RawCSVTransformedQueryDataKey(String configurationName,
-            long timestamp, String host, String server, String fieldSeparator) {
-        super(configurationName, timestamp, host, server, fieldSeparator);
+            long timestamp, String host, String server) {
+        super(configurationName, timestamp);
     }
 
 }

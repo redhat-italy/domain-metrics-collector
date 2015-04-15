@@ -22,6 +22,8 @@ import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.node.ValueNode;
 import org.jboss.dmr.ModelNode;
 
+import com.redhat.it.customers.dmc.core.enums.ObjectMapperType;
+
 /**
  * The Class JsonFunctions.
  *
@@ -29,6 +31,8 @@ import org.jboss.dmr.ModelNode;
  */
 @Singleton
 public final class JsonFunctions {
+    private static final ObjectMapper objectMapper = ObjectMapperType.DEFAULT
+            .getObjectMapper();
     private JsonFactory f = new MappingJsonFactory();
 
     /**
@@ -61,7 +65,7 @@ public final class JsonFunctions {
 
         Map<String, String> map = new LinkedHashMap<String, String>();
         try {
-            JsonNode readTree = new ObjectMapper().readTree(jp);
+            JsonNode readTree = objectMapper.readTree(jp);
             addKeys("", readTree, map);
         } catch (IOException e) {
             e.printStackTrace();

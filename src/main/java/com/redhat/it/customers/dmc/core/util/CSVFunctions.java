@@ -3,7 +3,15 @@
  */
 package com.redhat.it.customers.dmc.core.util;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Arrays;
+
 import com.opencsv.CSVWriter;
+import com.opencsv.bean.BeanToCsv;
+import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
+import com.opencsv.bean.MappingStrategy;
 
 /**
  * @author Andrea Battaglia
@@ -12,32 +20,32 @@ import com.opencsv.CSVWriter;
 public final class CSVFunctions {
 
     /** The Constant INITIAL_STRING_SIZE. */
-    private static final int INITIAL_STRING_SIZE = CSVWriter.INITIAL_STRING_SIZE;
+    public static final int INITIAL_STRING_SIZE = CSVWriter.INITIAL_STRING_SIZE;
     /**
      * The character used for escaping quotes.
      */
-    private static final char DEFAULT_ESCAPE_CHARACTER = CSVWriter.DEFAULT_ESCAPE_CHARACTER;
+    public static final char DEFAULT_ESCAPE_CHARACTER = CSVWriter.DEFAULT_ESCAPE_CHARACTER;
     /**
      * The default separator to use if none is supplied to the constructor.
      */
-    private static final char DEFAULT_SEPARATOR = CSVWriter.DEFAULT_SEPARATOR;
+    public static final char DEFAULT_SEPARATOR = CSVWriter.DEFAULT_SEPARATOR;
     /**
      * The default quote character to use if none is supplied to the
      * constructor.
      */
-    private static final char DEFAULT_QUOTE_CHARACTER = CSVWriter.DEFAULT_QUOTE_CHARACTER;
+    public static final char DEFAULT_QUOTE_CHARACTER = CSVWriter.DEFAULT_QUOTE_CHARACTER;
     /**
      * The quote constant to use when you wish to suppress all quoting.
      */
-    private static final char NO_QUOTE_CHARACTER = CSVWriter.NO_QUOTE_CHARACTER;
+    public static final char NO_QUOTE_CHARACTER = CSVWriter.NO_QUOTE_CHARACTER;
     /**
      * The escape constant to use when you wish to suppress all escaping.
      */
-    private static final char NO_ESCAPE_CHARACTER = CSVWriter.NO_ESCAPE_CHARACTER;
+    public static final char NO_ESCAPE_CHARACTER = CSVWriter.NO_ESCAPE_CHARACTER;
     /**
      * Default line terminator uses platform encoding.
      */
-    private static final String DEFAULT_LINE_END = CSVWriter.DEFAULT_LINE_END;
+    public static final String DEFAULT_LINE_END = CSVWriter.DEFAULT_LINE_END;
 
     private char separator;
     private char quotechar;
@@ -62,6 +70,15 @@ public final class CSVFunctions {
         this.escapechar = escapechar;
         this.lineEnd = lineEnd;
     }
+
+//    public String prepareCSVLine(String[] data) {
+//        StringWriter stringWriter = new StringWriter();
+//        CSVWriter csvWriter = new CSVWriter(stringWriter,
+//                CSVFunctions.DEFAULT_SEPARATOR,
+//                CSVFunctions.DEFAULT_QUOTE_CHARACTER,
+//                CSVFunctions.DEFAULT_ESCAPE_CHARACTER);
+//        return stringWriter.toString();
+//    }
 
     public String prepareCSVLine(String[] data) {
         boolean applyQuotesToAll = true;
@@ -154,5 +171,25 @@ public final class CSVFunctions {
         } else {
             sb.append(nextChar);
         }
+    }
+
+    public static <T> String[] beanToCsv(T bean) {
+        String[] result = null;
+        BeanToCsv<T> btc = null;
+        MappingStrategy<T> beanStrategy = null;
+        // Writer writer = new StringWriter();
+
+        btc = new BeanToCsv<>();
+        beanStrategy = new HeaderColumnNameTranslateMappingStrategy<>();
+        // writer = new StringWriter();
+        try (Writer writer = new StringWriter()) {
+            btc.write(beanStrategy, writer, Arrays.asList(bean));
+            result = writer.toString().split(",");
+        } catch (IOException e) {
+        } finally {
+            btc = null;
+            beanStrategy = null;
+        }
+        return result;
     }
 }

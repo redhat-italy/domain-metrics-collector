@@ -3,7 +3,7 @@
  */
 package com.redhat.it.customers.dmc.core.services.data.export;
 
-import java.util.Map.Entry;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,27 +49,24 @@ public class FileDataExporterImpl implements DataExporter {
      */
     @Override
     public void exportData(AbstractTransformedQueryData data) {
-        // if (data instanceof CSVTransformedQueryData) {
-        // logCSVData((CSVTransformedQueryData) data);
-        // } else if (data instanceof JsonTransformedQueryData) {
-        // logJsonData((JsonTransformedQueryData) data);
-        // } else if (data instanceof RawCSVTransformedQueryData) {
-        // logRawCSVData((RawCSVTransformedQueryData) data);
-        // }
-        for (Object value : data.values())
-            LOG.trace(value.toString());
+        if (data instanceof CSVTransformedQueryData) {
+            logCSVData((CSVTransformedQueryData) data);
+        } else if (data instanceof JsonTransformedQueryData) {
+            logJsonData((JsonTransformedQueryData) data);
+        } else if (data instanceof RawCSVTransformedQueryData) {
+            logRawCSVData((RawCSVTransformedQueryData) data);
+        }
     }
 
     private void logCSVData(CSVTransformedQueryData data) {
-        // TODO Auto-generated method stub
-
-        // LOG.trace();
+        for (List<String> rows : data.values())
+            for (String row : rows)
+                LOG.trace(row);
     }
 
     private void logJsonData(JsonTransformedQueryData data) {
-        // TODO Auto-generated method stub
-
-        // LOG.trace();
+        for (Object value : data.values())
+            LOG.trace(value.toString());
     }
 
     private void logRawCSVData(RawCSVTransformedQueryData data) {

@@ -25,7 +25,6 @@ import com.redhat.it.customers.dmc.core.exceptions.DMCException;
 import com.redhat.it.customers.dmc.core.services.collector.CollectorWorker;
 import com.redhat.it.customers.dmc.core.services.data.export.DataExporter;
 import com.redhat.it.customers.dmc.core.services.data.transformer.DataTransformer;
-import com.redhat.it.customers.dmc.core.services.data.transformer.impl.JsonAppDataTransformerImpl;
 import com.redhat.it.customers.dmc.core.services.query.QueryExecutor;
 
 /**
@@ -68,7 +67,7 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     @Inject
     private Instance<DataTransformer> dataTransformerInstance;
 
-    private DataTransformer dataTransformer = new JsonAppDataTransformerImpl();
+    private DataTransformer dataTransformer;
     private DataExporter dataExporter;
 
     /**
@@ -296,15 +295,15 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
     protected abstract void configureQueryExecutor();
 
     protected void configureDataTransformer() {
-//        for (DataTransformer exporter : dataTransformerInstance) {
-//            if (exporter.getExportDestinationType().equals(
-//                    configuration.getExportDestinationType())) {
-//                dataExporter = exporter;
-//                return;
-//            }
-//        }
-//        throw new IllegalStateException(
-//                "Export destination invalid or not admitted.");
+        for (DataTransformer transformer : dataTransformerInstance) {
+            if (transformer.getExportFormatType().equals(
+                    configuration.getExportFormatType())) {
+                dataTransformer = transformer;
+                return;
+            }
+        }
+        throw new IllegalStateException(
+                "Export destination invalid or not admitted.");
     }
 
     /**
@@ -348,11 +347,10 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
             AbstractRawQueryData rawData = getQueryExecutor().extractData();
             AbstractTransformedQueryData transformedData = getDataTransformer()
                     .transformData(rawData);
+            rawData = null;
             getDataExporter().exportData(transformedData);
-            // dataExporter.writeData(new String[] { "I AM WORKING...",
-            // "Field 1",
-            // "Field \"2\"", ",,,field 3,,," });
-            return "I AM WORKING...";
+            transformedData = null;
+            // return "I AM WORKING...";
         } catch (Exception e) {
             LOG.error("Error extracting statistics.", e);
         }

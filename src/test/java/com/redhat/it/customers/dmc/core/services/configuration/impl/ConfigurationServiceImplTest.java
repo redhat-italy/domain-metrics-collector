@@ -29,6 +29,7 @@ import com.redhat.it.customers.dmc.core.dto.configuration.AppObjectAttributeConf
 import com.redhat.it.customers.dmc.core.dto.configuration.Configuration;
 import com.redhat.it.customers.dmc.core.dto.configuration.InstanceConfiguration;
 import com.redhat.it.customers.dmc.core.dto.configuration.JvmConfiguration;
+import com.redhat.it.customers.dmc.core.enums.ObjectMapperType;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -39,7 +40,8 @@ import com.redhat.it.customers.dmc.core.dto.configuration.JvmConfiguration;
 public class ConfigurationServiceImplTest {
 
     /** The Constant objectMapper. */
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = ObjectMapperType.DEFAULT
+            .getObjectMapper();
 
     /** The configuration files path. */
     private static Path configurationFilesPath;

@@ -3,7 +3,7 @@ package com.redhat.it.customers.dmc.core.services.query.impl;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 
 import com.redhat.it.customers.dmc.core.dto.collector.qd.raw.DMRRawQueryData;
 import com.redhat.it.customers.dmc.core.exceptions.DMCCloseException;
-import com.redhat.it.customers.dmc.core.exceptions.DMCException;
 import com.redhat.it.customers.dmc.core.exceptions.DMCOpenException;
 import com.redhat.it.customers.dmc.core.exceptions.DMCQueryException;
 
@@ -91,27 +90,30 @@ public abstract class AbstractDMRQueryExecutorImpl extends
     @Override
     public DMRRawQueryData extractData() throws DMCQueryException {
         long now = System.currentTimeMillis();
-        DMRRawQueryData rawData=null;
+        Set<String> hosts = null;
+        DMRRawQueryData rawData = null;
+        Set<String> servers = null;
 
-        Set<String> hosts = getHosts(client);
-        if (LOG.isInfoEnabled()) {
-            LOG.info("main(String[]) - Set<String> hosts={}", hosts);
+        hosts = getHosts(client);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("extractData() - Set<String> hosts={}", hosts);
         }
-        
-        rawData=new DMRRawQueryData();
+
+        rawData = new DMRRawQueryData();
 
         for (String host : hosts) {
             if (patternHostname.matcher(host).matches()) {
-                Set<String> servers = getServers(client, host);
-                if (LOG.isInfoEnabled()) {
-                    LOG.info("main(String[]) - Set<String> servers={}", servers);
+                servers = getServers(client, host);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("extractData() - Set<String> servers={}", servers);
                 }
 
                 for (String server : servers) {
                     if (patternServer.matcher(server).matches()) {
-                        analyzeServer(now,host, server, rawData);
+                        analyzeServer(now, host, server, rawData);
                     }
                 }
+                servers = null;
             }
         }
         return rawData;
@@ -124,13 +126,13 @@ public abstract class AbstractDMRQueryExecutorImpl extends
      *            the host
      * @param server
      *            the server
-     * @param server2 
-     * @param rawData 
+     * @param server2
+     * @param rawData
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    protected abstract void analyzeServer(final long timestamp, String host, String server, DMRRawQueryData rawData)
-            throws DMCQueryException;
+    protected abstract void analyzeServer(final long timestamp, String host,
+            String server, DMRRawQueryData rawData) throws DMCQueryException;
 
     /**
      * Gets the hosts.
@@ -144,12 +146,28 @@ public abstract class AbstractDMRQueryExecutorImpl extends
      */
     protected Set<String> getHosts(ModelControllerClient client)
             throws DMCQueryException {
-        ModelNode op = new ModelNode();
+        ModelNode response = null;
+        ModelNode op = null;
+        ModelNode result = null;
+        ModelNode host = null;
+        Set<String> hostList = null;
+
+        op = new ModelNode();
         op.get("operation").set("read-resource");
         op.get("operations").set(true);
-        ModelNode response = executeOperation(client, op);
+        response = executeOperation(client, op);
 
-        return response.get("result").get("host").keys();
+        try {
+            result = response.get("result");
+            host = result.get("host");
+            hostList = host.keys();
+        } catch (IllegalArgumentException e) {
+            hostList = new LinkedHashSet<>();
+        } finally {
+            result = null;
+            response = null;
+        }
+        return hostList;
     }
 
     private ModelNode executeOperation(ModelControllerClient client,
@@ -175,15 +193,35 @@ public abstract class AbstractDMRQueryExecutorImpl extends
      */
     protected Set<String> getServers(ModelControllerClient client, String host)
             throws DMCQueryException {
-        ModelNode op = new ModelNode();
+        ModelNode result = null;
+        ModelNode response = null;
+        Set<String> serverList = null;
+        ModelNode server = null;
+        ModelNode op = null;
+        ModelNode address = null;
+
+        op = new ModelNode();
         op.get("operation").set("read-resource");
         op.get("operations").set(true);
-        ModelNode address = op.get("address");
+        address = op.get("address");
         address.add("host", host);
 
-        ModelNode response = executeOperation(client, op);
+        response = executeOperation(client, op);
+        op = null;
 
-        return response.get("result").get("server").keys();
+        result = response.get("result");
+        response = null;
+        serverList = null;
+        try {
+            server = result.get("server");
+            serverList = server.keys();
+        } catch (IllegalArgumentException e) {
+            serverList = new LinkedHashSet<>();
+        } finally {
+            result = null;
+            server = null;
+        }
+        return serverList;
     }
 
     /**
@@ -201,19 +239,28 @@ public abstract class AbstractDMRQueryExecutorImpl extends
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    protected ModelNode getAllStatistics(String host, String server,
+    protected ModelNode getDeploymentStatistics(String host, String server,
             String deployment) throws IOException {
-        ModelNode op = new ModelNode();
+        ModelNode op = null;
+        ModelNode address = null;
+        ModelNode response = null;
+
+        op = new ModelNode();
         op.get("operation").set("read-resource");
         op.get("operations").set(true);
         op.get("include-runtime").set(true);
         op.get("recursive").set(true);
-        ModelNode address = op.get("address");
+        address = op.get("address");
         address.add("host", host);
         address.add("server", server);
         address.add("deployment", deployment);
 
-        return client.execute(op);
+        address = null;
+
+        response = client.execute(op);
+        op = null;
+
+        return response;
     }
 
 }

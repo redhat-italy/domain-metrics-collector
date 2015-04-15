@@ -19,12 +19,17 @@ import org.codehaus.jackson.node.ObjectNode;
 import org.codehaus.jackson.node.ValueNode;
 import org.junit.Test;
 
+import com.redhat.it.customers.dmc.core.enums.ObjectMapperType;
+
 /**
  * The Class JsonToCsvJacksonTest.
  * 
  * @author Andrea Battaglia (Red Hat)
  */
 public class JsonToCsvJacksonTest {
+
+    private final ObjectMapper objectMapper = ObjectMapperType.DEFAULT
+            .getObjectMapper();
 
     /**
      * Test creating flat key values.
@@ -44,12 +49,12 @@ public class JsonToCsvJacksonTest {
 
         Map<String, String> map = new LinkedHashMap<String, String>();
         try {
-            JsonNode readTree = new ObjectMapper().readTree(jp);
+            JsonNode readTree = objectMapper.readTree(jp);
             addKeys("", readTree, map);
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        System.out.println(map);
+        // System.out.println(map);
         for (Entry<String, String> entry : map.entrySet()) {
             System.out.println(entry.getKey() + " = " + entry.getValue());
 
