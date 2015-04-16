@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.redhat.it.customers.dmc.core.dto.configuration;
 
@@ -23,8 +23,8 @@ import com.redhat.it.customers.dmc.core.enums.MetricType;
 @XmlType(name = "AppConfiguration", namespace = "dto.dmc.customers.it.redhat.com")
 public class AppConfiguration extends Configuration {
 
-    /** The apps. */
-    private Set<String> apps;
+    /** The regexpApps. */
+    private String regexpApps;
 
     /** The regexp subdeployment. */
     private String regexpSubdeployment = Constants.REGEXP_CATCH_ALL.getValue();
@@ -42,22 +42,22 @@ public class AppConfiguration extends Configuration {
     }
 
     /**
-     * Gets the apps.
+     * Gets the regexpApps.
      *
-     * @return the apps
+     * @return the regexpApps
      */
-    public Set<String> getApps() {
-        return apps;
+    public String getRegexpApps() {
+        return regexpApps;
     }
 
     /**
-     * Sets the apps.
+     * Sets the regexpApps.
      *
-     * @param apps
-     *            the apps to set
+     * @param regexpApps
+     *            the regexpApps to set
      */
-    public void setApps(Set<String> apps) {
-        this.apps = apps;
+    public void setRegexpApps(String regexpApps) {
+        this.regexpApps = regexpApps;
     }
 
     /**
@@ -143,8 +143,8 @@ public class AppConfiguration extends Configuration {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("AppConfiguration [apps=");
-        builder.append(apps);
+        builder.append("AppConfiguration [regexpApps=");
+        builder.append(regexpApps);
         builder.append(", regexpSubdeployment=");
         builder.append(regexpSubdeployment);
         builder.append(", subsystem=");

@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.redhat.it.customers.dmc.core.services.collector.impl;
 
 import java.util.regex.Pattern;
@@ -18,7 +21,7 @@ import com.redhat.it.customers.dmc.core.services.query.impl.AppDMRQueryExecutorI
 
 /**
  * The Class AppCollectorWorkerImpl.
- * 
+ *
  * @author Andrea Battaglia
  */
 // @Dependent
@@ -81,7 +84,9 @@ public class AppCollectorWorkerImpl extends
         queryExecutor
                 .setPatternServer(configuration.getRegexpServer() == null ? null
                         : Pattern.compile(configuration.getRegexpServer()));
-        queryExecutor.setApps(configuration.getApps());
+        queryExecutor
+                .setPatternApps(configuration.getRegexpApps() == null ? null
+                        : Pattern.compile(configuration.getRegexpApps()));
         queryExecutor.setSubsystem(configuration.getSubsystem());
         queryExecutor.setPatternSubsystemComponents(configuration
                 .getRegexpSubsystemComponent() == null ? null : Pattern

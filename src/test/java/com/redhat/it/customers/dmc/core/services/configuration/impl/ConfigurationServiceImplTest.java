@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.redhat.it.customers.dmc.core.services.configuration.impl;
 
@@ -50,11 +50,10 @@ public class ConfigurationServiceImplTest {
     private static LinkedHashMap<Integer, AppObjectAttributeConfiguration> appObjectAttributeConfigurations;
 
     /** The Constant apps. */
-    private final static Set<String> apps = new LinkedHashSet<String>();
+    private final static String regexpApps;
 
     static {
-        apps.add("test-enterprise.ear");
-        apps.add("test-pippo.ear");
+        regexpApps = "test-.+\\.ear";
 
         appObjectAttributeConfigurations = new LinkedHashMap<Integer, AppObjectAttributeConfiguration>();
         AppObjectAttributeConfiguration value = new AppObjectAttributeConfiguration();
@@ -122,7 +121,7 @@ public class ConfigurationServiceImplTest {
         AppConfiguration appConfiguration = new AppConfiguration();
         appConfiguration.setId("testAppConfiguration");
         // appConfiguration.setDepth(1);
-        appConfiguration.setApps(apps);
+        appConfiguration.setRegexpApps(regexpApps);
         // appConfiguration
         // .setAppObjectAttributeConfigurations(appObjectAttributeConfigurations);
         try (OutputStream os = Files.newOutputStream(

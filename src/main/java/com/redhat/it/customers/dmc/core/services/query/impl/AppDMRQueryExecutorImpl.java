@@ -36,7 +36,7 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
     // private JsonFunctions jsonFunctions;
 
     /** The apps. */
-    protected Set<String> apps;
+    protected Pattern patternApps;
 
     /** The pattern subdeployment. */
     protected Pattern patternSubdeployment;
@@ -48,19 +48,12 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
     /** The app object name pattern. */
     protected Pattern patternAppObjectName;
 
-    /**
-     * @return the apps
-     */
-    public Set<String> getApps() {
-        return apps;
+    public Pattern getPatternApps() {
+        return patternApps;
     }
 
-    /**
-     * @param apps
-     *            the apps to set
-     */
-    public void setApps(final Set<String> apps) {
-        this.apps = apps;
+    public void setPatternApps(Pattern patternApps) {
+        this.patternApps = patternApps;
     }
 
     public Pattern getPatternSubdeployment() {
@@ -122,7 +115,7 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
         }
 
         for (String deployment : deployments) {
-            if (apps.contains(deployment)) {
+            if (patternApps.matcher(deployment).matches()) {
                 ModelNode deploymentStatistics;
                 try {
                     deploymentStatistics = getDeploymentStatistics(host,

@@ -21,12 +21,12 @@
     <!-- <level>${log.root.level}</level> -->
     <!-- </filter> -->
     <!-- </appender> -->
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] %c{0} - %X{collectorId} %msg%n</pattern>
-        </encoder>
-    </appender>
+<!--     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender"> -->
+<!--         <encoder> -->
+<!--             <charset>UTF-8</charset> -->
+<!--             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] %c{0} - %X{collectorId} %msg%n</pattern> -->
+<!--         </encoder> -->
+<!--     </appender> -->
 
 
     <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
@@ -54,9 +54,9 @@
     </appender>
 
     <logger name="com.redhat.it.customers.dmc" level="${log.core.level}" />
-    <logger name="org.jboss.as.controller" level="TRACE"> 
-        <appender-ref ref="CONSOLE" />
-    </logger>
+<!--     <logger name="org.jboss.as.controller" level="TRACE">  -->
+<!--         <appender-ref ref="CONSOLE" /> -->
+<!--     </logger> -->
     <logger name="exportLogger" level="TRACE">
         <appender-ref ref="SIFT" />
     </logger>
