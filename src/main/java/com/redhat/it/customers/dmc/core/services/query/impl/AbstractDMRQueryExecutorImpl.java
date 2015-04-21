@@ -1,13 +1,17 @@
+/*
+ *
+ */
 package com.redhat.it.customers.dmc.core.services.query.impl;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.jboss.as.cli.scriptsupport.CLI;
 import org.jboss.as.controller.client.ModelControllerClient;
 import org.jboss.dmr.ModelNode;
 import org.slf4j.Logger;
@@ -19,15 +23,40 @@ import com.redhat.it.customers.dmc.core.exceptions.DMCQueryException;
 
 /**
  * The Class AbstractDMRQueryExecutorImpl.
- * 
+ *
  * @author Andrea Battaglia
  */
 public abstract class AbstractDMRQueryExecutorImpl extends
-        AbstractQueryExecutorImpl<ModelControllerClient> {
+        AbstractQueryExecutorImpl<CLI> {
 
     /** Logger for this class. */
     @Inject
     protected Logger LOG;
+
+    protected ModelControllerClient mcClient;
+
+    /** The subsystem. */
+    protected String subsystem;
+
+    @PostConstruct
+    private void init() {
+        client = CLI.newInstance();
+    }
+
+    /**
+     * @return the subsystem
+     */
+    public String getSubsystem() {
+        return subsystem;
+    }
+
+    /**
+     * @param subsystem
+     *            the subsystem to set
+     */
+    public void setSubsystem(String subsystem) {
+        this.subsystem = subsystem;
+    }
 
     /**
      * Open.
@@ -47,7 +76,7 @@ public abstract class AbstractDMRQueryExecutorImpl extends
         // configuration.getRealm());
 
         try {
-            client = initClient();
+            mcClient = initClient();
         } catch (UnknownHostException e) {
             LOG.error(
                     "Cannot instantiate DMR Connection object because "
@@ -57,10 +86,12 @@ public abstract class AbstractDMRQueryExecutorImpl extends
     }
 
     protected ModelControllerClient initClient() throws UnknownHostException {
-        DMRCallbackHandler callbackHandler = null;
-        callbackHandler = new DMRCallbackHandler(username, password, realm);
-        return ModelControllerClient.Factory.create(
-                InetAddress.getByName(hostname), port, callbackHandler);
+        // DMRCallbackHandler callbackHandler = null;
+        // callbackHandler = new DMRCallbackHandler(username, password, realm);
+        // return ModelControllerClient.Factory.create(
+        // InetAddress.getByName(hostname), port, callbackHandler);
+        client.connect(hostname, port, username, password.toCharArray());
+        return client.getCommandContext().getModelControllerClient();
     }
 
     /**
@@ -72,11 +103,7 @@ public abstract class AbstractDMRQueryExecutorImpl extends
      */
     @Override
     public void close() throws DMCCloseException {
-        try {
-            client.close();
-        } catch (IOException e) {
-            throw new DMCCloseException(e);
-        }
+        client.disconnect();
     }
 
     /**
@@ -94,7 +121,7 @@ public abstract class AbstractDMRQueryExecutorImpl extends
         DMRRawQueryData rawData = null;
         Set<String> servers = null;
 
-        hosts = getHosts(client);
+        hosts = getHosts();
         if (LOG.isDebugEnabled()) {
             LOG.debug("extractData() - Set<String> hosts={}", hosts);
         }
@@ -103,7 +130,7 @@ public abstract class AbstractDMRQueryExecutorImpl extends
 
         for (String host : hosts) {
             if (patternHostname.matcher(host).matches()) {
-                servers = getServers(client, host);
+                servers = getServers(host);
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("extractData() - Set<String> servers={}", servers);
                 }
@@ -144,8 +171,7 @@ public abstract class AbstractDMRQueryExecutorImpl extends
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    protected Set<String> getHosts(ModelControllerClient client)
-            throws DMCQueryException {
+    protected Set<String> getHosts() throws DMCQueryException {
         ModelNode response = null;
         ModelNode op = null;
         ModelNode result = null;
@@ -155,7 +181,7 @@ public abstract class AbstractDMRQueryExecutorImpl extends
         op = new ModelNode();
         op.get("operation").set("read-resource");
         op.get("operations").set(true);
-        response = executeOperation(client, op);
+        response = executeOperation(op);
 
         try {
             result = response.get("result");
@@ -170,10 +196,9 @@ public abstract class AbstractDMRQueryExecutorImpl extends
         return hostList;
     }
 
-    private ModelNode executeOperation(ModelControllerClient client,
-            ModelNode op) throws DMCQueryException {
+    private ModelNode executeOperation(ModelNode op) throws DMCQueryException {
         try {
-            return client.execute(op);
+            return mcClient.execute(op);
         } catch (IOException e) {
             throw new DMCQueryException(e);
         }
@@ -191,8 +216,7 @@ public abstract class AbstractDMRQueryExecutorImpl extends
      *             Signals that an I/O exception has occurred.
      * @throws DMCQueryException
      */
-    protected Set<String> getServers(ModelControllerClient client, String host)
-            throws DMCQueryException {
+    protected Set<String> getServers(String host) throws DMCQueryException {
         ModelNode result = null;
         ModelNode response = null;
         Set<String> serverList = null;
@@ -206,7 +230,7 @@ public abstract class AbstractDMRQueryExecutorImpl extends
         address = op.get("address");
         address.add("host", host);
 
-        response = executeOperation(client, op);
+        response = executeOperation(op);
         op = null;
 
         result = response.get("result");
@@ -222,45 +246,6 @@ public abstract class AbstractDMRQueryExecutorImpl extends
             server = null;
         }
         return serverList;
-    }
-
-    /**
-     * Gets the all statistics.
-     *
-     * @param client
-     *            the client
-     * @param host
-     *            the host
-     * @param server
-     *            the server
-     * @param deployment
-     *            the deployment
-     * @return the all statistics
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    protected ModelNode getDeploymentStatistics(String host, String server,
-            String deployment) throws IOException {
-        ModelNode op = null;
-        ModelNode address = null;
-        ModelNode response = null;
-
-        op = new ModelNode();
-        op.get("operation").set("read-resource");
-        op.get("operations").set(true);
-        op.get("include-runtime").set(true);
-        op.get("recursive").set(true);
-        address = op.get("address");
-        address.add("host", host);
-        address.add("server", server);
-        address.add("deployment", deployment);
-
-        address = null;
-
-        response = client.execute(op);
-        op = null;
-
-        return response;
     }
 
 }

@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package com.redhat.it.customers.dmc.core.constants;
 
 import com.redhat.it.customers.dmc.core.enums.ExportDestinationType;
@@ -5,7 +8,7 @@ import com.redhat.it.customers.dmc.core.enums.ExportFormatType;
 
 /**
  * The Enum Constants.
- * 
+ *
  * @author Andrea Battaglia
  */
 public enum Constants {
@@ -57,6 +60,12 @@ public enum Constants {
     DEFAULT_EXPORT_DESTINATION_TYPE(ExportDestinationType.FILE.name()),
 
     DEFAULT_EXPORT_FORMAT_TYPE(ExportFormatType.JSON.name()),
+
+    /** The equals. */
+    EQUALS("="),
+
+    /** The cli separator. */
+    CLI_SEPARATOR("/"),
 
     ;
 

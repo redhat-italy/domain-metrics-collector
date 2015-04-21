@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.redhat.it.customers.dmc.core.dto.collector.qdk.t;
 
@@ -13,7 +13,7 @@ import com.redhat.it.customers.dmc.core.dto.collector.qdk.QueryDataKey;
  *
  */
 public abstract class AbstractTransformedQueryDataKey extends QueryDataKey {
-    
+
     /** The key elements. */
     private final Map<String, Object> keyElements;
 
@@ -48,7 +48,7 @@ public abstract class AbstractTransformedQueryDataKey extends QueryDataKey {
             Object keyElementValue) {
         return keyElements.put(keyElementName, keyElementValue);
     }
-    
+
     public Map<String, Object> getKeyElements() {
         return keyElements;
     }
@@ -62,7 +62,7 @@ public abstract class AbstractTransformedQueryDataKey extends QueryDataKey {
     public int hashCode() {
         final int prime = 31;
         int result = super.hashCode();
-        result = prime * result
+        result = (prime * result)
                 + ((keyElements == null) ? 0 : keyElements.hashCode());
         return result;
     }
@@ -72,18 +72,23 @@ public abstract class AbstractTransformedQueryDataKey extends QueryDataKey {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         AbstractTransformedQueryDataKey other = (AbstractTransformedQueryDataKey) obj;
         if (keyElements == null) {
-            if (other.keyElements != null)
+            if (other.keyElements != null) {
                 return false;
-        } else if (!keyElements.equals(other.keyElements))
+            }
+        } else if (!keyElements.equals(other.keyElements)) {
             return false;
+        }
         return true;
     }
 
@@ -98,5 +103,6 @@ public abstract class AbstractTransformedQueryDataKey extends QueryDataKey {
         builder.append("\n]");
         return builder.toString();
     }
+
 
 }

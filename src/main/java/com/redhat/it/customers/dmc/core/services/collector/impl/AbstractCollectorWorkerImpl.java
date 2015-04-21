@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package com.redhat.it.customers.dmc.core.services.collector.impl;
 
 import static com.redhat.it.customers.dmc.core.constants.CollectorWorkerStatus.PAUSED;
@@ -296,8 +299,13 @@ public abstract class AbstractCollectorWorkerImpl<C extends Configuration>
 
     protected void configureDataTransformer() {
         for (DataTransformer transformer : dataTransformerInstance) {
-            if (transformer.getExportFormatType().equals(
-                    configuration.getExportFormatType())) {
+            if (transformer.getMetricType().equals(
+                    configuration.getMetricType())
+                    &&
+                    transformer.getExportFormatType().equals(
+                            configuration.getExportFormatType())
+
+            ) {
                 dataTransformer = transformer;
                 return;
             }

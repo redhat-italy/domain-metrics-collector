@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.redhat.it.customers.dmc.core.dto.collector.qd.t;
 
@@ -13,7 +13,7 @@ public class JsonTransformedQueryData extends
         AbstractTransformedQueryData<JsonTransformedQueryDataKey, String> {
 
     /**
-     * 
+     *
      */
     public JsonTransformedQueryData() {
         // TODO Auto-generated constructor stub

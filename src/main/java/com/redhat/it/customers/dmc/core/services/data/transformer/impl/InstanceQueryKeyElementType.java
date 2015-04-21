@@ -1,15 +1,15 @@
-/**
- *
+/*
+ * 
  */
-package com.redhat.it.customers.dmc.core.enums;
+package com.redhat.it.customers.dmc.core.services.data.transformer.impl;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Enum AppQueryKeyElementType.
+ * The Enum InstanceQueryKeyElementType.
  *
  * @author Andrea Battaglia (Red Hat)
  */
-public enum AppQueryKeyElementType {
+public enum InstanceQueryKeyElementType {
 
     /** The host. */
     HOST("host"),
@@ -17,14 +17,13 @@ public enum AppQueryKeyElementType {
     /** The server. */
     SERVER("server"),
 
-
-    /** The deploy. */
-    DEPLOY("deploy"),
     /** The subsystem. */
     SUBSYSTEM("subsystem"),
 
     /** The subdeploy. */
-     SUBDEPLOY("subdeploy");
+    SUBSYSTEM_COMPONENT("subsystemComponent"),
+
+    SUBSYSTEM_COMPONENT_ATTRIBUTE("subsystemComponentAttribute");
 
     /** The value. */
     private String value;
@@ -35,7 +34,7 @@ public enum AppQueryKeyElementType {
      * @param value
      *            the value
      */
-    private AppQueryKeyElementType(String value) {
+    private InstanceQueryKeyElementType(String value) {
         this.value = value;
 
     }

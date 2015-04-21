@@ -1,4 +1,9 @@
+/*
+ *
+ */
 package com.redhat.it.customers.dmc.core.services.collector.impl;
+
+import java.util.regex.Pattern;
 
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.New;
@@ -8,24 +13,25 @@ import com.redhat.it.customers.dmc.core.cdi.interfaces.InstanceCollectorWorkerBi
 import com.redhat.it.customers.dmc.core.dto.configuration.InstanceConfiguration;
 import com.redhat.it.customers.dmc.core.enums.MetricType;
 import com.redhat.it.customers.dmc.core.exceptions.DMCException;
-import com.redhat.it.customers.dmc.core.services.data.export.DataExporter;
-import com.redhat.it.customers.dmc.core.services.data.transformer.DataTransformer;
 import com.redhat.it.customers.dmc.core.services.query.QueryExecutor;
 import com.redhat.it.customers.dmc.core.services.query.impl.InstanceDMRQueryExecutorImpl;
 
 /**
  * The Class InstanceCollectorWorkerImpl.
- * 
+ *
  * @author Andrea Battaglia
  */
+// @Dependent
 @InstanceCollectorWorkerBinding
 public class InstanceCollectorWorkerImpl extends
         AbstractCollectorWorkerImpl<InstanceConfiguration> {
-    
+
+    /** The query executor. */
+    private QueryExecutor<?> queryExecutor;
+
     @Inject
     @New(InstanceDMRQueryExecutorImpl.class)
-    private Instance<QueryExecutor> queryExecutorInstance;
-    private InstanceDMRQueryExecutorImpl queryExecutor;
+    private Instance<QueryExecutor<?>> queryExecutorInstance;
 
     /**
      * @see com.redhat.it.customers.dmc.core.services.collector.CollectorWorker#getType()
@@ -34,7 +40,7 @@ public class InstanceCollectorWorkerImpl extends
     public MetricType getType() {
         return MetricType.INSTANCE;
     }
-    
+
     @Override
     protected void disposeComponents() throws DMCException {
         super.disposeComponents();
@@ -45,8 +51,14 @@ public class InstanceCollectorWorkerImpl extends
      * @see com.redhat.it.customers.dmc.core.services.collector.impl.AbstractCollectorWorkerImpl#getQueryExecutor()
      */
     @Override
-    protected QueryExecutor getQueryExecutor() {
+    protected QueryExecutor<?> getQueryExecutor() {
         return queryExecutor;
+    }
+
+    @Override
+    protected void configureDataTransformer() {
+        super.configureDataTransformer();
+
     }
 
     /**
@@ -55,9 +67,32 @@ public class InstanceCollectorWorkerImpl extends
     @Override
     protected void configureQueryExecutor() {
         InstanceConfiguration configuration = this.configuration;
-        InstanceDMRQueryExecutorImpl queryExecutor = (InstanceDMRQueryExecutorImpl) queryExecutorInstance.get();
-        //...
-        this.queryExecutor=queryExecutor;
-    }
+        InstanceDMRQueryExecutorImpl queryExecutor = (InstanceDMRQueryExecutorImpl) queryExecutorInstance
+                .get();
+        queryExecutor.setConfigurationId(id);
+        queryExecutor.setHostname(configuration.getHostname());
+        queryExecutor.setPort(configuration.getPort());
+        queryExecutor.setUsername(configuration.getUsername());
+        queryExecutor.setPassword(configuration.getPassword());
+        queryExecutor.setRealm(configuration.getRealm());
+        queryExecutor
+                .setPatternHostname(configuration.getRegexpHostname() == null ? null
+                        : Pattern.compile(configuration.getRegexpHostname()));
+        queryExecutor
+                .setPatternServer(configuration.getRegexpServer() == null ? null
+                        : Pattern.compile(configuration.getRegexpServer()));
 
+        queryExecutor.setSubsystem(configuration.getSubsystem());
+        queryExecutor.setSubsystemComponentKey(configuration
+                .getSubsystemComponentKey());
+        queryExecutor.setSubsystemComponentValue(configuration
+                .getSubsystemComponentValue());
+        queryExecutor.setSubsystemComponentAttributeKey(configuration
+                .getSubsystemComponentAttributeKey());
+        queryExecutor.setSubsystemComponentAttributeValue(configuration
+                .getSubsystemComponentAttributeValue());
+        queryExecutor.setIncludeRuntime(configuration.isIncludeRuntime());
+        queryExecutor.setRecursive(configuration.isRecursive());
+        this.queryExecutor = queryExecutor;
+    }
 }

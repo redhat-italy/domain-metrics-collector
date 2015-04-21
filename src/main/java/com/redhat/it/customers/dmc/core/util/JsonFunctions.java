@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.redhat.it.customers.dmc.core.util;
 
@@ -59,7 +59,7 @@ public final class JsonFunctions {
      * @throws IOException
      *             Signals that an I/O exception has occurred.
      */
-    public Map<String, String> createFlatKeyValues(String jsonString)
+    public final Map<String, String> createFlatKeyValues(String jsonString)
             throws JsonParseException, IOException {
         JsonParser jp = f.createJsonParser(jsonString);
 
@@ -87,7 +87,7 @@ public final class JsonFunctions {
      * @param map
      *            the map
      */
-    private void addKeys(String currentPath, JsonNode jsonNode,
+    public final void addKeys(String currentPath, JsonNode jsonNode,
             Map<String, String> map) {
         if (jsonNode.isObject()) {
             ObjectNode objectNode = (ObjectNode) jsonNode;

@@ -3,8 +3,6 @@
  */
 package com.redhat.it.customers.dmc.core.dto.configuration;
 
-import java.util.Set;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
@@ -21,7 +19,7 @@ import com.redhat.it.customers.dmc.core.enums.MetricType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AppConfiguration", namespace = "dto.dmc.customers.it.redhat.com")
-public class AppConfiguration extends Configuration {
+public class AppConfiguration extends AbstractDMRConfiguration {
 
     /** The regexpApps. */
     private String regexpApps;
@@ -29,8 +27,6 @@ public class AppConfiguration extends Configuration {
     /** The regexp subdeployment. */
     private String regexpSubdeployment = Constants.REGEXP_CATCH_ALL.getValue();
 
-    /** The subsystem. */
-    private String subsystem;
     private String regexpSubsystemComponent = Constants.REGEXP_CATCH_ALL
             .getValue();
 
@@ -99,25 +95,6 @@ public class AppConfiguration extends Configuration {
     }
 
     /**
-     * Gets the subsystem.
-     *
-     * @return the subsystem
-     */
-    public String getSubsystem() {
-        return subsystem;
-    }
-
-    /**
-     * Sets the subsystem.
-     *
-     * @param subsystem
-     *            the subsystem to set
-     */
-    public void setSubsystem(String subsystem) {
-        this.subsystem = subsystem;
-    }
-
-    /**
      * Gets the app object name regex.
      *
      * @return the regexpAppObjectName
@@ -147,8 +124,6 @@ public class AppConfiguration extends Configuration {
         builder.append(regexpApps);
         builder.append(", regexpSubdeployment=");
         builder.append(regexpSubdeployment);
-        builder.append(", subsystem=");
-        builder.append(subsystem);
         builder.append(", regexpSubsystemComponent=");
         builder.append(regexpSubsystemComponent);
         builder.append(", regexpAppObjectName=");

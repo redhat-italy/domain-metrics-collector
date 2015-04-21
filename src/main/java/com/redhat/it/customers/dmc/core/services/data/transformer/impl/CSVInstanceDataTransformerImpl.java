@@ -6,12 +6,8 @@ package com.redhat.it.customers.dmc.core.services.data.transformer.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.jboss.dmr.ModelNode;
@@ -21,18 +17,18 @@ import com.redhat.it.customers.dmc.core.dto.collector.qd.raw.AbstractRawQueryDat
 import com.redhat.it.customers.dmc.core.dto.collector.qd.raw.DMRRawQueryData;
 import com.redhat.it.customers.dmc.core.dto.collector.qd.t.AbstractTransformedQueryData;
 import com.redhat.it.customers.dmc.core.dto.collector.qd.t.CSVTransformedQueryData;
-import com.redhat.it.customers.dmc.core.dto.collector.qdk.raw.AppDMRRawQueryDataKey;
 import com.redhat.it.customers.dmc.core.dto.collector.qdk.raw.DMRRawQueryDataKey;
+import com.redhat.it.customers.dmc.core.dto.collector.qdk.raw.InstanceDMRRawQueryDataKey;
 import com.redhat.it.customers.dmc.core.dto.collector.qdk.t.AbstractTransformedQueryDataKey;
 import com.redhat.it.customers.dmc.core.dto.collector.qdk.t.CSVTransformedQueryDataKey;
-import com.redhat.it.customers.dmc.core.enums.AppQueryKeyElementType;
 import com.redhat.it.customers.dmc.core.enums.ExportFormatType;
 import com.redhat.it.customers.dmc.core.enums.SupportedDMRSubsystemType;
-import com.redhat.it.customers.dmc.core.services.data.transformer.impl.ejb3.AppDMRRawDataCSVTransformationHandler;
+import com.redhat.it.customers.dmc.core.services.data.transformer.impl.ejb3.InstanceDMRRawDataCSVTransformationHandler;
 import com.redhat.it.customers.dmc.core.util.CSVFunctions;
 import com.redhat.it.customers.dmc.core.util.JsonFunctions;
 
-public class CSVAppDataTransformerImpl extends AbstractAppDataTransformerImpl<List<String[]>> {
+public class CSVInstanceDataTransformerImpl extends
+        AbstractInstanceDataTransformerImpl<List<String[]>> {
 
     // private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
@@ -40,24 +36,9 @@ public class CSVAppDataTransformerImpl extends AbstractAppDataTransformerImpl<Li
     private JsonFunctions jsonFunctions;
 
     @Inject
-    private Instance<AppDMRRawDataCSVTransformationHandler> transformationHandlerInstance;
+    private InstanceDMRRawDataCSVTransformationHandler transformationHandler;
 
     private String fieldSeparator;
-
-    private final Map<SupportedDMRSubsystemType, AppDMRRawDataCSVTransformationHandler> transformationHandlers;
-
-    {
-        transformationHandlers = new TreeMap<>();
-    }
-
-    @PostConstruct
-    private void init() {
-        for (AppDMRRawDataCSVTransformationHandler csvTransformationHandler : transformationHandlerInstance) {
-            transformationHandlers.put(
-                    csvTransformationHandler.getSupportedDMRSubsystemType(),
-                    csvTransformationHandler);
-        }
-    }
 
     @Override
     public ExportFormatType getExportFormatType() {
@@ -76,7 +57,7 @@ public class CSVAppDataTransformerImpl extends AbstractAppDataTransformerImpl<Li
     public AbstractTransformedQueryData transformData(AbstractRawQueryData input) {
         CSVTransformedQueryData result = null;
         DMRRawQueryData data = null;
-        AppDMRRawQueryDataKey key = null;
+        InstanceDMRRawQueryDataKey key = null;
         // String[] keyArray = null;
         List<String[]> valueArray = null;
         CSVTransformedQueryDataKey transformedKey = null;
@@ -86,28 +67,28 @@ public class CSVAppDataTransformerImpl extends AbstractAppDataTransformerImpl<Li
         result = new CSVTransformedQueryData();
 
         for (Entry<DMRRawQueryDataKey, ModelNode> entry : data.entrySet()) {
-            key = (AppDMRRawQueryDataKey) entry.getKey();
+            key = (InstanceDMRRawQueryDataKey) entry.getKey();
             transformedKey = new CSVTransformedQueryDataKey(
                     key.getConfigurationName(), key.getTimestamp());
 
             transformedKey.setKeyElement(
-                    AppQueryKeyElementType.HOST.getValue(), key.getHost());
+                    InstanceQueryKeyElementType.HOST.getValue(), key.getHost());
             transformedKey.setKeyElement(
-                    AppQueryKeyElementType.SERVER.getValue(), key.getServer());
+                    InstanceQueryKeyElementType.SERVER.getValue(),
+                    key.getServer());
             transformedKey.setKeyElement(
-                    AppQueryKeyElementType.DEPLOY.getValue(), key.getDeploy());
-            transformedKey.setKeyElement(
-                    AppQueryKeyElementType.SUBDEPLOY.getValue(),
-                    key.getSubdeploy());
-            transformedKey.setKeyElement(
-                    AppQueryKeyElementType.SUBSYSTEM.getValue(),
+                    InstanceQueryKeyElementType.SUBSYSTEM.getValue(),
                     key.getSubsystem());
+            transformedKey.setKeyElement(key.getSubsystemComponentKey(),
+                    key.getSubsystemComponentValue());
+            transformedKey.setKeyElement(
+                    key.getSubsystemComponentAttributeKey(),
+                    key.getSubsystemComponentAttributeValue());
 
             // keyArray = convertKey(key);
             SupportedDMRSubsystemType supportedDMRSubsystemType = SupportedDMRSubsystemType
                     .decode(key.getSubsystem());
-            valueArray = transformationHandlers.get(supportedDMRSubsystemType)
-                    .transformData(entry.getValue());
+            valueArray = transformationHandler.transformData(entry.getValue());
             result.put(transformedKey,
                     completeTransformation(transformedKey, valueArray));
             transformedKey = null;

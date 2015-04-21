@@ -1,10 +1,13 @@
+/*
+ * 
+ */
 package com.redhat.it.customers.dmc.core.dto.event;
 
 import com.redhat.it.customers.dmc.core.dto.configuration.Configuration;
 
 /**
  * The Class StartCollectorEvent.
- * 
+ *
  * @author Andrea Battaglia
  */
 public class RestartCollectorEvent {
@@ -38,7 +41,7 @@ public class RestartCollectorEvent {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("StartCollectorEvent [configurationId=");
+        builder.append("RestartCollectorEvent [configurationId=");
         builder.append(configuration.getId());
         builder.append("]");
         return builder.toString();

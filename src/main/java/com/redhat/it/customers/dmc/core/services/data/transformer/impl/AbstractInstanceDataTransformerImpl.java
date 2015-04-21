@@ -1,30 +1,23 @@
 /**
- * 
+ *
  */
 package com.redhat.it.customers.dmc.core.services.data.transformer.impl;
 
-import org.jboss.dmr.ModelNode;
+import com.redhat.it.customers.dmc.core.enums.MetricType;
 
 /**
  * The Class AbstractAppDataTransformerImpl.
  *
  * @author Andrea Battaglia (Red Hat)
  */
-public abstract class AbstractInstanceDataTransformerImpl extends AbstractDMRDataTransformerImpl {
+public abstract class AbstractInstanceDataTransformerImpl<V> extends
+        AbstractDMRDataTransformerImpl<V> {
 
     /**
-     * Instantiates a new abstract app data transformer impl.
+     * @see com.redhat.it.customers.dmc.core.services.data.transformer.DataTransformer#getMetricType()
      */
-    public AbstractInstanceDataTransformerImpl() {
+    @Override
+    public MetricType getMetricType() {
+        return MetricType.INSTANCE;
     }
-//
-//    /**
-//     * @see com.redhat.it.customers.dmc.core.services.data.transformer.DataTransformer
-//     *      #transformData(com.redhat.it.customers.dmc.core.dto.collector.AbstractRawQueryData)
-//     */
-//    @Override
-//    public AbstractTransformedQueryData transformData(AbstractRawQueryData input) {
-//        // TODO Auto-generated method stub
-//        return null;
-//    }
 }

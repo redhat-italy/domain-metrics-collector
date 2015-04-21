@@ -1,16 +1,24 @@
 /**
- * 
+ *
  */
 package com.redhat.it.customers.dmc.core.services.data.transformer.impl;
 
-import java.util.regex.Pattern;
-
+import com.redhat.it.customers.dmc.core.enums.MetricType;
 
 /**
  * The Class AbstractAppDataTransformerImpl.
  *
  * @author Andrea Battaglia (Red Hat)
  */
-public abstract class AbstractAppDataTransformerImpl extends AbstractDMRDataTransformerImpl {
+public abstract class AbstractAppDataTransformerImpl<V> extends
+        AbstractDMRDataTransformerImpl<V> {
+
+    /**
+     * @see com.redhat.it.customers.dmc.core.services.data.transformer.DataTransformer#getMetricType()
+     */
+    @Override
+    public MetricType getMetricType() {
+        return MetricType.APP;
+    }
 
 }

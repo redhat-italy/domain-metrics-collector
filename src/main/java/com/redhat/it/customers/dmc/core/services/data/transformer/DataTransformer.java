@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.redhat.it.customers.dmc.core.services.data.transformer;
 
 import java.io.IOException;
@@ -6,10 +9,11 @@ import com.redhat.it.customers.dmc.core.dto.collector.qd.raw.AbstractRawQueryDat
 import com.redhat.it.customers.dmc.core.dto.collector.qd.t.AbstractTransformedQueryData;
 import com.redhat.it.customers.dmc.core.enums.ExportDestinationType;
 import com.redhat.it.customers.dmc.core.enums.ExportFormatType;
+import com.redhat.it.customers.dmc.core.enums.MetricType;
 
 /**
  * The Interface DataTransformer.
- * 
+ *
  * @author Andrea Battaglia (Red Hat)
  */
 public interface DataTransformer {
@@ -20,6 +24,8 @@ public interface DataTransformer {
      * @return the export format type
      */
     ExportFormatType getExportFormatType();
+
+    MetricType getMetricType();
 
     /**
      * Extract header.

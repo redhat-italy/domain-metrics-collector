@@ -4,11 +4,8 @@
 package com.redhat.it.customers.dmc.core.services.query.impl;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -41,9 +38,6 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
     /** The pattern subdeployment. */
     protected Pattern patternSubdeployment;
 
-    /** The subsystem. */
-    protected String subsystem;
-
     protected Pattern patternSubsystemComponents;
     /** The app object name pattern. */
     protected Pattern patternAppObjectName;
@@ -70,21 +64,6 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
 
     public void setPatternSubdeployment(Pattern patternSubdeployment) {
         this.patternSubdeployment = patternSubdeployment;
-    }
-
-    /**
-     * @return the subsystem
-     */
-    public String getSubsystem() {
-        return subsystem;
-    }
-
-    /**
-     * @param subsystem
-     *            the subsystem to set
-     */
-    public void setSubsystem(String subsystem) {
-        this.subsystem = subsystem;
     }
 
     /**
@@ -142,6 +121,45 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
     }
 
     /**
+     * Gets the all statistics.
+     *
+     * @param client
+     *            the client
+     * @param host
+     *            the host
+     * @param server
+     *            the server
+     * @param deployment
+     *            the deployment
+     * @return the all statistics
+     * @throws IOException
+     *             Signals that an I/O exception has occurred.
+     */
+    protected ModelNode getDeploymentStatistics(String host, String server,
+            String deployment) throws IOException {
+        ModelNode op = null;
+        ModelNode address = null;
+        ModelNode response = null;
+
+        op = new ModelNode();
+        op.get("operation").set("read-resource");
+        op.get("operations").set(true);
+        op.get("include-runtime").set(true);
+        op.get("recursive").set(true);
+        address = op.get("address");
+        address.add("host", host);
+        address.add("server", server);
+        address.add("deployment", deployment);
+
+        address = null;
+
+        response = mcClient.execute(op);
+        op = null;
+
+        return response;
+    }
+
+    /**
      * Gets the deployments.
      *
      * @param client
@@ -170,7 +188,7 @@ public class AppDMRQueryExecutorImpl extends AbstractDMRQueryExecutorImpl {
         address.add("host", host);
         address.add("server", server);
 
-        response = client.execute(op);
+        response = mcClient.execute(op);
 
         result = response.get("result");
         response = null;
